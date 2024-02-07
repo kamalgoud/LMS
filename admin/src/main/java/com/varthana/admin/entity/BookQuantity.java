@@ -20,5 +20,6 @@ public class BookQuantity {
     private int id;
     private int totalQuantity;
     private int rentedQuantity;
+    private int purchasedQuantity;
     private int remainingQuantity;
 }

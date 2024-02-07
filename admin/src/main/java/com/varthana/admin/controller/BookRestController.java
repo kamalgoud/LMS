@@ -37,16 +37,16 @@ public class BookRestController {
     public BookDetail rentBook(@PathVariable("id")String id, @RequestBody DateTimeDto dateTimeDto){
         int bookId = Integer.valueOf(id);
         BookDetail bookDetail = bookDetailService.getBookById(bookId);
-        BookQuantity bookRent = bookDetail.getBookRent();
+        BookQuantity bookQuantity = bookDetail.getBookQuantity();
         LocalDate startDate = dateTimeDto.getStartDate();
         LocalDate expectedEndDate = dateTimeDto.getEndDate();
-        if(bookRent.getRemainingQuantity()>0){
-            bookRent.setRentedQuantity(bookRent.getRentedQuantity()+1);
-            bookRent.setRemainingQuantity(bookRent.getRemainingQuantity()-1);
+        if(bookQuantity.getRemainingQuantity()>0){
+            bookQuantity.setRentedQuantity(bookQuantity.getRentedQuantity()+1);
+            bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity()-1);
             long daysDifference = ChronoUnit.DAYS.between(startDate, expectedEndDate);
             int amountToBePaid = (int)((Math.ceil(daysDifference/7))*(0.1*bookDetail.getPrice()));
-//            bookRent.getUserIds().add(userId);
-            bookDetail.setBookRent(bookRent);
+//            bookQuantity.getUserIds().add(userId);
+            bookDetail.setBookQuantity(bookQuantity);
             bookDetailService.saveBook(bookDetail);
             BookRentTransaction bookRentTransaction = new BookRentTransaction();
             bookRentTransaction.setBookId(bookId);
@@ -59,5 +59,18 @@ public class BookRestController {
         else{
             return null;
         }
+    }
+
+    @GetMapping("/get-rented-books")
+    public List<BookDetail> getRentedBooks(){
+        List<BookDetail> books = bookDetailService.getAllBooks();
+        Iterator<BookDetail> iterator = books.iterator();
+        while (iterator.hasNext()) {
+            BookDetail book = iterator.next();
+            if (book.isDeletedByAdmin()) {
+                iterator.remove();  // Safe removal using Iterator
+            }
+        }
+        return books;
     }
 }

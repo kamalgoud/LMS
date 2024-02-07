@@ -2,6 +2,7 @@ package com.varthana.user.controller;
 
 import com.varthana.user.dto.BookDetailDto;
 import com.varthana.user.dto.DateTimeDto;
+import com.varthana.user.dto.RentedBookDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -69,6 +70,16 @@ public class UserController {
                 = restTemplate.getForEntity(url, List.class);
         List<BookDetailDto> bookDetailsDto = response.getBody();
         model.addAttribute("books",bookDetailsDto);
+        return "home";
+    }
+
+    @GetMapping("/rented-books")
+    public String getRentedBooks(Model model){//id
+        String url = "http://localhost:8080/get-rented-books";//+id
+        ResponseEntity<List> response
+                = restTemplate.getForEntity(url, List.class);
+        List<RentedBookDto> rentedBookDetailsDto = response.getBody();
+        model.addAttribute("rentedBooks",rentedBookDetailsDto);
         return "home";
     }
 }

@@ -28,5 +28,5 @@ public class BookDetail {
 
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "book_id")
-    private BookQuantity bookRent;
+    private BookQuantity bookQuantity;
 }

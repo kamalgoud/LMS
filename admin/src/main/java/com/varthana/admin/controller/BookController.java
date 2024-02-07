@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Controller
-public class bookController {
+public class BookController {
     @Autowired
     private BookDetailService bookDetailService;
 
@@ -42,10 +42,10 @@ public class bookController {
         bookDetail.setPrice(price);
         bookDetail.setQuantity(quantity);
         bookDetail.setCreatedAt(localDate);
-        BookQuantity bookRent = new BookQuantity();
-        bookRent.setTotalQuantity(quantity);
-        bookRent.setRemainingQuantity(quantity);
-        bookDetail.setBookRent(bookRent);
+        BookQuantity bookQuantity = new BookQuantity();
+        bookQuantity.setTotalQuantity(quantity);
+        bookQuantity.setRemainingQuantity(quantity);
+        bookDetail.setBookQuantity(bookQuantity);
         BookDetail savedBook = bookDetailService.saveBook(bookDetail);
         return "redirect:/";
     }
@@ -66,9 +66,9 @@ public class bookController {
         bookDetail.setPrice(updatedBookDetail.getPrice());
         bookDetail.setQuantity(updatedBookDetail.getQuantity());
         bookDetail.setUpdatedAt(localDate);
-        BookQuantity bookRent = bookDetail.getBookRent();
-        bookRent.setTotalQuantity(updatedBookDetail.getQuantity());
-        bookDetail.setBookRent(bookRent);
+        BookQuantity bookQuantity = bookDetail.getBookQuantity();
+        bookQuantity.setTotalQuantity(updatedBookDetail.getQuantity());
+        bookDetail.setBookQuantity(bookQuantity);
         bookDetailService.updateBook(bookDetail);
         return "redirect:/";
     }
