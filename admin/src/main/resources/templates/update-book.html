@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Book</title>
+</head>
+<body>
+<h1>New/Edit Book Details</h1>
+<form method="POST" th:action="@{/save-updated-book}" th:object="${book}">
+    <input th:field="*{id}" type="hidden"/>
+    <input name="name" placeholder="Name" th:field="*{name}" type="text"/> <br><br>
+
+    <input name="author" placeholder="Author" th:field="*{author}" type="text"/> <br><br>
+
+    <input name="price" placeholder="Price" th:field="*{price}" type="number"/> <br><br>
+
+    <input name="quantity" placeholder="Quantity" th:field="*{quantity}" type="number"/> <br><br>
+
+    <input type="submit" value="POST"/>
+</form>
+</body>
+</html>
