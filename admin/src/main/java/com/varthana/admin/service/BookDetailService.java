@@ -2,7 +2,6 @@ package com.varthana.admin.service;
 
 import com.varthana.admin.entity.BookDetail;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface BookDetailService {

@@ -1,6 +1,5 @@
 package com.varthana.admin.service.serviceimpl;
 
-import com.varthana.admin.entity.BookDetail;
 import com.varthana.admin.entity.BookRentTransaction;
 import com.varthana.admin.repository.BookRentTransactionRepository;
 import com.varthana.admin.service.BookRentTransactionService;

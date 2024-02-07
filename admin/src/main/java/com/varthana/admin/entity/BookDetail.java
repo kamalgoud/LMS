@@ -27,6 +27,6 @@ public class BookDetail {
     private LocalDate updatedAt;
 
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_quantity_id")
     private BookQuantity bookQuantity;
 }

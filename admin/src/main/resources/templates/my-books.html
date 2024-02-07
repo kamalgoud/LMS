@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Title</title>
     <style>
         table{
         width:50%;
@@ -17,20 +17,6 @@
     </style>
 </head>
 <body>
-<div>
-    <form method="POST" th:action="@{/create-book}">
-        <label for="nameId">Name:</label>
-        <input id="nameId" name="name" type="text"> <br>
-        <label for="authorId">Author:</label>
-        <input id="authorId" name="author" type="text"> <br>
-        <label for="priceId">Price:</label>
-        <input id="priceId" name="price" type="number"> <br>
-        <label for="quantityId">Quantity:</label>
-        <input id="quantityId" name="quantity" type="number"> <br>
-        <button type="submit">create</button>
-    </form>
-</div>
-<br><br>
 <div class="books">
     <h3>Books Details</h3>
     <table>
@@ -39,19 +25,28 @@
             <th>Author</th>
             <th>Price</th>
             <th>Quantity</th>
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
         <tr th:each="book: ${books}">
             <td th:text="${book.name}"/>
             <td th:text="${book.author}"/>
             <td th:text="${book.price}"/>
             <td th:text="${book.quantity}"/>
+            <td>
+                <form method="POST" th:action="@{/update-book}">
+                    <input name="id" th:value="${book.id}" type="hidden">
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/delete-book}">
+                    <input name="id" th:value="${book.id}" type="hidden">
+                    <button type="submit">delete</button>
+                </form>
+            </td>
         </tr>
     </table>
 </div>
-<br><br>
-<h3>View My Books</h3>
-<form th:action="view-my-books" method="GET">
-    <button type="submit" >View</button>
-</form>
 </body>
 </html>
