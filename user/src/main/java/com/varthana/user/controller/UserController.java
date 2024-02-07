@@ -24,21 +24,33 @@ public class UserController {
     private RestTemplate restTemplate;
     @GetMapping("/")
     public String home(Model model){
-        String url = "http://localhost:8080/getAllBooks";
-        ResponseEntity<List> response
-                = restTemplate.getForEntity(url, List.class);
-        List<BookDetailDto> bookDetailsDto = response.getBody();
-        model.addAttribute("books",bookDetailsDto);
-        return "home";
+        try {
+            String url = "http://localhost:8080/getAllBooks";
+            ResponseEntity<List> response
+                    = restTemplate.getForEntity(url, List.class);
+            List<BookDetailDto> bookDetailsDto = response.getBody();
+            model.addAttribute("books", bookDetailsDto);
+            return "home";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
     }
 
     @PostMapping("/request-rent-book")
     public String rentDetails(Model model,
                               @RequestParam("id") int id,
                               @RequestParam("name") String name){
-        model.addAttribute("id",id);
-        model.addAttribute("name",name);
-        return "rent-details";
+        try {
+            model.addAttribute("id", id);
+            model.addAttribute("name", name);
+            return "rent-details";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
     }
 
     @PostMapping("/rent-book")
@@ -46,41 +58,59 @@ public class UserController {
                            @RequestParam("id") int id,
                            @RequestParam("startdate") LocalDate startDate,
                            @RequestParam("enddate") LocalDate endDate){
-        System.out.println(startDate);
-        System.out.println(endDate);
-        long daysDifference = ChronoUnit.DAYS.between(startDate, endDate);
-        if(daysDifference<=0){
-            return "error";
-        }
-        String url = "http://localhost:8080/rent-book/"+id;
-        DateTimeDto dateTimeDto = new DateTimeDto(startDate,endDate);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, dateTimeDto, String.class);
+        try {
+            System.out.println(startDate);
+            System.out.println(endDate);
+            long daysDifference = ChronoUnit.DAYS.between(startDate, endDate);
+            if (daysDifference <= 0) {
+                return "error";
+            }
+            String url = "http://localhost:8080/rent-book/" + id;
+            DateTimeDto dateTimeDto = new DateTimeDto(startDate, endDate);
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, dateTimeDto, String.class);
 
-        System.out.println(responseEntity.getBody());
+            System.out.println(responseEntity.getBody());
 
 //        return ResponseEntity.ok(responseEntity.getBody());
 
-        return "redirect:/";
+            return "redirect:/";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
     }
 
     @PostMapping("/purchase-book")
     public String purchase(Model model, @RequestParam("id") int id){
-        String url = "http://localhost:8080/getAllBooks";
-        ResponseEntity<List> response
-                = restTemplate.getForEntity(url, List.class);
-        List<BookDetailDto> bookDetailsDto = response.getBody();
-        model.addAttribute("books",bookDetailsDto);
-        return "home";
+        try {
+            String url = "http://localhost:8080/getAllBooks";
+            ResponseEntity<List> response
+                    = restTemplate.getForEntity(url, List.class);
+            List<BookDetailDto> bookDetailsDto = response.getBody();
+            model.addAttribute("books", bookDetailsDto);
+            return "home";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
     }
 
     @GetMapping("/rented-books")
     public String getRentedBooks(Model model){//id
-        String url = "http://localhost:8080/get-rented-books";//+id
-        ResponseEntity<List> response
-                = restTemplate.getForEntity(url, List.class);
-        List<RentedBookDto> rentedBookDetailsDto = response.getBody();
-        model.addAttribute("rentedBooks",rentedBookDetailsDto);
-        return "home";
+        try {
+            String url = "http://localhost:8080/get-rented-books";//+id
+            ResponseEntity<List> response
+                    = restTemplate.getForEntity(url, List.class);
+            List<RentedBookDto> rentedBookDetailsDto = response.getBody();
+            model.addAttribute("rentedBooks", rentedBookDetailsDto);
+            return "home";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
     }
 }
 

@@ -22,55 +22,72 @@ public class BookRestController {
     private BookRentTransactionService bookRentTransactionService;
     @GetMapping("/getAllBooks")
     public List<BookDetail> getAllBooks(){
-        List<BookDetail> books = bookDetailService.getAllBooks();
-        Iterator<BookDetail> iterator = books.iterator();
-        while (iterator.hasNext()) {
-            BookDetail book = iterator.next();
-            if (book.isDeletedByAdmin()) {
-                iterator.remove();  // Safe removal using Iterator
+        try {
+            List<BookDetail> books = bookDetailService.getAllBooks();
+            Iterator<BookDetail> iterator = books.iterator();
+            while (iterator.hasNext()) {
+                BookDetail book = iterator.next();
+                if (book.isDeletedByAdmin()) {
+                    iterator.remove();  // Safe removal using Iterator
+                }
             }
+            return books;
         }
-        return books;
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @PostMapping("/rent-book/{id}")
     public BookDetail rentBook(@PathVariable("id")String id, @RequestBody DateTimeDto dateTimeDto){
-        int bookId = Integer.valueOf(id);
-        BookDetail bookDetail = bookDetailService.getBookById(bookId);
-        BookQuantity bookQuantity = bookDetail.getBookQuantity();
-        LocalDate startDate = dateTimeDto.getStartDate();
-        LocalDate expectedEndDate = dateTimeDto.getEndDate();
-        if(bookQuantity.getRemainingQuantity()>0){
-            bookQuantity.setRentedQuantity(bookQuantity.getRentedQuantity()+1);
-            bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity()-1);
-            long daysDifference = ChronoUnit.DAYS.between(startDate, expectedEndDate);
-            int amountToBePaid = (int)((Math.ceil(daysDifference/7))*(0.1*bookDetail.getPrice()));
+        try {
+            int bookId = Integer.valueOf(id);
+            BookDetail bookDetail = bookDetailService.getBookById(bookId);
+            BookQuantity bookQuantity = bookDetail.getBookQuantity();
+            LocalDate startDate = dateTimeDto.getStartDate();
+            LocalDate expectedEndDate = dateTimeDto.getEndDate();
+            if (bookQuantity.getRemainingQuantity() > 0) {
+                bookQuantity.setRentedQuantity(bookQuantity.getRentedQuantity() + 1);
+                bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity() - 1);
+                long daysDifference = ChronoUnit.DAYS.between(startDate, expectedEndDate);
+                int amountToBePaid = (int) ((Math.ceil(daysDifference / 7)) * (0.1 * bookDetail.getPrice()));
 //            bookQuantity.getUserIds().add(userId);
-            bookDetail.setBookQuantity(bookQuantity);
-            bookDetailService.saveBook(bookDetail);
-            BookRentTransaction bookRentTransaction = new BookRentTransaction();
-            bookRentTransaction.setBookId(bookId);
-            bookRentTransaction.setRentedDate(startDate);
-            bookRentTransaction.setExpectedReturnDate(expectedEndDate);
-            bookRentTransaction.setRentAmount(amountToBePaid);
-            bookRentTransactionService.saveRentTransaction(bookRentTransaction);
-            return bookDetail;
+                bookDetail.setBookQuantity(bookQuantity);
+                bookDetailService.saveBook(bookDetail);
+                BookRentTransaction bookRentTransaction = new BookRentTransaction();
+                bookRentTransaction.setBookId(bookId);
+                bookRentTransaction.setRentedDate(startDate);
+                bookRentTransaction.setExpectedReturnDate(expectedEndDate);
+                bookRentTransaction.setRentAmount(amountToBePaid);
+                bookRentTransactionService.saveRentTransaction(bookRentTransaction);
+                return bookDetail;
+            } else {
+                return null;
+            }
         }
-        else{
+        catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
 
     @GetMapping("/get-rented-books")
     public List<BookDetail> getRentedBooks(){
-        List<BookDetail> books = bookDetailService.getAllBooks();
-        Iterator<BookDetail> iterator = books.iterator();
-        while (iterator.hasNext()) {
-            BookDetail book = iterator.next();
-            if (book.isDeletedByAdmin()) {
-                iterator.remove();  // Safe removal using Iterator
+        try {
+            List<BookDetail> books = bookDetailService.getAllBooks();
+            Iterator<BookDetail> iterator = books.iterator();
+            while (iterator.hasNext()) {
+                BookDetail book = iterator.next();
+                if (book.isDeletedByAdmin()) {
+                    iterator.remove();  // Safe removal using Iterator
+                }
             }
+            return books;
         }
-        return books;
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }
