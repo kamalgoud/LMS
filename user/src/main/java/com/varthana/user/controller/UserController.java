@@ -47,5 +47,31 @@ public class UserController {
             return "error";
         }
     }
+
+    @GetMapping("/all-transactions")
+    public String allTransactions(Model model){
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println(authentication.getName());
+            User user = userService.getUserByEmail(authentication.getName());
+
+            String url = "http://localhost:8080/all-transactions/"+user.getId();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
+            HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
+            ResponseEntity<List> response
+                    = restTemplate.exchange(url, HttpMethod.GET,entity,List.class);
+            List<BookTransactionsDto> bookTransactionsDto = response.getBody();
+            if(bookTransactionsDto==null){
+                return "no-transactions";
+            }
+            model.addAttribute("books", bookTransactionsDto);
+            return "all-transactions";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 

@@ -2,10 +2,8 @@ package com.varthana.admin.controller;
 
 import com.varthana.admin.dto.*;
 import com.varthana.admin.entity.*;
-import com.varthana.admin.service.BookDetailService;
-import com.varthana.admin.service.BookPurchaseTransactionService;
-import com.varthana.admin.service.BookRentTransactionService;
-import com.varthana.admin.service.CartService;
+import com.varthana.admin.enums.Transaction;
+import com.varthana.admin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +23,8 @@ public class BookRestController {
     private CartService cartService;
     @Autowired
     private BookPurchaseTransactionService bookPurchaseTransactionService;
+    @Autowired
+    private BookTransactionService bookTransactionService;
     @GetMapping("/getAllBooks")
     public List<BookDetail> getAllBooks(){
         try {
@@ -87,6 +87,17 @@ public class BookRestController {
                 bookRentTransaction.setTransactionId(UUID.randomUUID());
                 bookRentTransactionService.saveRentTransaction(bookRentTransaction);
 
+                BookTransaction bookTransaction = new BookTransaction();
+                bookTransaction.setBookId(bookId);
+                bookTransaction.setBookName(bookDetail.getName());
+                bookTransaction.setType(Transaction.RENT);
+                bookTransaction.setUserId(userId);
+                bookTransaction.setTransactionDate(startDate);
+                bookTransaction.setPrice(bookDetail.getPrice());
+                bookTransaction.setRentAmount(amountToBePaid);
+                bookTransactionService.saveTransaction(bookTransaction);
+
+
                 return bookDetail;
             } else {
                 System.out.println(null+" "+"/rent-book  in  BookRestController");
@@ -141,32 +152,32 @@ public class BookRestController {
             int bookId = returnBookDto.getBookId();
             UUID transactionId = returnBookDto.getTransactionId();
             System.out.println(bookId+" "+transactionId);
-            BookRentTransaction bookTransaction = bookRentTransactionService.getTransactionByBookIdAndTansactionId(bookId,
+            BookRentTransaction bookRentTransaction = bookRentTransactionService.getTransactionByBookIdAndTansactionId(bookId,
                     transactionId);
-            if(bookTransaction.getReturnDate()!=null){
+            if(bookRentTransaction.getReturnDate()!=null){
                 return false;
             }
             else{
                 LocalDate returnDate = LocalDate.now();
-                bookTransaction.setReturnDate(returnDate);
-                LocalDate startDate = bookTransaction.getRentedDate();
-                LocalDate expectedEndDate = bookTransaction.getExpectedReturnDate();
+                bookRentTransaction.setReturnDate(returnDate);
+                LocalDate startDate = bookRentTransaction.getRentedDate();
+                LocalDate expectedEndDate = bookRentTransaction.getExpectedReturnDate();
 
 
                 if(returnDate.isAfter(expectedEndDate)){
                     long daysDifference = ChronoUnit.DAYS.between(expectedEndDate, returnDate);
                     double fine = 0;
                     if(daysDifference<=7){
-                        fine = Math.ceil(0.2 * bookTransaction.getPrice());
+                        fine = Math.ceil(0.2 * bookRentTransaction.getPrice());
                     }
                     else{
-                        fine =  ((Math.ceil((double)daysDifference / 7)) * ((0.2 * bookTransaction.getPrice())));
+                        fine =  ((Math.ceil((double)daysDifference / 7)) * ((0.2 * bookRentTransaction.getPrice())));
                     }
-                    System.out.println(0.1*bookTransaction.getPrice());
+                    System.out.println(0.1*bookRentTransaction.getPrice());
                     System.out.println(Math.ceil(daysDifference));
-                    bookTransaction.setFineAmount(fine);
+                    bookRentTransaction.setFineAmount(fine);
                 }
-                bookRentTransactionService.saveRentTransaction(bookTransaction);
+                bookRentTransactionService.saveRentTransaction(bookRentTransaction);
 
                 BookDetail bookDetail = bookDetailService.getBookById(bookId);
                 BookQuantity bookQuantity = bookDetail.getBookQuantity();
@@ -174,6 +185,17 @@ public class BookRestController {
                 bookQuantity.setRentedQuantity(bookQuantity.getRentedQuantity()-1);
                 bookDetail.setBookQuantity(bookQuantity);
                 bookDetailService.saveBook(bookDetail);
+
+                BookTransaction bookTransaction = new BookTransaction();
+                bookTransaction.setBookId(bookId);
+                bookTransaction.setBookName(bookDetail.getName());
+                bookTransaction.setType(Transaction.RETURN);
+                bookTransaction.setUserId(bookRentTransaction.getUserId());
+                bookTransaction.setPrice(bookDetail.getPrice());
+                bookTransaction.setRentAmount(bookRentTransaction.getRentAmount());
+                bookTransaction.setFine(bookRentTransaction.getFineAmount());
+                bookTransaction.setTransactionDate(bookRentTransaction.getReturnDate());
+                bookTransactionService.saveTransaction(bookTransaction);
 
                 return true;
             }
@@ -279,10 +301,18 @@ public class BookRestController {
             bookDetail.setBookQuantity(bookQuantity);
 
             Cart cart = cartService.getCartByBookIdAndUserId(bookId,userId);
-
             cartService.deleteFromCart(cart);
-
             bookDetailService.saveBook(bookDetail);
+
+            BookTransaction bookTransaction = new BookTransaction();
+            bookTransaction.setBookId(bookId);
+            bookTransaction.setBookName(bookDetail.getName());
+            bookTransaction.setType(Transaction.PURCHASE);
+            bookTransaction.setUserId(userId);
+            bookTransaction.setPrice(bookDetail.getPrice());
+            bookTransaction.setTransactionDate(LocalDate.now());
+            bookTransaction.setAmountPaid(bookPurchaseTransaction.getAmountPaid());
+            bookTransactionService.saveTransaction(bookTransaction);
 
             return true;
         }
@@ -305,4 +335,14 @@ public class BookRestController {
         }
     }
 
+    @GetMapping("/all-transactions/{id}")
+    public List<BookTransaction> allTransactions(@PathVariable("id") int userId){
+        try {
+            return bookTransactionService.getTransactionsByUserId(userId);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

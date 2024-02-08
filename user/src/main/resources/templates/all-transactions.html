@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Transactions</title>
+  <style>
+    table{
+    width:50%;
+    }
+    table,tr,td,th{
+    border:1px solid black;
+    }
+    table{
+    border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+<div class="books">
+  <h3>Books Details</h3>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Transaction Type</th>
+      <th>Price of Book</th>
+      <th>Transaction Date</th>
+      <th>Rent Amount</th>
+      <th>Purchasing Amount</th>
+      <th>Fine Amount</th>
+    </tr>
+    <tr th:each="book: ${books}">
+      <td th:text="${book.bookName}"/>
+      <td th:text="${book.type}"/>
+      <td th:text="${book.price}"/>
+      <td th:text="${book.transactionDate}"/>
+      <td th:text="${book.rentAmount}"/>
+      <td th:text="${book.amountPaid}"/>
+      <td th:text="${book.fine}"/>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
