@@ -9,10 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDetailDto {
-    private int id;
-    private String name;
-    private String author;
-    private double price;
-    private long quantity;
+public class UserBookDto {
+    private int bookId;
+    private int userId;
 }

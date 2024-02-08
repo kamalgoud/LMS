@@ -20,8 +20,8 @@ public class BookDetail {
     private int id;
     private String name;
     private String author;
-    private int price;
-    private int quantity;
+    private double price;
+    private long quantity;
     private boolean isDeletedByAdmin;
     private LocalDate createdAt;
     private LocalDate updatedAt;

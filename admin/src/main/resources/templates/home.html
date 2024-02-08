@@ -17,20 +17,7 @@
     </style>
 </head>
 <body>
-<div>
-    <form method="POST" th:action="@{/create-book}">
-        <label for="nameId">Name:</label>
-        <input id="nameId" name="name" type="text"> <br>
-        <label for="authorId">Author:</label>
-        <input id="authorId" name="author" type="text"> <br>
-        <label for="priceId">Price:</label>
-        <input id="priceId" name="price" type="number"> <br>
-        <label for="quantityId">Quantity:</label>
-        <input id="quantityId" name="quantity" type="number"> <br>
-        <button type="submit">create</button>
-    </form>
-</div>
-<br><br>
+
 <div class="books">
     <h3>Books Details</h3>
     <table>
@@ -49,6 +36,10 @@
     </table>
 </div>
 <br><br>
+<h3>Add Books</h3>
+<form th:action="add-book" method="POST">
+    <button type="submit" >Add</button>
+</form>
 <h3>View My Books</h3>
 <form th:action="view-my-books" method="GET">
     <button type="submit" >View</button>

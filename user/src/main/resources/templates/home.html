@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Books</title>
+    <title>User</title>
     <style>
         table{
         width:50%;
@@ -25,8 +25,9 @@
             <th>Author</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Update</th>
-            <th>Delete</th>
+            <th>Rent</th>
+            <th>Purchase</th>
+            <th>Return</th>
         </tr>
         <tr th:each="book: ${books}">
             <td th:text="${book.name}"/>
@@ -44,6 +45,12 @@
                 <form method="POST" th:action="@{/purchase-book}">
                     <input name="id" th:value="${book.id}" type="hidden">
                     <button type="submit">Purchase</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/return-book}">
+                    <input name="id" th:value="${book.id}" type="hidden">
+                    <button type="submit">Return</button>
                 </form>
             </td>
         </tr>

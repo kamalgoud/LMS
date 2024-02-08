@@ -1,5 +1,6 @@
 package com.varthana.admin.controller;
 
+import com.varthana.admin.configuration.SecurityConfiguration;
 import com.varthana.admin.entity.Admin;
 import com.varthana.admin.entity.BookDetail;
 import com.varthana.admin.entity.BookQuantity;
@@ -43,6 +44,18 @@ public class BookController {
             return "error";
         }
     }
+
+    @PostMapping("/add-book")
+    public String addBook(){
+        try {
+            return "add-book";
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
     @PostMapping("/create-book")
     public String saveBookDetail(@RequestParam("name") String name,
                                  @RequestParam("author") String author,

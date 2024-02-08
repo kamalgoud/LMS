@@ -11,14 +11,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RentedBookDto {
-    private int id;
+public class ReturnBookDto {
     private int bookId;
-    private String name;
-    private String author;
-    private double price;
-    private double rentAmount;
-    private double fineAmount;
-    private boolean isReturned;
     private UUID transactionId;
 }

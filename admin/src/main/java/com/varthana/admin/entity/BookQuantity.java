@@ -18,8 +18,8 @@ public class BookQuantity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int totalQuantity;
-    private int rentedQuantity;
-    private int purchasedQuantity;
-    private int remainingQuantity;
+    private long totalQuantity;
+    private long rentedQuantity;
+    private long purchasedQuantity;
+    private long remainingQuantity;
 }

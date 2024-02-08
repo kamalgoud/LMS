@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rented Books</title>
+    <style>
+        table{
+        width:50%;
+        }
+        table,tr,td,th{
+        border:1px solid black;
+        }
+        table{
+        border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Rented Date</th>
+        <th>Expected Return Date</th>
+        <th>Return Date</th>
+        <th>Rent Amount</th>
+        <th>Fine Amount</th>
+        <th>Purchase</th>
+        <th>Return</th>
+    </tr>
+    <tr th:each="book: ${books}">
+        <td th:text="${book.bookName}"/>
+        <td th:text="${book.rentedDate}"/>
+        <td th:text="${book.expectedReturnDate}"/>
+        <td th:text="${book.returnDate}"/>
+        <td th:text="${book.rentAmount}"/>
+        <td th:text="${book.fineAmount}"/>
+        <td>
+            <form method="POST" th:action="@{/purchase-book}">
+                <input name="id" th:value="${book.bookId}" type="hidden">
+                <button type="submit">Purchase</button>
+            </form>
+        </td>
+        <td>
+            <form method="POST" th:action="@{/return-book}">
+                <input name="id" th:value="${book.bookId}" type="hidden">
+                <input name="transactionId" th:value="${book.transactionId}" type="hidden">
+                <button type="submit">Return</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.varthana.user.dto;
+package com.varthana.admin.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RentedBookDto {
     private int id;
-    private int bookId;
     private String name;
     private String author;
     private double price;
