@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart quantity</title>
+</head>
+<body>
+<form th:action="@{/add-to-cart}" method="POST">
+    <input type="number" name="quantity">
+    <input name="id" th:value="${id}" type="hidden">
+    <input name="name" th:value="${name}" type="hidden">
+    <button type="submit">ADD</button>
+</form>
+</body>
+</html>

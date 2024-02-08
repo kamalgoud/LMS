@@ -22,16 +22,14 @@
     <table>
         <tr>
             <th>Name</th>
-            <th>Author</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Rent</th>
-            <th>Purchase</th>
+            <th>Add To Cart</th>
             <th>Return</th>
         </tr>
         <tr th:each="book: ${books}">
             <td th:text="${book.name}"/>
-            <td th:text="${book.author}"/>
             <td th:text="${book.price}"/>
             <td th:text="${book.quantity}"/>
             <td>
@@ -42,9 +40,10 @@
                 </form>
             </td>
             <td>
-                <form method="POST" th:action="@{/purchase-book}">
+                <form method="POST" th:action="@{/cart-quantity}">
                     <input name="id" th:value="${book.id}" type="hidden">
-                    <button type="submit">Purchase</button>
+                    <input name="name" th:value="${book.name}" type="hidden">
+                    <button type="submit">Cart</button>
                 </form>
             </td>
             <td>
@@ -60,6 +59,11 @@
 
     <h2>Rented books</h2>
     <form th:action="@{/rented-books}" method="GET">
+        <input type="submit" value="View"/>
+    </form>
+
+    <h2>View Cart</h2>
+    <form th:action="@{/view-cart}" method="GET">
         <input type="submit" value="View"/>
     </form>
 </div>

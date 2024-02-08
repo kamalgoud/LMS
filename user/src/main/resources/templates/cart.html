@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <style>
+        table{
+        width:50%;
+        }
+        table,tr,td,th{
+        border:1px solid black;
+        }
+        table{
+        border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<div class="books">
+    <h3>Books Details</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity Wanted</th>
+            <th>Amount to be Paid</th>
+            <th>Change Quantity</th>
+            <th>Purchase</th>
+            <th>Remove from Cart</th>
+        </tr>
+        <tr th:each="book: ${books}">
+            <td th:text="${book.name}"/>
+            <td th:text="${book.price}"/>
+            <td th:text="${book.quantityWanted}"/>
+            <td th:text="${book.amountToBePaid}"/>
+            <td>
+                <form method="POST" th:action="@{/change-quantity}">
+                    <input name="id" th:value="${book.bookId}" type="hidden">
+                    <input name="name" th:value="${book.name}" type="hidden">
+                    <input name="quantity" th:value="${book.quantityWanted}" type="hidden">
+                    <button type="submit">Change Quantity</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/change-quantity}">
+                    <input name="id" th:value="${book.bookId}" type="hidden">
+                    <input name="name" th:value="${book.name}" type="hidden">
+                    <input name="quantity" th:value="${book.quantityWanted}" type="hidden">
+                    <button type="submit">Purchase</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/remove-from-cart}">
+                    <input name="id" th:value="${book.bookId}" type="hidden">
+                    <button type="submit">Remove</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

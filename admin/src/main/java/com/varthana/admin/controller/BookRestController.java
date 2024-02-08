@@ -4,8 +4,10 @@ import com.varthana.admin.dto.*;
 import com.varthana.admin.entity.BookDetail;
 import com.varthana.admin.entity.BookQuantity;
 import com.varthana.admin.entity.BookRentTransaction;
+import com.varthana.admin.entity.Cart;
 import com.varthana.admin.service.BookDetailService;
 import com.varthana.admin.service.BookRentTransactionService;
+import com.varthana.admin.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,8 @@ public class BookRestController {
     private BookDetailService bookDetailService;
     @Autowired
     private BookRentTransactionService bookRentTransactionService;
+    @Autowired
+    private CartService cartService;
     @GetMapping("/getAllBooks")
     public List<BookDetail> getAllBooks(){
         try {
@@ -173,6 +177,74 @@ public class BookRestController {
 
                 return true;
             }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/add-to-cart")
+    public Boolean addToCart(@RequestBody BookCartQuantityDto bookCartQuantityDto){
+        try {
+            int bookId = bookCartQuantityDto.getBookId();
+            int userId = bookCartQuantityDto.getUserId();
+            long quantity = bookCartQuantityDto.getQuantity();
+            BookDetail bookDetail = bookDetailService.getBookById(bookId);
+            BookQuantity bookQuantity = bookDetail.getBookQuantity();
+            if (bookQuantity.getRemainingQuantity() < quantity) {
+                return false;
+            }
+            Cart cart = cartService.getCartByBookIdAndUserId(bookId, userId);
+            if (cart == null && quantity!=0) {
+                Cart cart1 = new Cart();
+                cart1.setBookId(bookId);
+                cart1.setUserId(userId);
+                cart1.setName(bookDetail.getName());
+                cart1.setPrice(bookDetail.getPrice());
+                cart1.setQuantityWanted(quantity);
+                cart1.setAmountToBePaid(quantity * bookDetail.getPrice());
+                cartService.saveCart(cart1);
+            } else {
+                cart.setQuantityWanted(quantity);
+                cart.setAmountToBePaid(quantity * bookDetail.getPrice());
+                cartService.saveCart(cart);
+            }
+            if(cart!=null && quantity==0){
+                cartService.deleteFromCart(cart);
+            }
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/get-cart-books/{id}")
+    public List<Cart> getCartBooks(@PathVariable("id") int userId){
+        try {
+            List<Cart> cartBooks = cartService.getCartByUserId(userId);
+            return cartBooks;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/remove-from-cart")
+    public Boolean deleteFromCart(@RequestBody BookCartQuantityDto bookCartQuantityDto){
+        try{
+            int bookId = bookCartQuantityDto.getBookId();
+            int userId = bookCartQuantityDto.getUserId();
+            Cart cart = cartService.getCartByBookIdAndUserId(bookId, userId);
+            System.out.println(bookId+" "+userId);
+            System.out.println(cart+" /remove-from-cart before if condition");
+            if(cart!=null){
+                cartService.deleteFromCart(cart);
+            }
+            return true;
         }
         catch (Exception e){
             e.printStackTrace();
