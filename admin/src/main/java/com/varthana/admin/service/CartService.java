@@ -11,4 +11,6 @@ public interface CartService {
     public List<Cart> getCartByUserId(int userId);
 
     public void deleteFromCart(Cart cart);
+
+    public void deleteCartByBookIdAndUserId(int bookId,int userId);
 }

@@ -10,4 +10,5 @@ public interface CartRepository extends JpaRepository<Cart,Integer> {
 
     List<Cart> findByUserId(int userId);
 
+    void deleteByBookIdAndUserId(int bookId,int userId);
 }

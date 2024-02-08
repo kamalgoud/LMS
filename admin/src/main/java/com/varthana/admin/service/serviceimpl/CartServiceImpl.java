@@ -33,4 +33,9 @@ public class CartServiceImpl implements CartService {
     public void deleteFromCart(Cart cart) {
         cartRepository.delete(cart);
     }
+
+    @Override
+    public void deleteCartByBookIdAndUserId(int bookId, int userId) {
+        cartRepository.deleteByBookIdAndUserId(bookId,userId);
+    }
 }

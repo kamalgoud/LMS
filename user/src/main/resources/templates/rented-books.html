@@ -25,7 +25,6 @@
         <th>Return Date</th>
         <th>Rent Amount</th>
         <th>Fine Amount</th>
-        <th>Purchase</th>
         <th>Return</th>
     </tr>
     <tr th:each="book: ${books}">
@@ -35,12 +34,6 @@
         <td th:text="${book.returnDate}"/>
         <td th:text="${book.rentAmount}"/>
         <td th:text="${book.fineAmount}"/>
-        <td>
-            <form method="POST" th:action="@{/purchase-book}">
-                <input name="id" th:value="${book.bookId}" type="hidden">
-                <button type="submit">Purchase</button>
-            </form>
-        </td>
         <td>
             <form method="POST" th:action="@{/return-book}">
                 <input name="id" th:value="${book.bookId}" type="hidden">

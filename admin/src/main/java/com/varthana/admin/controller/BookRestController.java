@@ -1,11 +1,9 @@
 package com.varthana.admin.controller;
 
 import com.varthana.admin.dto.*;
-import com.varthana.admin.entity.BookDetail;
-import com.varthana.admin.entity.BookQuantity;
-import com.varthana.admin.entity.BookRentTransaction;
-import com.varthana.admin.entity.Cart;
+import com.varthana.admin.entity.*;
 import com.varthana.admin.service.BookDetailService;
+import com.varthana.admin.service.BookPurchaseTransactionService;
 import com.varthana.admin.service.BookRentTransactionService;
 import com.varthana.admin.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,8 @@ public class BookRestController {
     private BookRentTransactionService bookRentTransactionService;
     @Autowired
     private CartService cartService;
+    @Autowired
+    private BookPurchaseTransactionService bookPurchaseTransactionService;
     @GetMapping("/getAllBooks")
     public List<BookDetail> getAllBooks(){
         try {
@@ -245,6 +245,59 @@ public class BookRestController {
                 cartService.deleteFromCart(cart);
             }
             return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/purchase-book")
+    public Boolean purchaseBook(@RequestBody PurchaseBookRequestDto purchaseBookRequestDto){
+        try{
+            int bookId = purchaseBookRequestDto.getBookId();
+            int userId = purchaseBookRequestDto.getUserId();
+            long requestedQuantity = purchaseBookRequestDto.getQuantity();
+
+            BookDetail bookDetail = bookDetailService.getBookById(bookId);
+            BookQuantity bookQuantity = bookDetail.getBookQuantity();
+            if(bookQuantity.getRemainingQuantity()<requestedQuantity){
+                return false;
+            }
+
+            BookPurchaseTransaction bookPurchaseTransaction = new BookPurchaseTransaction();
+            bookPurchaseTransaction.setBookId(bookId);
+            bookPurchaseTransaction.setBookName(bookDetail.getName());
+            bookPurchaseTransaction.setPurchasedDate(LocalDate.now());
+            bookPurchaseTransaction.setUserId(userId);
+            bookPurchaseTransaction.setQuantity(requestedQuantity);
+            bookPurchaseTransaction.setAmountPaid(requestedQuantity*bookDetail.getPrice());
+            bookPurchaseTransactionService.savePurchaseTransaction(bookPurchaseTransaction);
+
+            bookQuantity.setPurchasedQuantity(bookQuantity.getPurchasedQuantity()+requestedQuantity);
+            bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity()-requestedQuantity);
+            bookDetail.setBookQuantity(bookQuantity);
+
+            Cart cart = cartService.getCartByBookIdAndUserId(bookId,userId);
+
+            cartService.deleteFromCart(cart);
+
+            bookDetailService.saveBook(bookDetail);
+
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/get-purchased-books/{id}")
+    public List<BookPurchaseTransaction> getPurchasedBooks(@PathVariable("id") int userId){
+        try{
+            List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
+                    .getPurchaseTransactionsByUserId(userId);
+            return bookPurchaseTransactions;
         }
         catch (Exception e){
             e.printStackTrace();

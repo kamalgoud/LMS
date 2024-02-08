@@ -26,7 +26,6 @@
             <th>Quantity</th>
             <th>Rent</th>
             <th>Add To Cart</th>
-            <th>Return</th>
         </tr>
         <tr th:each="book: ${books}">
             <td th:text="${book.name}"/>
@@ -46,12 +45,6 @@
                     <button type="submit">Cart</button>
                 </form>
             </td>
-            <td>
-                <form method="POST" th:action="@{/return-book}">
-                    <input name="id" th:value="${book.id}" type="hidden">
-                    <button type="submit">Return</button>
-                </form>
-            </td>
         </tr>
     </table>
 
@@ -59,6 +52,11 @@
 
     <h2>Rented books</h2>
     <form th:action="@{/rented-books}" method="GET">
+        <input type="submit" value="View"/>
+    </form>
+
+    <h2>Purchased books</h2>
+    <form th:action="@{/purchased-books}" method="GET">
         <input type="submit" value="View"/>
     </form>
 

@@ -43,9 +43,8 @@
                 </form>
             </td>
             <td>
-                <form method="POST" th:action="@{/change-quantity}">
-                    <input name="id" th:value="${book.bookId}" type="hidden">
-                    <input name="name" th:value="${book.name}" type="hidden">
+                <form method="POST" th:action="@{/purchase-book}">
+                    <input name="bookId" th:value="${book.bookId}" type="hidden">
                     <input name="quantity" th:value="${book.quantityWanted}" type="hidden">
                     <button type="submit">Purchase</button>
                 </form>

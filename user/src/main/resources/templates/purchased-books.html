@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchased Books</title>
+    <style>
+        table{
+        width:50%;
+        }
+        table,tr,td,th{
+        border:1px solid black;
+        }
+        table{
+        border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<body>
+<div class="books">
+    <h3>Books Details</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Amount Paid</th>
+            <th>Quantity</th>
+            <th>Purchased Date</th>
+        </tr>
+        <tr th:each="book: ${books}">
+            <td th:text="${book.bookName}"/>
+            <td th:text="${book.amountPaid}"/>
+            <td th:text="${book.quantity}"/>
+            <td th:text="${book.purchasedDate}"/>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
