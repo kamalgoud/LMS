@@ -23,4 +23,11 @@ public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransacti
                 .findByUserId(userId);
         return bookPurchaseTransactions;
     }
+
+    @Override
+    public List<BookPurchaseTransaction> getPurchaseTransactionsByBookId(int bookId) {
+        List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
+                .findByBookId(bookId);
+        return bookPurchaseTransactions;
+    }
 }

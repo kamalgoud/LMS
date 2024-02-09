@@ -37,6 +37,11 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     }
 
     @Override
+    public List<BookRentTransaction> getBookTransactionsByBookId(int bookId) {
+        return bookRentTransactionRepository.findByBookId(bookId);
+    }
+
+    @Override
     public BookRentTransaction getTransactionByBookIdAndTansactionId(int bookId, UUID transactionId) {
         BookRentTransaction bookRentTransaction = bookRentTransactionRepository.findByBookIdAndTransactionId(bookId,
                 transactionId);

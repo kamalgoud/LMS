@@ -10,5 +10,6 @@ import java.util.UUID;
 public interface BookRentTransactionRepository extends JpaRepository<BookRentTransaction,Integer> {
     List<BookRentTransaction> findByBookIdAndUserId(int bookId,int userId);
     List<BookRentTransaction> findByUserId(int userId);
+    List<BookRentTransaction> findByBookId(int bookId);
     BookRentTransaction findByBookIdAndTransactionId(int bookId, UUID transactionId);
 }

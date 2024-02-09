@@ -1,11 +1,11 @@
 package com.varthana.admin.controller;
 
 import com.varthana.admin.configuration.SecurityConfiguration;
-import com.varthana.admin.entity.Admin;
-import com.varthana.admin.entity.BookDetail;
-import com.varthana.admin.entity.BookQuantity;
+import com.varthana.admin.entity.*;
 import com.varthana.admin.service.AdminService;
 import com.varthana.admin.service.BookDetailService;
+import com.varthana.admin.service.BookPurchaseTransactionService;
+import com.varthana.admin.service.BookRentTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +24,10 @@ public class BookController {
     private BookDetailService bookDetailService;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private BookRentTransactionService bookRentTransactionService;
+    @Autowired
+    private BookPurchaseTransactionService bookPurchaseTransactionService;
 
     @GetMapping("/")
     public String home(Model model){
@@ -62,6 +66,9 @@ public class BookController {
                                  @RequestParam("price") int price,
                                  @RequestParam("quantity") int quantity){
         try {
+            if(name==null || author==null || price==0 || quantity==0 ){
+                return "error";
+            }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             Admin admin = adminService.getAdminByEmail(authentication.getName());
@@ -152,6 +159,9 @@ public class BookController {
             bookDetail.setUpdatedAt(localDate);
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
             bookQuantity.setTotalQuantity(updatedBookDetail.getQuantity());
+            bookQuantity.setRemainingQuantity(updatedBookDetail.getQuantity()-bookQuantity.getRentedQuantity()-
+                    bookQuantity.getPurchasedQuantity());
+
             bookDetail.setBookQuantity(bookQuantity);
             bookDetailService.updateBook(bookDetail);
             return "redirect:/";
@@ -173,6 +183,49 @@ public class BookController {
             return "redirect:/";
         }
         catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    @GetMapping("/my-book-rent-transaction")
+    public String myBookRentTransactions(Model model,@RequestParam("bookId") int bookId){
+        try {
+            List<BookRentTransaction> bookRentTransactions = bookRentTransactionService
+                    .getBookTransactionsByBookId(bookId);
+            model.addAttribute("books", bookRentTransactions);
+            return "my-book-rent-transactions";
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    @GetMapping("/my-book-purchase-transaction")
+    public String myBookPurchaseTransactions(Model model,@RequestParam("bookId") int bookId){
+        try {
+            List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
+                    .getPurchaseTransactionsByBookId(bookId);
+            model.addAttribute("books", bookPurchaseTransactions);
+            return "my-book-purchase-transactions";
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    @GetMapping("/my-book-quantity")
+    public String myBookQuantity(Model model,@RequestParam("bookId") int bookId){
+        try {
+            BookDetail bookDetail = bookDetailService.getBookById(bookId);
+            BookQuantity bookQuantity = bookDetail.getBookQuantity();
+            model.addAttribute("bookQuantity", bookQuantity);
+            model.addAttribute("name", bookDetail.getName());
+            return "my-book-quantity-detail";
+        }
+        catch(Exception e){
             e.printStackTrace();
             return "error";
         }

@@ -12,5 +12,6 @@ import lombok.Setter;
 public class PurchaseBookRequestDto {
     private int bookId;
     private int userId;
+    private String userName;
     private long quantity;
 }

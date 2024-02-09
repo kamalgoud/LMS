@@ -23,6 +23,7 @@ public class BookPurchaseTransaction {
     private int bookId;
     private int userId;
     private String bookName;
+    private String userName;
     private double amountPaid;
     private long quantity;
     private LocalDate purchasedDate;

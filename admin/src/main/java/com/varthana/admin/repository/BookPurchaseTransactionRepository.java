@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BookPurchaseTransactionRepository extends JpaRepository<BookPurchaseTransaction,Integer> {
     List<BookPurchaseTransaction> findByUserId(int userId);
+    List<BookPurchaseTransaction> findByBookId(int bookId);
 }

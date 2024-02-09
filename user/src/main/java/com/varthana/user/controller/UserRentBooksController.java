@@ -70,6 +70,10 @@ public class UserRentBooksController {
                            @RequestParam("startdate") LocalDate startDate,
                            @RequestParam("enddate") LocalDate endDate){
         try {
+            if(startDate==null || endDate==null){
+                return "error";
+            }
+
             long daysDifference = ChronoUnit.DAYS.between(startDate, endDate);
             System.out.println(daysDifference+" "+"/rent-book  in  UserController");
             if (daysDifference <= 0) {
@@ -80,7 +84,8 @@ public class UserRentBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            BookRentRequestDto bookRentRequestDto = new BookRentRequestDto(id,user.getId(),startDate,endDate);
+            BookRentRequestDto bookRentRequestDto = new BookRentRequestDto(id,user.getId(), user.getName(),
+                    startDate,endDate);
 
             String url = "http://localhost:8080/rent-book" ;
             HttpHeaders httpHeaders = new HttpHeaders();

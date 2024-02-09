@@ -43,7 +43,8 @@ public class UserPurchaseBooksController {
 
             String url = "http://localhost:8080/purchase-book";
 
-            PurchaseBookRequestDto purchaseBookRequestDto = new PurchaseBookRequestDto(bookId,user.getId(),quantity);
+            PurchaseBookRequestDto purchaseBookRequestDto = new PurchaseBookRequestDto(bookId,user.getId(),
+                    user.getName(),quantity);
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");

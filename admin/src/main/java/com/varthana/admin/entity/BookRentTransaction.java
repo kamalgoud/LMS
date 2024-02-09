@@ -26,6 +26,7 @@ public class BookRentTransaction {
     private int userId;
     private double price;
     private String bookName;
+    private String userName;
     private LocalDate rentedDate;
     private LocalDate expectedReturnDate;
     private LocalDate returnDate;

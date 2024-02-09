@@ -47,6 +47,7 @@ public class BookRestController {
         try {
             int bookId = bookRentRequestDto.getBookId();
             int userId = bookRentRequestDto.getUserId();
+            String userName = bookRentRequestDto.getUserName();
             LocalDate startDate = bookRentRequestDto.getStartDate();
             LocalDate expectedEndDate = bookRentRequestDto.getEndDate();
 
@@ -77,6 +78,7 @@ public class BookRestController {
                 bookRentTransaction.setUserId(userId);
                 bookRentTransaction.setBookName(bookDetail.getName());
                 bookRentTransaction.setRentedDate(startDate);
+                bookRentTransaction.setUserName(userName);
                 bookRentTransaction.setExpectedReturnDate(expectedEndDate);
                 bookRentTransaction.setRentAmount(amountToBePaid);
                 bookRentTransaction.setPrice(bookDetail.getPrice());
@@ -162,12 +164,15 @@ public class BookRestController {
 
                 if(returnDate.isAfter(expectedEndDate)){
                     long daysDifference = ChronoUnit.DAYS.between(expectedEndDate, returnDate);
+                    System.out.println(daysDifference);
                     double fine = 0;
                     if(daysDifference<=7){
                         fine = Math.ceil(0.2 * bookRentTransaction.getPrice());
                     }
                     else{
+                        System.out.println((double)daysDifference / 7);
                         fine =  ((Math.ceil((double)daysDifference / 7)) * ((0.2 * bookRentTransaction.getPrice())));
+
                     }
                     System.out.println(0.1*bookRentTransaction.getPrice());
                     System.out.println(Math.ceil(daysDifference));
@@ -208,6 +213,7 @@ public class BookRestController {
         try{
             int bookId = purchaseBookRequestDto.getBookId();
             int userId = purchaseBookRequestDto.getUserId();
+            String userName = purchaseBookRequestDto.getUserName();
             long requestedQuantity = purchaseBookRequestDto.getQuantity();
 
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
@@ -221,6 +227,7 @@ public class BookRestController {
             bookPurchaseTransaction.setBookName(bookDetail.getName());
             bookPurchaseTransaction.setPurchasedDate(LocalDate.now());
             bookPurchaseTransaction.setUserId(userId);
+            bookPurchaseTransaction.setUserName(userName);
             bookPurchaseTransaction.setQuantity(requestedQuantity);
             bookPurchaseTransaction.setAmountPaid(requestedQuantity*bookDetail.getPrice());
             bookPurchaseTransactionService.savePurchaseTransaction(bookPurchaseTransaction);

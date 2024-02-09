@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class BookRentRequestDto {
     private int bookId;
     private int userId;
+    private String userName;
     private LocalDate startDate;
     private LocalDate endDate;
 

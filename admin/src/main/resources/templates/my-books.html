@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="books">
-    <h3>Books Details</h3>
+    <h3>My Books Details</h3>
     <table>
         <tr>
             <th>Name</th>
@@ -27,6 +27,9 @@
             <th>Quantity</th>
             <th>Update</th>
             <th>Delete</th>
+            <th>Rental Transactions</th>
+            <th>Purchase Transactions</th>
+            <th>View Book Quantity</th>
         </tr>
         <tr th:each="book: ${books}">
             <td th:text="${book.name}"/>
@@ -43,6 +46,24 @@
                 <form method="POST" th:action="@{/delete-book}">
                     <input name="id" th:value="${book.id}" type="hidden">
                     <button type="submit">delete</button>
+                </form>
+            </td>
+            <td>
+                <form method="GET" th:action="@{/my-book-rent-transaction}">
+                    <input name="bookId" th:value="${book.id}" type="hidden">
+                    <button type="submit">View Rents</button>
+                </form>
+            </td>
+            <td>
+                <form method="GET" th:action="@{/my-book-purchase-transaction}">
+                    <input name="bookId" th:value="${book.id}" type="hidden">
+                    <button type="submit">View Purchases</button>
+                </form>
+            </td>
+            <td>
+                <form method="GET" th:action="@{/my-book-quantity}">
+                    <input name="bookId" th:value="${book.id}" type="hidden">
+                    <button type="submit">View</button>
                 </form>
             </td>
         </tr>

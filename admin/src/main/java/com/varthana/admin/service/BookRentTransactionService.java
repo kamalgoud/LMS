@@ -10,5 +10,6 @@ public interface BookRentTransactionService {
     public BookRentTransaction updateRentTransaction(BookRentTransaction bookRentTransaction);
     public List<BookRentTransaction> checkTransactionByBookIdAndUserId(int bookId,int userId);
     public List<BookRentTransaction> getBookTransactionsByUserId(int userId);
+    public List<BookRentTransaction> getBookTransactionsByBookId(int bookId);
     public BookRentTransaction getTransactionByBookIdAndTansactionId(int bookId, UUID transactionId);
 }
