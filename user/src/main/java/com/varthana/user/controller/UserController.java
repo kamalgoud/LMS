@@ -30,48 +30,64 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model) {
         try {
             String url = "http://localhost:8080/getAllBooks";
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
+            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
             ResponseEntity<List> response
-                    = restTemplate.exchange(url, HttpMethod.GET,entity,List.class);
+                    = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
             List<BookDetailDto> bookDetailsDto = response.getBody();
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println(authentication.getName());
+            User user = userService.getUserByEmail(authentication.getName());
+
             model.addAttribute("books", bookDetailsDto);
+            model.addAttribute("isEliteUser", user.isEliteUser());
             return "home";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @GetMapping("/all-transactions")
-    public String allTransactions(Model model){
+    public String allTransactions(Model model) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/all-transactions/"+user.getId();
+            String url = "http://localhost:8080/all-transactions/" + user.getId();
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
+            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
             ResponseEntity<List> response
-                    = restTemplate.exchange(url, HttpMethod.GET,entity,List.class);
+                    = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
             List<BookTransactionsDto> bookTransactionsDto = response.getBody();
-            if(bookTransactionsDto==null){
+            if (bookTransactionsDto == null) {
                 return "no-transactions";
             }
             model.addAttribute("books", bookTransactionsDto);
             return "all-transactions";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
+    }
+
+    @PostMapping("/become-elite-user")
+    public String becomeEliteUser(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getName());
+        User user = userService.getUserByEmail(authentication.getName());
+
+        user.setEliteUser(true);
+        userService.saveUser(user);
+
+        return "redirect:/";
     }
 }
 

@@ -17,5 +17,5 @@ public class BookRentRequestDto {
     private String userName;
     private LocalDate startDate;
     private LocalDate endDate;
-
+    private boolean isEliteUser;
 }

@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface BookTransactionService {
     public BookTransaction saveTransaction(BookTransaction bookTransaction);
+
     public List<BookTransaction> getTransactionsByUserId(int userId);
 }

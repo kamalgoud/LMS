@@ -25,8 +25,7 @@ public class BookDetail {
     private boolean isDeletedByAdmin;
     private LocalDate createdAt;
     private LocalDate updatedAt;
-
-    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "book_quantity_id")
     private BookQuantity bookQuantity;
 }

@@ -1,4 +1,3 @@
-
 package com.varthana.admin.dto;
 
 import lombok.AllArgsConstructor;

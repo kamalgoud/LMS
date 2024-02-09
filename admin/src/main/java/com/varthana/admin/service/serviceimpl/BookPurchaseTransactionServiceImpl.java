@@ -12,22 +12,35 @@ import java.util.List;
 public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransactionService {
     @Autowired
     private BookPurchaseTransactionRepository bookPurchaseTransactionRepository;
+
     @Override
     public BookPurchaseTransaction savePurchaseTransaction(BookPurchaseTransaction bookPurchaseTransaction) {
-        return bookPurchaseTransactionRepository.save(bookPurchaseTransaction);
+        try {
+            return bookPurchaseTransactionRepository.save(bookPurchaseTransaction);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<BookPurchaseTransaction> getPurchaseTransactionsByUserId(int userId) {
-        List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
-                .findByUserId(userId);
-        return bookPurchaseTransactions;
+        try {
+            List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
+                    .findByUserId(userId);
+            return bookPurchaseTransactions;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<BookPurchaseTransaction> getPurchaseTransactionsByBookId(int bookId) {
-        List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
-                .findByBookId(bookId);
-        return bookPurchaseTransactions;
+        try {
+            List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
+                    .findByBookId(bookId);
+            return bookPurchaseTransactions;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

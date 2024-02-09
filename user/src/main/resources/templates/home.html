@@ -17,6 +17,11 @@
     </style>
 </head>
 <body>
+<div th:if="${isEliteUser == false}">
+    <form th:action="@{/become-elite-user}" method="POST">
+        <button type="submit">Obtain Elite Membership</button>
+    </form>
+</div>
 <div class="books">
     <h3>Books Details</h3>
     <table>
@@ -52,22 +57,22 @@
     <br><br>
 
     <h2>All Transactins</h2>
-    <form th:action="@{/all-transactions}" method="GET">
+    <form method="GET" th:action="@{/all-transactions}">
         <input type="submit" value="View"/>
     </form>
 
     <h2>Rented books</h2>
-    <form th:action="@{/rented-books}" method="GET">
+    <form method="GET" th:action="@{/rented-books}">
         <input type="submit" value="View"/>
     </form>
 
     <h2>Purchased books</h2>
-    <form th:action="@{/purchased-books}" method="GET">
+    <form method="GET" th:action="@{/purchased-books}">
         <input type="submit" value="View"/>
     </form>
 
     <h2>View Cart</h2>
-    <form th:action="@{/view-cart}" method="GET">
+    <form method="GET" th:action="@{/view-cart}">
         <input type="submit" value="View"/>
     </form>
 </div>

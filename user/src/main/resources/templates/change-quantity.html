@@ -6,8 +6,8 @@
 </head>
 <body>
 <h2 th:text="${name}"></h2>
-<form th:action="@{/update-quantity}" method="POST">
-    <input type="number" name="quantity" th:value="${quantity}">
+<form method="POST" th:action="@{/update-quantity}">
+    <input name="quantity" th:value="${quantity}" type="number">
     <input name="bookId" th:value="${bookId}" type="hidden">
     <button type="submit">ADD</button>
 </form>

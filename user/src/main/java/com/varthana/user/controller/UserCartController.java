@@ -37,14 +37,13 @@ public class UserCartController {
     public String cartBook(Model model,
                            @RequestParam("id") int id,
                            @RequestParam("price") double price,
-                           @RequestParam("name") String name){
+                           @RequestParam("name") String name) {
         try {
-            model.addAttribute("id",id);
-            model.addAttribute("price",price);
-            model.addAttribute("name",name);
+            model.addAttribute("id", id);
+            model.addAttribute("price", price);
+            model.addAttribute("name", name);
             return "cart-quantity";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
@@ -55,19 +54,18 @@ public class UserCartController {
                             @RequestParam("id") int bookId,
                             @RequestParam("name") String bookName,
                             @RequestParam("price") double price,
-                            @RequestParam("quantity") long quantity){
+                            @RequestParam("quantity") long quantity) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
             CartBook existedCartBook = cartService.getCartBookByBookIdAndUserId(bookId, user.getId());
-            if(existedCartBook!=null){
-                existedCartBook.setAmountToBePaid(price*quantity);
+            if (existedCartBook != null) {
+                existedCartBook.setAmountToBePaid(price * quantity);
                 existedCartBook.setQuantityWanted(quantity);
                 cartService.saveCart(existedCartBook);
-            }
-            else {
+            } else {
                 List<CartBook> cartBooks = user.getCartBooks();
                 CartBook cartBook = new CartBook();
                 cartBook.setName(bookName);
@@ -89,16 +87,15 @@ public class UserCartController {
             }
 
             return "redirect:/view-cart";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @GetMapping("/view-cart")
-    public String viewCart(Model model){
-        try{
+    public String viewCart(Model model) {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
@@ -106,8 +103,7 @@ public class UserCartController {
             List<CartBook> cartBookList = user.getCartBooks();
             model.addAttribute("books", cartBookList);
             return "cart";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
@@ -115,8 +111,8 @@ public class UserCartController {
 
     @PostMapping("/remove-from-cart")
     public String removeFromCart(Model model,
-                                 @RequestParam("id") int bookId){
-        try{
+                                 @RequestParam("id") int bookId) {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
@@ -126,8 +122,7 @@ public class UserCartController {
             cartService.deleteCart(cartBook);
             userService.saveUser(user);
             return "redirect:/view-cart";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
@@ -137,15 +132,14 @@ public class UserCartController {
     public String changeQuantity(Model model,
                                  @RequestParam("id") int bookId,
                                  @RequestParam("name") String name,
-                                 @RequestParam("quantity") long quantity){
-        try{
-            model.addAttribute("bookId",bookId);
-            model.addAttribute("name",name);
-            model.addAttribute("quantity",quantity);
-            System.out.println(bookId+" "+name+" "+quantity);
+                                 @RequestParam("quantity") long quantity) {
+        try {
+            model.addAttribute("bookId", bookId);
+            model.addAttribute("name", name);
+            model.addAttribute("quantity", quantity);
+            System.out.println(bookId + " " + name + " " + quantity);
             return "change-quantity";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
@@ -154,8 +148,8 @@ public class UserCartController {
     @PostMapping("/update-quantity")
     public String updateQuantity(Model model,
                                  @RequestParam("bookId") int bookId,
-                                 @RequestParam("quantity") long quantity){
-        try{
+                                 @RequestParam("quantity") long quantity) {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
@@ -164,13 +158,11 @@ public class UserCartController {
 
             CartBook cartBook = cartService.getCartBookByBookIdAndUserId(bookId, user.getId());
             cartBook.setQuantityWanted(quantity);
-            cartBook.setAmountToBePaid(quantity*cartBook.getPrice());
+            cartBook.setAmountToBePaid(quantity * cartBook.getPrice());
             cartService.saveCart(cartBook);
 
-
             return "redirect:/view-cart";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }

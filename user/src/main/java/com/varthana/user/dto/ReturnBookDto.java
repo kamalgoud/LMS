@@ -14,4 +14,5 @@ import java.util.UUID;
 public class ReturnBookDto {
     private int bookId;
     private UUID transactionId;
+    private boolean isEliteUser;
 }

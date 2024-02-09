@@ -15,11 +15,19 @@ public class BookTransactionServiceImpl implements BookTransactionService {
 
     @Override
     public BookTransaction saveTransaction(BookTransaction bookTransaction) {
-        return bookTransactionRepository.save(bookTransaction);
+        try {
+            return bookTransactionRepository.save(bookTransaction);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
-    public List<BookTransaction> getTransactionsByUserId( int userId) {
-        return bookTransactionRepository.findByUserId(userId);
+    public List<BookTransaction> getTransactionsByUserId(int userId) {
+        try {
+            return bookTransactionRepository.findByUserId(userId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

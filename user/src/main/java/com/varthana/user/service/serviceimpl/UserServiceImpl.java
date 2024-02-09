@@ -10,19 +10,23 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
     @Override
     public User getUserByEmail(String email) {
         try {
             User user = userRepository.findByEmail(email);
             return user;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
 
     @Override
     public User saveUser(User user) {
-        return userRepository.save(user);
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

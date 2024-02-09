@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SecurityController {
     @Autowired
     private AdminService adminService;
+
     @GetMapping("/showLoginPage")
     public String showLoginPage() {
         return "login";
@@ -35,14 +36,14 @@ public class SecurityController {
                                      @RequestParam String confirmPassword) {
 
         if (adminService.getAdminByEmail(email) != null ||
-                !password.equals(confirmPassword) || name==null || name.trim().isEmpty()) {
+                !password.equals(confirmPassword) || name == null || name.trim().isEmpty()) {
             return "registration-form";
         }
 
         Admin admin = new Admin();
         admin.setName(name);
         admin.setEmail(email);
-        admin.setPassword("{noop}"+password);
+        admin.setPassword("{noop}" + password);
         adminService.saveAdmin(admin);
 
         return "redirect:/showLoginPage";

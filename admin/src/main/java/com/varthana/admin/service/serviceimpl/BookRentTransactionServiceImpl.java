@@ -13,38 +13,63 @@ import java.util.UUID;
 public class BookRentTransactionServiceImpl implements BookRentTransactionService {
     @Autowired
     private BookRentTransactionRepository bookRentTransactionRepository;
+
     @Override
     public BookRentTransaction saveRentTransaction(BookRentTransaction bookRentTransaction) {
-        return bookRentTransactionRepository.save(bookRentTransaction);
+        try {
+            return bookRentTransactionRepository.save(bookRentTransaction);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public BookRentTransaction updateRentTransaction(BookRentTransaction bookRentTransaction) {
-        BookRentTransaction updatedBookRentTransaction = bookRentTransactionRepository.save(bookRentTransaction);
-        return updatedBookRentTransaction;
+        try {
+            BookRentTransaction updatedBookRentTransaction = bookRentTransactionRepository.save(bookRentTransaction);
+            return updatedBookRentTransaction;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<BookRentTransaction> checkTransactionByBookIdAndUserId(int bookId, int userId) {
-        List<BookRentTransaction> bookRentTransaction = bookRentTransactionRepository.findByBookIdAndUserId(bookId,userId);
-        return bookRentTransaction;
+        try {
+            List<BookRentTransaction> bookRentTransaction = bookRentTransactionRepository.findByBookIdAndUserId(bookId, userId);
+            return bookRentTransaction;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<BookRentTransaction> getBookTransactionsByUserId(int userId) {
-        List<BookRentTransaction> bookRentTransactions = bookRentTransactionRepository.findByUserId(userId);
-        return bookRentTransactions;
+        try {
+            List<BookRentTransaction> bookRentTransactions = bookRentTransactionRepository.findByUserId(userId);
+            return bookRentTransactions;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<BookRentTransaction> getBookTransactionsByBookId(int bookId) {
-        return bookRentTransactionRepository.findByBookId(bookId);
+        try {
+            return bookRentTransactionRepository.findByBookId(bookId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public BookRentTransaction getTransactionByBookIdAndTansactionId(int bookId, UUID transactionId) {
-        BookRentTransaction bookRentTransaction = bookRentTransactionRepository.findByBookIdAndTransactionId(bookId,
-                transactionId);
-        return bookRentTransaction;
+        try {
+            BookRentTransaction bookRentTransaction = bookRentTransactionRepository.findByBookIdAndTransactionId(bookId,
+                    transactionId);
+            return bookRentTransaction;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

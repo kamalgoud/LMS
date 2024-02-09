@@ -30,7 +30,7 @@ public class BookController {
     private BookPurchaseTransactionService bookPurchaseTransactionService;
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model) {
         try {
             List<BookDetail> books = bookDetailService.getAllBooks();
             Iterator<BookDetail> iterator = books.iterator();
@@ -42,19 +42,17 @@ public class BookController {
             }
             model.addAttribute("books", books);
             return "home";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @PostMapping("/add-book")
-    public String addBook(){
+    public String addBook() {
         try {
             return "add-book";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
@@ -64,9 +62,9 @@ public class BookController {
     public String saveBookDetail(@RequestParam("name") String name,
                                  @RequestParam("author") String author,
                                  @RequestParam("price") int price,
-                                 @RequestParam("quantity") int quantity){
+                                 @RequestParam("quantity") int quantity) {
         try {
-            if(name==null || author==null || price==0 || quantity==0 ){
+            if (name == null || author == null || price == 0 || quantity == 0) {
                 return "error";
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -101,15 +99,14 @@ public class BookController {
             }
 
             return "redirect:/";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @GetMapping("/view-my-books")
-    public String viewMyBooks(Model model){
+    public String viewMyBooks(Model model) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Admin admin = adminService.getAdminByEmail(authentication.getName());
@@ -127,28 +124,26 @@ public class BookController {
             }
             model.addAttribute("books", books);
             return "my-books";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @PostMapping("/update-book")
-    public String updateBookDetail(@RequestParam("id") int id,Model model){
+    public String updateBookDetail(@RequestParam("id") int id, Model model) {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(id);
             model.addAttribute("book", bookDetail);
             return "update-book";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @PostMapping("/save-updated-book")
-    public String saveUpdatedBookDetail(@RequestParam("id") int id,@ModelAttribute BookDetail updatedBookDetail){
+    public String saveUpdatedBookDetail(@RequestParam("id") int id, @ModelAttribute BookDetail updatedBookDetail) {
         try {
             LocalDate localDate = LocalDate.now();
             BookDetail bookDetail = bookDetailService.getBookById(id);
@@ -159,21 +154,20 @@ public class BookController {
             bookDetail.setUpdatedAt(localDate);
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
             bookQuantity.setTotalQuantity(updatedBookDetail.getQuantity());
-            bookQuantity.setRemainingQuantity(updatedBookDetail.getQuantity()-bookQuantity.getRentedQuantity()-
+            bookQuantity.setRemainingQuantity(updatedBookDetail.getQuantity() - bookQuantity.getRentedQuantity() -
                     bookQuantity.getPurchasedQuantity());
 
             bookDetail.setBookQuantity(bookQuantity);
             bookDetailService.updateBook(bookDetail);
             return "redirect:/";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @PostMapping("/delete-book")
-    public String deleteBookDetail(@RequestParam("id") int id){
+    public String deleteBookDetail(@RequestParam("id") int id) {
         try {
             if (bookDetailService.isPresentById(id)) {
                 BookDetail bookDetail = bookDetailService.getBookById(id);
@@ -181,51 +175,47 @@ public class BookController {
                 bookDetailService.saveBook(bookDetail);
             }
             return "redirect:/";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @GetMapping("/my-book-rent-transaction")
-    public String myBookRentTransactions(Model model,@RequestParam("bookId") int bookId){
+    public String myBookRentTransactions(Model model, @RequestParam("bookId") int bookId) {
         try {
             List<BookRentTransaction> bookRentTransactions = bookRentTransactionService
                     .getBookTransactionsByBookId(bookId);
             model.addAttribute("books", bookRentTransactions);
             return "my-book-rent-transactions";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @GetMapping("/my-book-purchase-transaction")
-    public String myBookPurchaseTransactions(Model model,@RequestParam("bookId") int bookId){
+    public String myBookPurchaseTransactions(Model model, @RequestParam("bookId") int bookId) {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByBookId(bookId);
             model.addAttribute("books", bookPurchaseTransactions);
             return "my-book-purchase-transactions";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @GetMapping("/my-book-quantity")
-    public String myBookQuantity(Model model,@RequestParam("bookId") int bookId){
+    public String myBookQuantity(Model model, @RequestParam("bookId") int bookId) {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
             model.addAttribute("bookQuantity", bookQuantity);
             model.addAttribute("name", bookDetail.getName());
             return "my-book-quantity-detail";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }

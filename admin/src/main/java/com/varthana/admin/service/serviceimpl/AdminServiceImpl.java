@@ -10,20 +10,33 @@ import org.springframework.stereotype.Service;
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
+
     @Override
     public Admin getAdminByEmail(String email) {
-        Admin admin = adminRepository.findByEmail(email);
-        return admin;
+        try {
+            Admin admin = adminRepository.findByEmail(email);
+            return admin;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Admin update(Admin admin) {
-        Admin updatedAdmin = adminRepository.save(admin);
-        return updatedAdmin;
+        try {
+            Admin updatedAdmin = adminRepository.save(admin);
+            return updatedAdmin;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Admin saveAdmin(Admin admin) {
-        return adminRepository.save(admin);
+        try {
+            return adminRepository.save(admin);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -13,21 +13,37 @@ public class CartBookServiceImpl implements CartBookService {
 
     @Override
     public CartBook saveCart(CartBook cart) {
-        return cartRepository.save(cart);
+        try {
+            return cartRepository.save(cart);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public void deleteCart(CartBook cart) {
-        cartRepository.delete(cart);
+        try {
+            cartRepository.delete(cart);
+        } catch (Exception e) {
+            return;
+        }
     }
 
     @Override
     public CartBook updateCart(CartBook cart) {
-        return cartRepository.save(cart);
+        try {
+            return cartRepository.save(cart);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
-    public CartBook getCartBookByBookIdAndUserId(int bookId,int userId) {
-        return cartRepository.findByBookIdAndUserId(bookId,userId);
+    public CartBook getCartBookByBookIdAndUserId(int bookId, int userId) {
+        try {
+            return cartRepository.findByBookIdAndUserId(bookId, userId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

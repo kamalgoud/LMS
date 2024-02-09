@@ -21,7 +21,7 @@ public class Admin {
     private String name;
     private String email;
     private String password;
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "admin_id")
     private List<BookDetail> bookDetails;
 }

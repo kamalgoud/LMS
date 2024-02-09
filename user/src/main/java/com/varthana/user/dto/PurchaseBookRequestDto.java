@@ -14,4 +14,5 @@ public class PurchaseBookRequestDto {
     private int userId;
     private String userName;
     private long quantity;
+    private boolean isEliteUser;
 }

@@ -5,8 +5,8 @@
     <title>Cart quantity</title>
 </head>
 <body>
-<form th:action="@{/add-to-cart}" method="POST">
-    <input type="number" name="quantity">
+<form method="POST" th:action="@{/add-to-cart}">
+    <input name="quantity" type="number">
     <input name="id" th:value="${id}" type="hidden">
     <input name="name" th:value="${name}" type="hidden">
     <input name="price" th:value="${price}" type="hidden">

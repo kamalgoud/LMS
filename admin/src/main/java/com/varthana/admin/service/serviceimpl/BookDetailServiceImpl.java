@@ -13,19 +13,28 @@ public class BookDetailServiceImpl implements BookDetailService {
     private BookDetailRepository bookDetailRepository;
 
     @Autowired
-    public BookDetailServiceImpl(BookDetailRepository bookDetailRepository){
+    public BookDetailServiceImpl(BookDetailRepository bookDetailRepository) {
         this.bookDetailRepository = bookDetailRepository;
     }
+
     @Override
     public BookDetail saveBook(BookDetail bookDetail) {
-        BookDetail savedBook = bookDetailRepository.save(bookDetail);
-        return savedBook;
+        try {
+            BookDetail savedBook = bookDetailRepository.save(bookDetail);
+            return savedBook;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public BookDetail updateBook(BookDetail bookDetail) {
-        BookDetail updatedBook = bookDetailRepository.save(bookDetail);
-        return updatedBook;
+        try {
+            BookDetail updatedBook = bookDetailRepository.save(bookDetail);
+            return updatedBook;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -35,28 +44,44 @@ public class BookDetailServiceImpl implements BookDetailService {
 
     @Override
     public List<BookDetail> getAllBooks() {
-        List<BookDetail> books = bookDetailRepository.findAll();
-        return books;
+        try {
+            List<BookDetail> books = bookDetailRepository.findAll();
+            return books;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public BookDetail getBookById(int id) {
-        if(!bookDetailRepository.existsById(id)){
+        try {
+            if (!bookDetailRepository.existsById(id)) {
+                return null;
+            }
+            return bookDetailRepository.findById(id).get();
+        } catch (Exception e) {
             return null;
         }
-        return bookDetailRepository.findById(id).get();
     }
 
     @Override
     public void deleteBookById(int id) {
-        bookDetailRepository.deleteById(id);
+        try {
+            bookDetailRepository.deleteById(id);
+        } catch (Exception e) {
+            return;
+        }
     }
 
     @Override
     public boolean isPresentById(int id) {
-        if(bookDetailRepository.existsById(id)){
-            return true;
+        try {
+            if (bookDetailRepository.existsById(id)) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 }

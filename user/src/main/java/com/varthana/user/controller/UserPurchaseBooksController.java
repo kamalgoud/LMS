@@ -35,7 +35,7 @@ public class UserPurchaseBooksController {
     @PostMapping("/purchase-book")
     public String purchase(Model model,
                            @RequestParam("bookId") int bookId,
-                           @RequestParam("quantity") long quantity){
+                           @RequestParam("quantity") long quantity) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
@@ -43,19 +43,19 @@ public class UserPurchaseBooksController {
 
             String url = "http://localhost:8080/purchase-book";
 
-            PurchaseBookRequestDto purchaseBookRequestDto = new PurchaseBookRequestDto(bookId,user.getId(),
-                    user.getName(),quantity);
+            PurchaseBookRequestDto purchaseBookRequestDto = new PurchaseBookRequestDto(bookId, user.getId(),
+                    user.getName(), quantity, user.isEliteUser());
 
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
+            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
 
-            HttpEntity<Object> entity = new HttpEntity<>(purchaseBookRequestDto,httpHeaders);
+            HttpEntity<Object> entity = new HttpEntity<>(purchaseBookRequestDto, httpHeaders);
 
             ResponseEntity<Boolean> response
-                    = restTemplate.exchange(url, HttpMethod.POST,entity,Boolean.class);
+                    = restTemplate.exchange(url, HttpMethod.POST, entity, Boolean.class);
             Boolean isPurchased = response.getBody();
 
-            if(!isPurchased){
+            if (!isPurchased) {
                 return "not-able-to-purchase";
             }
 
@@ -66,15 +66,14 @@ public class UserPurchaseBooksController {
             userService.saveUser(user);
 
             return "redirect:/";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
     }
 
     @GetMapping("/purchased-books")
-    public String purchasedBooks(Model model){
+    public String purchasedBooks(Model model) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
@@ -94,8 +93,7 @@ public class UserPurchaseBooksController {
             }
             model.addAttribute("books", books);
             return "purchased-books";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "error";
         }
