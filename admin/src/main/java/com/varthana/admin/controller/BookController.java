@@ -112,7 +112,8 @@ public class BookController {
             Admin admin = adminService.getAdminByEmail(authentication.getName());
 
             if (admin.getBookDetails() == null || admin.getBookDetails().isEmpty()) {
-                return "books-not-created";
+                model.addAttribute("warning","Books Not Created");
+                return "warning";
             }
             List<BookDetail> books = admin.getBookDetails();
             Iterator<BookDetail> iterator = books.iterator();

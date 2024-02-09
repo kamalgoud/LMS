@@ -38,7 +38,8 @@ public class UserPurchaseBooksController {
                            @RequestParam("quantity") long quantity) {
         try {
             if(quantity==0){
-                return "not-able-to-purchase";
+                model.addAttribute("warning","Not Able to Purchase");
+                return "warning";
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
@@ -59,7 +60,8 @@ public class UserPurchaseBooksController {
             Boolean isPurchased = response.getBody();
 
             if (!isPurchased) {
-                return "not-able-to-purchase";
+                model.addAttribute("warning","Not Able to Purchase");
+                return "warning";
             }
 
             CartBook cartBook = cartBookService.getCartBookByBookIdAndUserId(bookId, user.getId());
@@ -92,7 +94,8 @@ public class UserPurchaseBooksController {
                     = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
             List<PurchasedBooksDto> books = response.getBody();
             if (books == null) {
-                return "no-purchased-books";
+                model.addAttribute("warning","No purchased Books");
+                return "warning";
             }
             model.addAttribute("books", books);
             return "purchased-books";

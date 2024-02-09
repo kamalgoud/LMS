@@ -50,7 +50,8 @@ public class UserRentBooksController {
             Boolean isBookRentedByUser = response.getBody();
 
             if (isBookRentedByUser) {
-                return "already-rented";
+                model.addAttribute("warning","Already Rented");
+                return "warning";
             } else {
                 model.addAttribute("id", id);
                 model.addAttribute("name", name);
@@ -69,13 +70,15 @@ public class UserRentBooksController {
                            @RequestParam("enddate") LocalDate endDate) {
         try {
             if (startDate == null || endDate == null) {
-                return "error";
+                model.addAttribute("warning","Invalid start date or end date");
+                return "warning";
             }
 
             long daysDifference = ChronoUnit.DAYS.between(startDate, endDate);
             System.out.println(daysDifference + " " + "/rent-book  in  UserController");
             if (daysDifference <= 0) {
-                return "error";
+                model.addAttribute("warning","Start Date is Greater than End Date");
+                return "warning";
             }
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -97,7 +100,8 @@ public class UserRentBooksController {
             System.out.println(bookDetailDto + " " + "/rent-book  in  UserController");
 
             if (bookDetailDto == null) {
-                return "books-not-available";
+                model.addAttribute("warning","Books Not Available");
+                return "warning";
             }
 
             return "redirect:/";
@@ -151,7 +155,8 @@ public class UserRentBooksController {
                     = restTemplate.exchange(url, HttpMethod.POST, entity, Boolean.class);
             Boolean isAbleToReturnBook = response.getBody();
             if (!isAbleToReturnBook) {
-                return "already-returned";
+                model.addAttribute("warning","Already-returned");
+                return "warning";
             }
             return "redirect:/";
         } catch (Exception e) {

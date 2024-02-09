@@ -1,16 +1,10 @@
 package com.varthana.user.controller;
 
-import com.varthana.user.dto.BookCartQuantityDto;
-import com.varthana.user.dto.CartDto;
 import com.varthana.user.entity.CartBook;
 import com.varthana.user.entity.User;
 import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

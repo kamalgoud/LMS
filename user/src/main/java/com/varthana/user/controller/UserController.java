@@ -68,7 +68,8 @@ public class UserController {
                     = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
             List<BookTransactionsDto> bookTransactionsDto = response.getBody();
             if (bookTransactionsDto == null) {
-                return "no-transactions";
+                model.addAttribute("warning","No Transactions");
+                return "warning";
             }
             model.addAttribute("books", bookTransactionsDto);
             return "all-transactions";
