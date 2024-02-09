@@ -300,9 +300,9 @@ public class BookRestController {
             bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity()-requestedQuantity);
             bookDetail.setBookQuantity(bookQuantity);
 
-            Cart cart = cartService.getCartByBookIdAndUserId(bookId,userId);
-            cartService.deleteFromCart(cart);
-            bookDetailService.saveBook(bookDetail);
+//            Cart cart = cartService.getCartByBookIdAndUserId(bookId,userId);
+//            cartService.deleteFromCart(cart);
+//            bookDetailService.saveBook(bookDetail);
 
             BookTransaction bookTransaction = new BookTransaction();
             bookTransaction.setBookId(bookId);

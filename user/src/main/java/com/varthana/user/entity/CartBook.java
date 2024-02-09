@@ -1,28 +1,27 @@
 package com.varthana.user.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
-public class User {
+public class CartBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private int bookId;
+    private int userId;
     private String name;
-    private String email;
-    private String password;
-    private boolean isEliteUser;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    private List<CartBook> cartBooks;
+    private double price;
+    private long quantityWanted;
+    private double amountToBePaid;
 }

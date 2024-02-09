@@ -20,4 +20,9 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
 }

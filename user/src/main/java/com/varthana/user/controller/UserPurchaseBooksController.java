@@ -3,7 +3,9 @@ package com.varthana.user.controller;
 import com.varthana.user.dto.BookDetailDto;
 import com.varthana.user.dto.PurchaseBookRequestDto;
 import com.varthana.user.dto.PurchasedBooksDto;
+import com.varthana.user.entity.CartBook;
 import com.varthana.user.entity.User;
+import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -27,6 +29,8 @@ public class UserPurchaseBooksController {
     private RestTemplate restTemplate;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CartBookService cartBookService;
 
     @PostMapping("/purchase-book")
     public String purchase(Model model,
@@ -53,6 +57,12 @@ public class UserPurchaseBooksController {
             if(!isPurchased){
                 return "not-able-to-purchase";
             }
+
+            CartBook cartBook = cartBookService.getCartBookByBookIdAndUserId(bookId, user.getId());
+            List<CartBook> cartBookList = user.getCartBooks();
+            cartBookList.remove(cartBook);
+            cartBookService.deleteCart(cartBook);
+            userService.saveUser(user);
 
             return "redirect:/";
         }

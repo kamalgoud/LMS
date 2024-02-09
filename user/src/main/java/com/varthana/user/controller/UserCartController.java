@@ -2,7 +2,9 @@ package com.varthana.user.controller;
 
 import com.varthana.user.dto.BookCartQuantityDto;
 import com.varthana.user.dto.CartDto;
+import com.varthana.user.entity.CartBook;
 import com.varthana.user.entity.User;
+import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,13 +30,17 @@ public class UserCartController {
     private RestTemplate restTemplate;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CartBookService cartService;
 
     @PostMapping("/cart-quantity")
     public String cartBook(Model model,
                            @RequestParam("id") int id,
+                           @RequestParam("price") double price,
                            @RequestParam("name") String name){
         try {
             model.addAttribute("id",id);
+            model.addAttribute("price",price);
             model.addAttribute("name",name);
             return "cart-quantity";
         }
@@ -45,26 +52,42 @@ public class UserCartController {
 
     @PostMapping("/add-to-cart")
     public String addToCart(Model model,
-                            @RequestParam("id") int id,
+                            @RequestParam("id") int bookId,
+                            @RequestParam("name") String bookName,
+                            @RequestParam("price") double price,
                             @RequestParam("quantity") long quantity){
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            BookCartQuantityDto bookCartQuantityDto = new BookCartQuantityDto(id,user.getId(),quantity);
-
-            String url = "http://localhost:8080/add-to-cart" ;
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
-
-            HttpEntity<Object> entity = new HttpEntity<>(bookCartQuantityDto,httpHeaders);
-            ResponseEntity<Boolean> response
-                    = restTemplate.exchange(url, HttpMethod.POST,entity,Boolean.class);
-            Boolean isAddedToCart = response.getBody();
-            if(!isAddedToCart){
-                return "not-added-to-cart";
+            CartBook existedCartBook = cartService.getCartBookByBookIdAndUserId(bookId, user.getId());
+            if(existedCartBook!=null){
+                existedCartBook.setAmountToBePaid(price*quantity);
+                existedCartBook.setQuantityWanted(quantity);
+                cartService.saveCart(existedCartBook);
             }
+            else {
+                List<CartBook> cartBooks = user.getCartBooks();
+                CartBook cartBook = new CartBook();
+                cartBook.setName(bookName);
+                cartBook.setBookId(bookId);
+                cartBook.setPrice(price);
+                cartBook.setQuantityWanted(quantity);
+                cartBook.setAmountToBePaid(price * quantity);
+                cartBook.setUserId(user.getId());
+                if (cartBooks != null) {
+                    cartBooks.add(cartBook);
+                    user.setCartBooks(cartBooks);
+                    userService.saveUser(user);
+                } else {
+                    List<CartBook> cartBookList = new ArrayList<>();
+                    cartBookList.add(cartBook);
+                    user.setCartBooks(cartBooks);
+                    userService.saveUser(user);
+                }
+            }
+
             return "redirect:/view-cart";
         }
         catch (Exception e){
@@ -80,15 +103,8 @@ public class UserCartController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/get-cart-books/"+user.getId();
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
-
-            HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
-            ResponseEntity<List> response
-                    = restTemplate.exchange(url, HttpMethod.GET,entity,List.class);
-            List<CartDto> rentedBooksDtos = response.getBody();
-            model.addAttribute("books", rentedBooksDtos);
+            List<CartBook> cartBookList = user.getCartBooks();
+            model.addAttribute("books", cartBookList);
             return "cart";
         }
         catch(Exception e){
@@ -104,21 +120,12 @@ public class UserCartController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
-
-            BookCartQuantityDto bookCartQuantityDto = new BookCartQuantityDto(bookId,user.getId(),0);
-
-            String url = "http://localhost:8080/remove-from-cart" ;
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
-
-            HttpEntity<Object> entity = new HttpEntity<>(bookCartQuantityDto,httpHeaders);
-            ResponseEntity<Boolean> response
-                    = restTemplate.exchange(url, HttpMethod.POST,entity,Boolean.class);
-            Boolean isDeleted = response.getBody();
-            if(isDeleted){
-                return "redirect:/view-cart";
-            }
-            return null;
+            CartBook cartBook = cartService.getCartBookByBookIdAndUserId(bookId, user.getId());
+            List<CartBook> cartBookList = user.getCartBooks();
+            cartBookList.remove(cartBook);
+            cartService.deleteCart(cartBook);
+            userService.saveUser(user);
+            return "redirect:/view-cart";
         }
         catch(Exception e){
             e.printStackTrace();
@@ -155,19 +162,12 @@ public class UserCartController {
 
             System.out.println("Updating quantity");
 
-            BookCartQuantityDto bookCartQuantityDto = new BookCartQuantityDto(bookId,user.getId(),quantity);
+            CartBook cartBook = cartService.getCartBookByBookIdAndUserId(bookId, user.getId());
+            cartBook.setQuantityWanted(quantity);
+            cartBook.setAmountToBePaid(quantity*cartBook.getPrice());
+            cartService.saveCart(cartBook);
 
-            String url = "http://localhost:8080/add-to-cart" ;
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
 
-            HttpEntity<Object> entity = new HttpEntity<>(bookCartQuantityDto,httpHeaders);
-            ResponseEntity<Boolean> response
-                    = restTemplate.exchange(url, HttpMethod.POST,entity,Boolean.class);
-            Boolean isAddedToCart = response.getBody();
-            if(!isAddedToCart){
-                return "not-added-to-cart";
-            }
             return "redirect:/view-cart";
         }
         catch(Exception e){
