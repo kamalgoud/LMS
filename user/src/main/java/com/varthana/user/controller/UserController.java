@@ -70,7 +70,7 @@ public class UserController {
         }
         catch (Exception e){
             e.printStackTrace();
-            return null;
+            return "error";
         }
     }
 }

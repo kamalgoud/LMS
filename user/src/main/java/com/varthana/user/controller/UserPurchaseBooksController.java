@@ -74,24 +74,30 @@ public class UserPurchaseBooksController {
 
     @GetMapping("/purchased-books")
     public String purchasedBooks(Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
-        User user = userService.getUserByEmail(authentication.getName());
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println(authentication.getName());
+            User user = userService.getUserByEmail(authentication.getName());
 
-        String url = "http://localhost:8080/get-purchased-books/"+user.getId();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
+            String url = "http://localhost:8080/get-purchased-books/" + user.getId();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
 
-        HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
+            HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<List> response
-                = restTemplate.exchange(url, HttpMethod.GET,entity,List.class);
-        List<PurchasedBooksDto> books = response.getBody();
-        if(books==null){
-            return "no-purchased-books";
+            ResponseEntity<List> response
+                    = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
+            List<PurchasedBooksDto> books = response.getBody();
+            if (books == null) {
+                return "no-purchased-books";
+            }
+            model.addAttribute("books", books);
+            return "purchased-books";
         }
-        model.addAttribute("books",books);
-        return "purchased-books";
+        catch (Exception e){
+            e.printStackTrace();
+            return "error";
+        }
 
     }
 }

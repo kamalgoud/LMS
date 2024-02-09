@@ -116,13 +116,11 @@ public class UserRentBooksController {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com","123");
 
-//            UserIdDto userIdDto = new UserIdDto(user.getId());
-//            System.out.println(userIdDto.getUserId());
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
-//            System.out.println("Before");
+
             ResponseEntity<List> response
                     = restTemplate.exchange(url, HttpMethod.GET,entity,List.class);
-//            System.out.println("After");
+
             List<RentedBooksDto> rentedBooksDtos = response.getBody();
             model.addAttribute("books", rentedBooksDtos);
             return "rented-books";

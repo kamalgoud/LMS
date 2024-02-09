@@ -20,8 +20,6 @@ public class BookRestController {
     @Autowired
     private BookRentTransactionService bookRentTransactionService;
     @Autowired
-    private CartService cartService;
-    @Autowired
     private BookPurchaseTransactionService bookPurchaseTransactionService;
     @Autowired
     private BookTransactionService bookTransactionService;
@@ -54,8 +52,6 @@ public class BookRestController {
 
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
-
-//            System.out.println(bookQuantity+" "+"bookQuantity  /rent-book  in  BookRestController");
 
             if (bookQuantity.getRemainingQuantity() > 0) {
                 bookQuantity.setRentedQuantity(bookQuantity.getRentedQuantity() + 1);
@@ -206,73 +202,6 @@ public class BookRestController {
         }
     }
 
-    @PostMapping("/add-to-cart")
-    public Boolean addToCart(@RequestBody BookCartQuantityDto bookCartQuantityDto){
-        try {
-            int bookId = bookCartQuantityDto.getBookId();
-            int userId = bookCartQuantityDto.getUserId();
-            long quantity = bookCartQuantityDto.getQuantity();
-            BookDetail bookDetail = bookDetailService.getBookById(bookId);
-            BookQuantity bookQuantity = bookDetail.getBookQuantity();
-            if (bookQuantity.getRemainingQuantity() < quantity) {
-                return false;
-            }
-            Cart cart = cartService.getCartByBookIdAndUserId(bookId, userId);
-            if (cart == null && quantity!=0) {
-                Cart cart1 = new Cart();
-                cart1.setBookId(bookId);
-                cart1.setUserId(userId);
-                cart1.setName(bookDetail.getName());
-                cart1.setPrice(bookDetail.getPrice());
-                cart1.setQuantityWanted(quantity);
-                cart1.setAmountToBePaid(quantity * bookDetail.getPrice());
-                cartService.saveCart(cart1);
-            } else {
-                cart.setQuantityWanted(quantity);
-                cart.setAmountToBePaid(quantity * bookDetail.getPrice());
-                cartService.saveCart(cart);
-            }
-            if(cart!=null && quantity==0){
-                cartService.deleteFromCart(cart);
-            }
-            return true;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @GetMapping("/get-cart-books/{id}")
-    public List<Cart> getCartBooks(@PathVariable("id") int userId){
-        try {
-            List<Cart> cartBooks = cartService.getCartByUserId(userId);
-            return cartBooks;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @PostMapping("/remove-from-cart")
-    public Boolean deleteFromCart(@RequestBody BookCartQuantityDto bookCartQuantityDto){
-        try{
-            int bookId = bookCartQuantityDto.getBookId();
-            int userId = bookCartQuantityDto.getUserId();
-            Cart cart = cartService.getCartByBookIdAndUserId(bookId, userId);
-            System.out.println(bookId+" "+userId);
-            System.out.println(cart+" /remove-from-cart before if condition");
-            if(cart!=null){
-                cartService.deleteFromCart(cart);
-            }
-            return true;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     @PostMapping("/purchase-book")
     public Boolean purchaseBook(@RequestBody PurchaseBookRequestDto purchaseBookRequestDto){
@@ -299,10 +228,6 @@ public class BookRestController {
             bookQuantity.setPurchasedQuantity(bookQuantity.getPurchasedQuantity()+requestedQuantity);
             bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity()-requestedQuantity);
             bookDetail.setBookQuantity(bookQuantity);
-
-//            Cart cart = cartService.getCartByBookIdAndUserId(bookId,userId);
-//            cartService.deleteFromCart(cart);
-//            bookDetailService.saveBook(bookDetail);
 
             BookTransaction bookTransaction = new BookTransaction();
             bookTransaction.setBookId(bookId);

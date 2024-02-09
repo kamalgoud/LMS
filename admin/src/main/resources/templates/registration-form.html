@@ -2,20 +2,24 @@
 <html xmlns:th="http://www.thymleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>User Registration</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #fff;
             color: #000;
+            text-align: center;
+            margin: 0;
+            padding: 0;
         }
 
         center {
-            margin-top: 100px;
+            margin-top: 50px;
         }
 
-        h3 {
+        a {
             color: #000;
+            text-decoration: none;
         }
 
         form {
@@ -44,29 +48,21 @@
         input[type="submit"]:hover {
             background: #ddd;
         }
-
-        a {
-            display: block;
-            margin-top: 10px;
-            color: #000;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
 <center>
-    <h3>Login</h3>
-    <a th:href="@{/register}">Register</a>
-    <form method="POST" th:action="@{/authenticateTheUser}">
-        <div style="color: #ff6347;" th:if="${param.error}">
-            Sorry, you entered invalid credentials.
-        </div>
-        <div style="color: #008000;" th:if="${param.logout}">
-            You are logged out.
-        </div>
-        <input name="username" placeholder="E-mail" type="text"/>
+    <a th:href="@{/}">Home</a>
+    <form method="POST" th:action="@{/saveRegisteredAdmin}">
+        <input name="name" placeholder="Name" type="text"/>
+        <br><br>
+        <input name="email" placeholder="Email" type="email"/>
+        <br><br>
         <input name="password" placeholder="Password" type="password"/>
-        <input type="submit" value="Login"/>
+        <br><br>
+        <input name="confirmPassword" placeholder="Confirm Password" type="password"/>
+        <br><br>
+        <input type="submit" value="Register"/>
     </form>
 </center>
 </body>

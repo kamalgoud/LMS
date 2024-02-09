@@ -56,7 +56,7 @@
 <body>
 <center>
     <h3>Login</h3>
-    <a th:href="@{/}">Home</a>
+    <a th:href="@{/register}">Register</a>
     <form method="POST" th:action="@{/authenticateTheUser}">
         <div style="color: #ff6347;" th:if="${param.error}">
             Sorry, you entered invalid credentials.

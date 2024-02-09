@@ -21,4 +21,9 @@ public class AdminServiceImpl implements AdminService {
         Admin updatedAdmin = adminRepository.save(admin);
         return updatedAdmin;
     }
+
+    @Override
+    public Admin saveAdmin(Admin admin) {
+        return adminRepository.save(admin);
+    }
 }

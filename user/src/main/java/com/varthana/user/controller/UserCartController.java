@@ -109,7 +109,7 @@ public class UserCartController {
         }
         catch(Exception e){
             e.printStackTrace();
-            return null;
+            return "error";
         }
     }
 
@@ -129,7 +129,7 @@ public class UserCartController {
         }
         catch(Exception e){
             e.printStackTrace();
-            return null;
+            return "error";
         }
     }
 
@@ -147,7 +147,7 @@ public class UserCartController {
         }
         catch(Exception e){
             e.printStackTrace();
-            return null;
+            return "error";
         }
     }
 
@@ -172,7 +172,7 @@ public class UserCartController {
         }
         catch(Exception e){
             e.printStackTrace();
-            return null;
+            return "error";
         }
     }
 }
