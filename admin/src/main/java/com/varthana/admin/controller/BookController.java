@@ -59,13 +59,15 @@ public class BookController {
     }
 
     @PostMapping("/create-book")
-    public String saveBookDetail(@RequestParam("name") String name,
+    public String saveBookDetail(Model model,
+                                 @RequestParam("name") String name,
                                  @RequestParam("author") String author,
                                  @RequestParam("price") int price,
                                  @RequestParam("quantity") int quantity) {
         try {
             if (name == null || author == null || price == 0 || quantity == 0) {
-                return "error";
+                model.addAttribute("warning","Fill All Details to Create Book");
+                return "warning";
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());

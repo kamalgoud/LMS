@@ -4,6 +4,7 @@ import com.varthana.user.dto.*;
 import com.varthana.user.entity.User;
 import com.varthana.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,24 +29,30 @@ public class UserController {
     private RestTemplate restTemplate;
     @Autowired
     private UserService userService;
+    @Value("${admin-url}")
+    private String adminUrl;
+    @Value("${admin-username}")
+    private String adminUserName;
+    @Value("${admin-password}")
+    private String adminPassword;
 
     @GetMapping("/")
     public String home(Model model) {
         try {
-            String url = "http://localhost:8080/getAllBooks";
+            String url = adminUrl+"/getAllBooks";
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
             ResponseEntity<List> response
                     = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
             List<BookDetailDto> bookDetailsDto = response.getBody();
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
             model.addAttribute("books", bookDetailsDto);
             model.addAttribute("isEliteUser", user.isEliteUser());
+
             return "home";
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,21 +64,22 @@ public class UserController {
     public String allTransactions(Model model) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/all-transactions/" + user.getId();
+            String url = adminUrl+"/all-transactions/" + user.getId();
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
             ResponseEntity<List> response
                     = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
             List<BookTransactionsDto> bookTransactionsDto = response.getBody();
+
             if (bookTransactionsDto == null) {
                 model.addAttribute("warning","No Transactions");
                 return "warning";
             }
             model.addAttribute("books", bookTransactionsDto);
+
             return "all-transactions";
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +90,6 @@ public class UserController {
     @PostMapping("/become-elite-user")
     public String becomeEliteUser(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
         User user = userService.getUserByEmail(authentication.getName());
 
         user.setEliteUser(true);

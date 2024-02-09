@@ -61,8 +61,6 @@ public class BookRentalRestController {
                     }
                 }
 
-                System.out.println((Math.ceil(daysDifference / 7)));
-
                 bookDetail.setBookQuantity(bookQuantity);
                 bookDetailService.saveBook(bookDetail);
 
@@ -90,7 +88,6 @@ public class BookRentalRestController {
 
                 return bookDetail;
             } else {
-                System.out.println(null + " " + "/rent-book  in  BookRestController");
                 return null;
             }
         } catch (Exception e) {
@@ -124,7 +121,6 @@ public class BookRentalRestController {
     public List<BookRentTransaction> getRentedBooks(@PathVariable("id") int id) {
         try {
             List<BookRentTransaction> books = bookRentTransactionService.getBookTransactionsByUserId(id);
-            System.out.println(books);
             return books;
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,7 +135,6 @@ public class BookRentalRestController {
             UUID transactionId = returnBookDto.getTransactionId();
             boolean isEliteUser = returnBookDto.isEliteUser();
 
-            System.out.println(bookId + " " + transactionId);
             BookRentTransaction bookRentTransaction = bookRentTransactionService
                     .getTransactionByBookIdAndTansactionId(bookId, transactionId);
             if (bookRentTransaction.getReturnDate() != null) {
@@ -152,7 +147,6 @@ public class BookRentalRestController {
 
                 if (returnDate.isAfter(expectedEndDate)) {
                     long daysDifference = ChronoUnit.DAYS.between(expectedEndDate, returnDate);
-                    System.out.println(daysDifference);
                     double fine = 0;
                     if (daysDifference <= 7) {
                         fine = Math.ceil(0.2 * bookRentTransaction.getPrice());
@@ -161,7 +155,6 @@ public class BookRentalRestController {
                             fine *= 0.8;
                         }
                     } else {
-                        System.out.println((double) daysDifference / 7);
                         fine = ((Math.ceil((double) daysDifference / 7)) * ((0.2 * bookRentTransaction.getPrice())));
 
                         if (isEliteUser) {
@@ -169,8 +162,6 @@ public class BookRentalRestController {
                         }
 
                     }
-                    System.out.println(0.1 * bookRentTransaction.getPrice());
-                    System.out.println(Math.ceil(daysDifference));
                     bookRentTransaction.setFineAmount(fine);
                 }
                 bookRentTransactionService.saveRentTransaction(bookRentTransaction);

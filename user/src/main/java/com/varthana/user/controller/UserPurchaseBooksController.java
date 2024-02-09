@@ -8,6 +8,7 @@ import com.varthana.user.entity.User;
 import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,6 +32,12 @@ public class UserPurchaseBooksController {
     private UserService userService;
     @Autowired
     private CartBookService cartBookService;
+    @Value("${admin-url}")
+    private String adminUrl;
+    @Value("${admin-username}")
+    private String adminUserName;
+    @Value("${admin-password}")
+    private String adminPassword;
 
     @PostMapping("/purchase-book")
     public String purchase(Model model,
@@ -42,19 +49,16 @@ public class UserPurchaseBooksController {
                 return "warning";
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/purchase-book";
+            String url = adminUrl+"/purchase-book";
 
             PurchaseBookRequestDto purchaseBookRequestDto = new PurchaseBookRequestDto(bookId, user.getId(),
                     user.getName(), quantity, user.isEliteUser());
 
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
-
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(purchaseBookRequestDto, httpHeaders);
-
             ResponseEntity<Boolean> response
                     = restTemplate.exchange(url, HttpMethod.POST, entity, Boolean.class);
             Boolean isPurchased = response.getBody();
@@ -84,20 +88,20 @@ public class UserPurchaseBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/get-purchased-books/" + user.getId();
+            String url = adminUrl+"/get-purchased-books/" + user.getId();
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
-
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
-
             ResponseEntity<List> response
                     = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
             List<PurchasedBooksDto> books = response.getBody();
+
             if (books == null) {
                 model.addAttribute("warning","No purchased Books");
                 return "warning";
             }
             model.addAttribute("books", books);
+
             return "purchased-books";
         } catch (Exception e) {
             e.printStackTrace();

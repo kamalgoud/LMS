@@ -4,6 +4,7 @@ import com.varthana.user.dto.*;
 import com.varthana.user.entity.User;
 import com.varthana.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,6 +30,12 @@ public class UserRentBooksController {
     private RestTemplate restTemplate;
     @Autowired
     private UserService userService;
+    @Value("${admin-url}")
+    private String adminUrl;
+    @Value("${admin-username}")
+    private String adminUserName;
+    @Value("${admin-password}")
+    private String adminPassword;
 
     @PostMapping("/request-rent-book")
     public String rentDetails(Model model,
@@ -39,9 +46,9 @@ public class UserRentBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/check-user-rented-book";
+            String url = adminUrl+"/check-user-rented-book";
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
 
             UserBookDto userBookDto = new UserBookDto(id, user.getId());
             HttpEntity<Object> entity = new HttpEntity<>(userBookDto, httpHeaders);
@@ -75,29 +82,24 @@ public class UserRentBooksController {
             }
 
             long daysDifference = ChronoUnit.DAYS.between(startDate, endDate);
-            System.out.println(daysDifference + " " + "/rent-book  in  UserController");
             if (daysDifference <= 0) {
                 model.addAttribute("warning","Start Date is Greater than End Date");
                 return "warning";
             }
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
             BookRentRequestDto bookRentRequestDto = new BookRentRequestDto(id, user.getId(), user.getName(),
                     startDate, endDate, user.isEliteUser());
 
-            String url = "http://localhost:8080/rent-book";
+            String url = adminUrl+"/rent-book";
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
-
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(bookRentRequestDto, httpHeaders);
             ResponseEntity<BookDetailDto> response
                     = restTemplate.exchange(url, HttpMethod.POST, entity, BookDetailDto.class);
             BookDetailDto bookDetailDto = response.getBody();
-
-            System.out.println(bookDetailDto + " " + "/rent-book  in  UserController");
 
             if (bookDetailDto == null) {
                 model.addAttribute("warning","Books Not Available");
@@ -118,9 +120,9 @@ public class UserRentBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/get-rented-books/" + user.getId();
+            String url = adminUrl+"/get-rented-books/" + user.getId();
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
 
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
 
@@ -145,9 +147,9 @@ public class UserRentBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = "http://localhost:8080/return-book";
+            String url = adminUrl+"/return-book";
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth("kamalgoudkatta@gmail.com", "123");
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
 
             ReturnBookDto returnBookDto = new ReturnBookDto(id, transactionId, user.isEliteUser());
             HttpEntity<Object> entity = new HttpEntity<>(returnBookDto, httpHeaders);
