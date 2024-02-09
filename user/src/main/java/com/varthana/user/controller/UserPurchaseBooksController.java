@@ -37,6 +37,9 @@ public class UserPurchaseBooksController {
                            @RequestParam("bookId") int bookId,
                            @RequestParam("quantity") long quantity) {
         try {
+            if(quantity==0){
+                return "not-able-to-purchase";
+            }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());

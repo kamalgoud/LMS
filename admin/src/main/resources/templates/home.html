@@ -36,6 +36,15 @@
     </table>
 </div>
 <br><br>
+
+<div>
+    <form method="POST" th:action="@{/logout}">
+        <input type="submit" value="logout"/>
+    </form>
+</div>
+
+<br><br>
+
 <h3>Add Books</h3>
 <form method="POST" th:action="add-book">
     <button type="submit">Add</button>

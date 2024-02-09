@@ -18,9 +18,12 @@
 </head>
 <body>
 <div th:if="${isEliteUser == false}">
-    <form th:action="@{/become-elite-user}" method="POST">
+    <form method="POST" th:action="@{/become-elite-user}">
         <button type="submit">Obtain Elite Membership</button>
     </form>
+</div>
+<div th:if="${isEliteUser == true}">
+    <h1>You are an Elite User</h1>
 </div>
 <div class="books">
     <h3>Books Details</h3>
@@ -53,6 +56,14 @@
             </td>
         </tr>
     </table>
+
+    <br><br>
+
+    <div>
+        <form method="POST" th:action="@{/logout}">
+            <input type="submit" value="logout"/>
+        </form>
+    </div>
 
     <br><br>
 
