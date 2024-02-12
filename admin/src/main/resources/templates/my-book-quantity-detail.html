@@ -5,34 +5,126 @@
     <meta charset="UTF-8">
     <title>My book</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            height: 100vh;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            padding:20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+            padding: 20px;
+            padding-top:60px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            margin: 0;
+        }
+        .sidebar button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        .sidebar p:hover {
+            padding:20px;
+            background-color: #C2E7FF;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
         table{
-        width:50%;
+            width:80%;
         }
         table,tr,td,th{
-        border:1px solid black;
+            border:1px solid black;
+            padding:10px;
         }
         table{
-        border-collapse: collapse;
+            border-collapse: collapse;
         }
     </style>
 </head>
 <body>
-<div class="books">
-    <h3 th:text="${name}"></h3>
-    <table>
-        <tr>
-            <th>Total Quantity</th>
-            <th>Rented Quantity</th>
-            <th>Purchased Quantity</th>
-            <th>Remaining Quantity</th>
-        </tr>
-        <tr th:each="book: ${bookQuantity}">
-            <td th:text="${book.totalQuantity}"/>
-            <td th:text="${book.rentedQuantity}"/>
-            <td th:text="${book.purchasedQuantity}"/>
-            <td th:text="${book.remainingQuantity}"/>
-        </tr>
-    </table>
+<div class="container">
+    <div class="sidebar">
+        <h3>Admin LMS</h3>
+        <ul>
+            <li>
+                <form method="GET" th:action="@{/}">
+                    <p>
+                        <button type="submit">Home</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="add-book">
+                    <p>
+                        <button type="submit">Add Book</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="view-my-books">
+                    <p>
+                        <button type="submit">View My Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="@{/logout}">
+                    <p>
+                        <button type="submit">Logout</button>
+                    </p>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="books">
+            <h3 th:text="${name}"></h3>
+            <table>
+                <tr>
+                    <th>Total Quantity</th>
+                    <th>Rented Quantity</th>
+                    <th>Purchased Quantity</th>
+                    <th>Remaining Quantity</th>
+                </tr>
+                <tr th:each="book: ${bookQuantity}">
+                    <td th:text="${book.totalQuantity}"/>
+                    <td th:text="${book.rentedQuantity}"/>
+                    <td th:text="${book.purchasedQuantity}"/>
+                    <td th:text="${book.remainingQuantity}"/>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>

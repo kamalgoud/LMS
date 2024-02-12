@@ -3,14 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <title>Cart quantity</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            height: 100vh;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            padding:20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+            padding: 10px;
+            padding-top:40px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            margin: 0;
+        }
+        .sidebar button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        .sidebar p:hover {
+            padding:20px;
+            background-color: #C2E7FF;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-<form method="POST" th:action="@{/add-to-cart}">
-    <input name="quantity" type="number">
-    <input name="id" th:value="${id}" type="hidden">
-    <input name="name" th:value="${name}" type="hidden">
-    <input name="price" th:value="${price}" type="hidden">
-    <button type="submit">ADD</button>
-</form>
+<div class="container">
+    <div class="sidebar">
+        <h3>User LMS</h3>
+        <ul>
+            <li>
+                <form method="GET" th:action="@{/}">
+                    <p>
+                        <button type="submit">Home</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/all-transactions}">
+                    <p>
+                        <button type="submit">All Transactions</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/rented-books}">
+                    <p>
+                        <button type="submit">Rented Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/purchased-books}">
+                    <p>
+                        <button type="submit">Purchased Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/view-cart}">
+                    <p>
+                        <button type="submit">Cart</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="@{/logout}">
+                    <p>
+                        <button type="submit">Logout</button>
+                    </p>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <form method="POST" th:action="@{/add-to-cart}">
+            <input name="quantity" type="number">
+            <input name="id" th:value="${id}" type="hidden">
+            <input name="name" th:value="${name}" type="hidden">
+            <input name="price" th:value="${price}" type="hidden">
+            <button type="submit">ADD</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

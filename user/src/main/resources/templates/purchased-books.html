@@ -4,35 +4,138 @@
     <meta charset="UTF-8">
     <title>Purchased Books</title>
     <style>
-        table{
-        width:50%;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
         }
-        table,tr,td,th{
-        border:1px solid black;
+        .container {
+            display: flex;
+            min-height: 100vh;
         }
-        table{
-        border-collapse: collapse;
+
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            height: 100vh;
         }
+        .sidebar h3 {
+            margin-top: 0;
+            padding:20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+            padding: 10px;
+            padding-top:40px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a {
+            text-decoration: none;
+             color: #333;
+            margin: 0;
+        }
+        .sidebar button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        .sidebar p:hover {
+            padding:20px;
+            background-color: #C2E7FF;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+         table{
+            width:80%;
+            border-collapse: collapse;
+         }
+         table,tr,td,th{
+            border:1px solid black;
+            padding:10px;
+         }
     </style>
 </head>
 <body>
-<body>
-<div class="books">
-    <h3>Books Details</h3>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Amount Paid</th>
-            <th>Quantity</th>
-            <th>Purchased Date</th>
-        </tr>
-        <tr th:each="book: ${books}">
-            <td th:text="${book.bookName}"/>
-            <td th:text="${book.amountPaid}"/>
-            <td th:text="${book.quantity}"/>
-            <td th:text="${book.purchasedDate}"/>
-        </tr>
-    </table>
+<div class="container">
+    <div class="sidebar">
+        <h3>User LMS</h3>
+        <ul>
+            <li>
+                <form method="GET" th:action="@{/}">
+                    <p>
+                        <button type="submit">Home</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/all-transactions}">
+                    <p>
+                        <button type="submit">All Transactions</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/rented-books}">
+                    <p>
+                        <button type="submit">Rented Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/purchased-books}">
+                    <p>
+                        <button type="submit">Purchased Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/view-cart}">
+                    <p>
+                        <button type="submit">Cart</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="@{/logout}">
+                    <p>
+                        <button type="submit">Logout</button>
+                    </p>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="books">
+            <h3>Purchased Books</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount Paid</th>
+                    <th>Quantity</th>
+                    <th>Purchased Date</th>
+                </tr>
+                <tr th:each="book: ${books}">
+                    <td th:text="${book.bookName}"/>
+                    <td th:text="${book.amountPaid}"/>
+                    <td th:text="${book.quantity}"/>
+                    <td th:text="${book.purchasedDate}"/>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>

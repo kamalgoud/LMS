@@ -4,20 +4,112 @@
 <head>
     <meta charset="UTF-8">
     <title>Update Book</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            height: 100vh;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            padding:20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+            padding: 20px;
+            padding-top:60px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            margin: 0;
+        }
+        .sidebar button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        .sidebar p:hover {
+            padding:20px;
+            background-color: #C2E7FF;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1>New/Edit Book Details</h1>
-<form method="POST" th:action="@{/save-updated-book}" th:object="${book}">
-    <input th:field="*{id}" type="hidden"/>
-    <input name="name" placeholder="Name" th:field="*{name}" type="text"/> <br><br>
+<div class="container">
+    <div class="sidebar">
+        <h3>Admin LMS</h3>
+        <ul>
+            <li>
+                <form method="GET" th:action="@{/}">
+                    <p>
+                        <button type="submit">Home</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="add-book">
+                    <p>
+                        <button type="submit">Add Book</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="view-my-books">
+                    <p>
+                        <button type="submit">View My Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="@{/logout}">
+                    <p>
+                        <button type="submit">Logout</button>
+                    </p>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <h1>New/Edit Book Details</h1>
+        <form method="POST" th:action="@{/save-updated-book}" th:object="${book}">
+            <input th:field="*{id}" type="hidden"/>
+            <input name="name" placeholder="Name" th:field="*{name}" type="text"/> <br><br>
 
-    <input name="author" placeholder="Author" th:field="*{author}" type="text"/> <br><br>
+            <input name="author" placeholder="Author" th:field="*{author}" type="text"/> <br><br>
 
-    <input name="price" placeholder="Price" th:field="*{price}" type="number"/> <br><br>
+            <input name="price" placeholder="Price" th:field="*{price}" type="number"/> <br><br>
 
-    <input name="quantity" placeholder="Quantity" th:field="*{quantity}" type="number"/> <br><br>
+            <input name="quantity" placeholder="Quantity" th:field="*{quantity}" type="number"/> <br><br>
 
-    <input type="submit" value="POST"/>
-</form>
+            <input type="submit" value="POST"/>
+        </form>
+    </div>
+</div>
 </body>
 </html>

@@ -5,87 +5,166 @@
     <meta charset="UTF-8">
     <title>User</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            height: 100vh;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            padding:20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+            padding: 10px;
+            padding-top:40px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            margin: 0;
+        }
+        .sidebar button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        .sidebar p:hover {
+            padding:20px;
+            background-color: #C2E7FF;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
         table{
-        width:50%;
+            width:80%;
+            border-collapse: collapse;
         }
         table,tr,td,th{
-        border:1px solid black;
-        }
-        table{
-        border-collapse: collapse;
+            border:1px solid black;
+            padding:10px;
         }
     </style>
 </head>
 <body>
-<div th:if="${isEliteUser == false}">
-    <form method="POST" th:action="@{/become-elite-user}">
-        <button type="submit">Obtain Elite Membership</button>
-    </form>
-</div>
-<div th:if="${isEliteUser == true}">
-    <h1>You are an Elite User</h1>
-</div>
-<div class="books">
-    <h3>Books Details</h3>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Rent</th>
-            <th>Add To Cart</th>
-        </tr>
-        <tr th:each="book: ${books}">
-            <td th:text="${book.name}"/>
-            <td th:text="${book.price}"/>
-            <td th:text="${book.quantity}"/>
-            <td>
-                <form method="POST" th:action="@{/request-rent-book}">
-                    <input name="id" th:value="${book.id}" type="hidden">
-                    <input name="name" th:value="${book.name}" type="hidden">
-                    <button type="submit">Rent</button>
+<div class="container">
+    <div class="sidebar">
+        <h3>User LMS</h3>
+        <ul>
+            <li>
+                <form method="GET" th:action="@{/}">
+                    <p>
+                        <button type="submit">Home</button>
+                    </p>
                 </form>
-            </td>
-            <td>
-                <form method="POST" th:action="@{/cart-quantity}">
-                    <input name="id" th:value="${book.id}" type="hidden">
-                    <input name="price" th:value="${book.price}" type="hidden">
-                    <input name="name" th:value="${book.name}" type="hidden">
-                    <button type="submit">Cart</button>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/all-transactions}">
+                    <p>
+                        <button type="submit">All Transactions</button>
+                    </p>
                 </form>
-            </td>
-        </tr>
-    </table>
-
-    <br><br>
-
-    <div>
-        <form method="POST" th:action="@{/logout}">
-            <input type="submit" value="logout"/>
-        </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/rented-books}">
+                    <p>
+                        <button type="submit">Rented Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/purchased-books}">
+                    <p>
+                        <button type="submit">Purchased Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/view-cart}">
+                    <p>
+                        <button type="submit">Cart</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="@{/logout}">
+                    <p>
+                        <button type="submit">Logout</button>
+                    </p>
+                </form>
+            </li>
+        </ul>
     </div>
 
-    <br><br>
+    <div class="content">
+        <div th:if="${isEliteUser == false}">
+            <form method="POST" th:action="@{/become-elite-user}">
+                <button type="submit">Obtain Elite Membership</button>
+            </form>
+        </div>
+        <div th:if="${isEliteUser == true}">
+            <h1>You are an Elite User</h1>
+        </div>
+        <div class="books">
+            <h3>Books Details</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Rent</th>
+                    <th>Add To Cart</th>
+                </tr>
+                <tr th:each="book: ${books}">
+                    <td th:text="${book.name}"/>
+                    <td th:text="${book.price}"/>
+                    <td th:text="${book.quantity}"/>
+                    <td>
+                        <form method="POST" th:action="@{/request-rent-book}">
+                            <input name="id" th:value="${book.id}" type="hidden">
+                            <input name="name" th:value="${book.name}" type="hidden">
+                            <button type="submit">Rent</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" th:action="@{/cart-quantity}">
+                            <input name="id" th:value="${book.id}" type="hidden">
+                            <input name="price" th:value="${book.price}" type="hidden">
+                            <input name="name" th:value="${book.name}" type="hidden">
+                            <button type="submit">Cart</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
 
-    <h2>All Transactins</h2>
-    <form method="GET" th:action="@{/all-transactions}">
-        <input type="submit" value="View"/>
-    </form>
+            <br><br>
 
-    <h2>Rented books</h2>
-    <form method="GET" th:action="@{/rented-books}">
-        <input type="submit" value="View"/>
-    </form>
 
-    <h2>Purchased books</h2>
-    <form method="GET" th:action="@{/purchased-books}">
-        <input type="submit" value="View"/>
-    </form>
-
-    <h2>View Cart</h2>
-    <form method="GET" th:action="@{/view-cart}">
-        <input type="submit" value="View"/>
-    </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

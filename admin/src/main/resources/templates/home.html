@@ -5,53 +5,130 @@
     <meta charset="UTF-8">
     <title>Admin</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            height: 100vh;
+        }
+        .sidebar h3 {
+            margin-top: 0;
+            padding:20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+            padding: 20px;
+            padding-top:60px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            margin: 0;
+        }
+        .sidebar button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        .sidebar p:hover {
+            padding:20px;
+            background-color: #C2E7FF;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
         table{
-        width:50%;
+            width:80%;
         }
         table,tr,td,th{
-        border:1px solid black;
+            border:1px solid black;
+            padding:10px;
         }
         table{
-        border-collapse: collapse;
+            border-collapse: collapse;
         }
     </style>
 </head>
 <body>
+<div class="container">
+    <div class="sidebar">
+        <h3>Admin LMS</h3>
+        <ul>
+            <li>
+                <form method="GET" th:action="@{/}">
+                    <p>
+                        <button type="submit">Home</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="add-book">
+                    <p>
+                        <button type="submit">Add Book</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="view-my-books">
+                    <p>
+                        <button type="submit">View My Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="@{/logout}">
+                    <p>
+                        <button type="submit">Logout</button>
+                    </p>
+                </form>
+            </li>
+        </ul>
+    </div>
 
-<div class="books">
-    <h3>Books Details</h3>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Author</th>
-            <th>Price</th>
-            <th>Quantity</th>
-        </tr>
-        <tr th:each="book: ${books}">
-            <td th:text="${book.name}"/>
-            <td th:text="${book.author}"/>
-            <td th:text="${book.price}"/>
-            <td th:text="${book.quantity}"/>
-        </tr>
-    </table>
+    <div class="content">
+        <div class="books">
+            <h3>Books Details</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+                <tr th:each="book: ${books}">
+                    <td th:text="${book.name}"/>
+                    <td th:text="${book.author}"/>
+                    <td th:text="${book.price}"/>
+                    <td th:text="${book.quantity}"/>
+                </tr>
+            </table>
+        </div>
+        <br><br>
+
+
+    </div>
 </div>
-<br><br>
-
-<div>
-    <form method="POST" th:action="@{/logout}">
-        <input type="submit" value="logout"/>
-    </form>
-</div>
-
-<br><br>
-
-<h3>Add Books</h3>
-<form method="POST" th:action="add-book">
-    <button type="submit">Add</button>
-</form>
-<h3>View My Books</h3>
-<form method="GET" th:action="view-my-books">
-    <button type="submit">View</button>
-</form>
 </body>
 </html>
