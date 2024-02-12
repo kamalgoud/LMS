@@ -48,13 +48,13 @@
 <center>
     <a th:href="@{/}">Home</a>
     <form method="POST" th:action="@{/saveRegisteredUser}">
-        <input name="name" placeholder="Name" type="text"/>
+        <input name="name" placeholder="Name" type="text" required/>
         <br><br>
-        <input name="email" placeholder="Email" type="email"/>
+        <input name="email" placeholder="Email" type="email" required/>
         <br><br>
-        <input name="password" placeholder="Password" type="password"/>
+        <input name="password" placeholder="Password" type="password" required/>
         <br><br>
-        <input name="confirmPassword" placeholder="Confirm Password" type="password"/>
+        <input name="confirmPassword" placeholder="Confirm Password" type="password" required/>
         <br><br>
         <input type="submit" value="Register"/>
     </form>

@@ -111,7 +111,7 @@
     <div class="content">
         <h2 th:text="${name}"></h2>
         <form method="POST" th:action="@{/update-quantity}">
-            <input name="quantity" th:value="${quantity}" type="number">
+            <input name="quantity" th:value="${quantity}" type="number" required>
             <input name="bookId" th:value="${bookId}" type="hidden">
             <button type="submit">ADD</button>
         </form>

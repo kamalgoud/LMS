@@ -118,13 +118,6 @@ public class BookController {
                 return "warning";
             }
             List<BookDetail> books = admin.getBookDetails();
-            Iterator<BookDetail> iterator = books.iterator();
-            while (iterator.hasNext()) {
-                BookDetail book = iterator.next();
-                if (book.isDeletedByAdmin()) {
-                    iterator.remove();  // Safe removal using Iterator
-                }
-            }
             model.addAttribute("books", books);
             return "my-books";
         } catch (Exception e) {
@@ -137,6 +130,10 @@ public class BookController {
     public String updateBookDetail(@RequestParam("id") int id, Model model) {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(id);
+            if(bookDetail.isDeletedByAdmin()){
+                model.addAttribute("warning","Deleted Book can't be Updated");
+                return "warning";
+            }
             model.addAttribute("book", bookDetail);
             return "update-book";
         } catch (Exception e) {
@@ -170,10 +167,14 @@ public class BookController {
     }
 
     @PostMapping("/delete-book")
-    public String deleteBookDetail(@RequestParam("id") int id) {
+    public String deleteBookDetail(Model model,@RequestParam("id") int id) {
         try {
             if (bookDetailService.isPresentById(id)) {
                 BookDetail bookDetail = bookDetailService.getBookById(id);
+                if(bookDetail.isDeletedByAdmin()){
+                    model.addAttribute("warning","Already Deleted ");
+                    return "warning";
+                }
                 bookDetail.setDeletedByAdmin(true);
                 bookDetailService.saveBook(bookDetail);
             }
@@ -189,7 +190,12 @@ public class BookController {
         try {
             List<BookRentTransaction> bookRentTransactions = bookRentTransactionService
                     .getBookTransactionsByBookId(bookId);
+            double totalRentalsIncome = 0;
+            for(BookRentTransaction b : bookRentTransactions ){
+                totalRentalsIncome += b.getRentAmount() + b.getFineAmount();
+            }
             model.addAttribute("books", bookRentTransactions);
+            model.addAttribute("income",totalRentalsIncome);
             return "my-book-rent-transactions";
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,7 +208,12 @@ public class BookController {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByBookId(bookId);
+            double totalSalesIncome = 0;
+            for(BookPurchaseTransaction b : bookPurchaseTransactions ){
+                totalSalesIncome += b.getAmountPaid();
+            }
             model.addAttribute("books", bookPurchaseTransactions);
+            model.addAttribute("income",totalSalesIncome);
             return "my-book-purchase-transactions";
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,6 +225,10 @@ public class BookController {
     public String myBookQuantity(Model model, @RequestParam("bookId") int bookId) {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
+            if(bookDetail.isDeletedByAdmin()){
+                model.addAttribute("warning","Book Deleted");
+                return "warning";
+            }
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
             model.addAttribute("bookQuantity", bookQuantity);
             model.addAttribute("name", bookDetail.getName());
