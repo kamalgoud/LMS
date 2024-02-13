@@ -6,6 +6,9 @@ import com.varthana.admin.service.AdminService;
 import com.varthana.admin.service.BookDetailService;
 import com.varthana.admin.service.BookPurchaseTransactionService;
 import com.varthana.admin.service.BookRentTransactionService;
+import com.varthana.admin.service.serviceimpl.AdminServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +33,8 @@ public class BookController {
     @Autowired
     private BookPurchaseTransactionService bookPurchaseTransactionService;
 
+    private Logger logger = LogManager.getLogger(BookController.class);
+
     @GetMapping("/")
     public String home(Model model) {
         try {
@@ -37,13 +43,15 @@ public class BookController {
             while (iterator.hasNext()) {
                 BookDetail book = iterator.next();
                 if (book.isDeletedByAdmin()) {
-                    iterator.remove();  // Safe removal using Iterator
+                    iterator.remove();
                 }
             }
+            logger.warn("home {}",books);
+            System.out.println("Admin Home");
             model.addAttribute("books", books);
             return "home";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while loading home page : {}",e.getMessage());
             return "error";
         }
     }
@@ -53,7 +61,7 @@ public class BookController {
         try {
             return "add-book";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while adding book : {}",e.getMessage());
             return "error";
         }
     }
@@ -66,7 +74,7 @@ public class BookController {
                                  @RequestParam("quantity") int quantity) {
         try {
             if (name == null || author == null || price == 0 || quantity == 0) {
-                model.addAttribute("warning","Fill All Details to Create Book");
+                model.addAttribute("warning", "Fill All Details to Create Book");
                 return "warning";
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +93,6 @@ public class BookController {
             bookQuantity.setTotalQuantity(quantity);
             bookQuantity.setRemainingQuantity(quantity);
             bookDetail.setBookQuantity(bookQuantity);
-
             BookDetail savedBook = bookDetailService.saveBook(bookDetail);
 
             if (admin.getBookDetails() == null) {
@@ -102,7 +109,7 @@ public class BookController {
 
             return "redirect:/";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while creating book : {}",e.getMessage());
             return "error";
         }
     }
@@ -114,14 +121,15 @@ public class BookController {
             Admin admin = adminService.getAdminByEmail(authentication.getName());
 
             if (admin.getBookDetails() == null || admin.getBookDetails().isEmpty()) {
-                model.addAttribute("warning","Books Not Created");
+                model.addAttribute("warning", "Books Not Created");
                 return "warning";
             }
             List<BookDetail> books = admin.getBookDetails();
             model.addAttribute("books", books);
+
             return "my-books";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while viewing my books : {}",e.getMessage());
             return "error";
         }
     }
@@ -130,14 +138,15 @@ public class BookController {
     public String updateBookDetail(@RequestParam("id") int id, Model model) {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(id);
-            if(bookDetail.isDeletedByAdmin()){
-                model.addAttribute("warning","Deleted Book can't be Updated");
+            if (bookDetail.isDeletedByAdmin()) {
+                model.addAttribute("warning", "Deleted Book can't be Updated");
                 return "warning";
             }
             model.addAttribute("book", bookDetail);
+
             return "update-book";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while updating book : {}",e.getMessage());
             return "error";
         }
     }
@@ -159,20 +168,21 @@ public class BookController {
 
             bookDetail.setBookQuantity(bookQuantity);
             bookDetailService.updateBook(bookDetail);
+
             return "redirect:/";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while saving updated book : {}",e.getMessage());
             return "error";
         }
     }
 
     @PostMapping("/delete-book")
-    public String deleteBookDetail(Model model,@RequestParam("id") int id) {
+    public String deleteBookDetail(Model model, @RequestParam("id") int id) {
         try {
             if (bookDetailService.isPresentById(id)) {
                 BookDetail bookDetail = bookDetailService.getBookById(id);
-                if(bookDetail.isDeletedByAdmin()){
-                    model.addAttribute("warning","Already Deleted ");
+                if (bookDetail.isDeletedByAdmin()) {
+                    model.addAttribute("warning", "Already Deleted ");
                     return "warning";
                 }
                 bookDetail.setDeletedByAdmin(true);
@@ -180,7 +190,7 @@ public class BookController {
             }
             return "redirect:/";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while deleting book : {}",e.getMessage());
             return "error";
         }
     }
@@ -191,14 +201,18 @@ public class BookController {
             List<BookRentTransaction> bookRentTransactions = bookRentTransactionService
                     .getBookTransactionsByBookId(bookId);
             double totalRentalsIncome = 0;
-            for(BookRentTransaction b : bookRentTransactions ){
+            for (BookRentTransaction b : bookRentTransactions) {
                 totalRentalsIncome += b.getRentAmount() + b.getFineAmount();
             }
+            BookDetail bookDetail = bookDetailService.getBookById(bookId);
+
+            model.addAttribute("name",bookDetail.getName());
             model.addAttribute("books", bookRentTransactions);
-            model.addAttribute("income",totalRentalsIncome);
+            model.addAttribute("income", totalRentalsIncome);
+
             return "my-book-rent-transactions";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while viewing my book rent transaction : {}",e.getMessage());
             return "error";
         }
     }
@@ -209,14 +223,18 @@ public class BookController {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByBookId(bookId);
             double totalSalesIncome = 0;
-            for(BookPurchaseTransaction b : bookPurchaseTransactions ){
+            for (BookPurchaseTransaction b : bookPurchaseTransactions) {
                 totalSalesIncome += b.getAmountPaid();
             }
+            BookDetail bookDetail = bookDetailService.getBookById(bookId);
+
+            model.addAttribute("name",bookDetail.getName());
             model.addAttribute("books", bookPurchaseTransactions);
-            model.addAttribute("income",totalSalesIncome);
+            model.addAttribute("income", totalSalesIncome);
+
             return "my-book-purchase-transactions";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while viewing my book purchase transaction : {}",e.getMessage());
             return "error";
         }
     }
@@ -225,18 +243,18 @@ public class BookController {
     public String myBookQuantity(Model model, @RequestParam("bookId") int bookId) {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
-            if(bookDetail.isDeletedByAdmin()){
-                model.addAttribute("warning","Book Deleted");
+            if (bookDetail.isDeletedByAdmin()) {
+                model.addAttribute("warning", "Book Deleted");
                 return "warning";
             }
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
             model.addAttribute("bookQuantity", bookQuantity);
             model.addAttribute("name", bookDetail.getName());
+
             return "my-book-quantity-detail";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while viewing my book quantity : {}",e.getMessage());
             return "error";
         }
     }
-
 }

@@ -15,8 +15,8 @@ public class SecurityConfiguration {
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-        userDetailsManager.setUsersByUsernameQuery("select email, password, true as enabled from admin where email=?");
-        userDetailsManager.setAuthoritiesByUsernameQuery("select email, 'admin' from admin where email=?");
+        userDetailsManager.setUsersByUsernameQuery("select email, password, true as enabled from admin_user where email=?");
+        userDetailsManager.setAuthoritiesByUsernameQuery("select email, 'admin' from admin_user where email=?");
 
         return userDetailsManager;
     }
@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF protection
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers("/showLoginPage","/saveRegisteredAdmin","/register",

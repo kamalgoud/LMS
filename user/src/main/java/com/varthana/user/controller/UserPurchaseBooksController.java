@@ -7,6 +7,8 @@ import com.varthana.user.entity.CartBook;
 import com.varthana.user.entity.User;
 import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -39,6 +41,8 @@ public class UserPurchaseBooksController {
     @Value("${admin-password}")
     private String adminPassword;
 
+    private Logger logger = LogManager.getLogger(UserPurchaseBooksController.class);
+
     @PostMapping("/purchase-book")
     public String purchase(Model model,
                            @RequestParam("bookId") int bookId,
@@ -65,6 +69,7 @@ public class UserPurchaseBooksController {
 
             if (!isPurchased) {
                 model.addAttribute("warning","Not Able to Purchase");
+                logger.warn("purchase-book controller : Not able to purchase because of admin side error");
                 return "warning";
             }
 
@@ -74,9 +79,10 @@ public class UserPurchaseBooksController {
             cartBookService.deleteCart(cartBook);
             userService.saveUser(user);
 
+            logger.warn("purchase-book controller : {}",cartBook.toString());
             return "redirect:/";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while purchasing book : {}",e.getMessage());
             return "error";
         }
     }
@@ -98,15 +104,16 @@ public class UserPurchaseBooksController {
 
             if (books == null) {
                 model.addAttribute("warning","No purchased Books");
+                logger.warn("purchased-books controller : No purchased books");
                 return "warning";
             }
             model.addAttribute("books", books);
+            logger.warn("purchased-books controller : {}",books.toString());
 
             return "purchased-books";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while retrieving purchased books : {}",e.getMessage());
             return "error";
         }
-
     }
 }

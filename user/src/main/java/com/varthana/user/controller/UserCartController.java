@@ -4,6 +4,8 @@ import com.varthana.user.entity.CartBook;
 import com.varthana.user.entity.User;
 import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,8 @@ public class UserCartController {
     @Autowired
     private CartBookService cartService;
 
+    private Logger logger = LogManager.getLogger(UserCartController.class);
+
     @PostMapping("/cart-quantity")
     public String cartBook(Model model,
                            @RequestParam("id") int id,
@@ -37,9 +41,11 @@ public class UserCartController {
             model.addAttribute("price", price);
             model.addAttribute("name", name);
 
+            logger.warn("cart-quantity controller : {}",name);
+
             return "cart-quantity";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while fetching cart quantity : {}",e.getMessage());
             return "error";
         }
     }
@@ -60,6 +66,8 @@ public class UserCartController {
                 existedCartBook.setAmountToBePaid(price * quantity);
                 existedCartBook.setQuantityWanted(quantity);
                 cartService.saveCart(existedCartBook);
+
+                logger.warn("add-to-cart controller existed book : {}",existedCartBook.toString());
             } else {
                 List<CartBook> cartBooks = user.getCartBooks();
                 CartBook cartBook = new CartBook();
@@ -80,11 +88,13 @@ public class UserCartController {
                     user.setCartBooks(cartBooks);
                     userService.saveUser(user);
                 }
+
+                logger.warn("add-to-cart controller book : {}",cartBook.toString());
             }
 
             return "redirect:/view-cart";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while adding book to cart : {}",e.getMessage());
             return "error";
         }
     }
@@ -98,9 +108,11 @@ public class UserCartController {
             List<CartBook> cartBookList = user.getCartBooks();
             model.addAttribute("books", cartBookList);
 
+            logger.warn("view-cart controller : {}",cartBookList);
+
             return "cart";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while viewing cart : {}",e.getMessage());
             return "error";
         }
     }
@@ -118,9 +130,11 @@ public class UserCartController {
             cartService.deleteCart(cartBook);
             userService.saveUser(user);
 
+            logger.warn("remove-from-cart controller : {}",bookId);
+
             return "redirect:/view-cart";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while removing from cart : {}",e.getMessage());
             return "error";
         }
     }
@@ -135,9 +149,10 @@ public class UserCartController {
             model.addAttribute("name", name);
             model.addAttribute("quantity", quantity);
 
+            logger.warn("change-quantity controller : {}",quantity);
             return "change-quantity";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while changing quantity : {}",e.getMessage());
             return "error";
         }
     }
@@ -155,9 +170,10 @@ public class UserCartController {
             cartBook.setAmountToBePaid(quantity * cartBook.getPrice());
             cartService.saveCart(cartBook);
 
+            logger.warn("update-quantity controller : {}",bookId);
             return "redirect:/view-cart";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while updating the quantity : {}",e.getMessage());
             return "error";
         }
     }

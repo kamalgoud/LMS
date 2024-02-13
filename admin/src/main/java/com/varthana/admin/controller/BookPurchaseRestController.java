@@ -1,19 +1,20 @@
 package com.varthana.admin.controller;
 
 import com.varthana.admin.dto.PurchaseBookRequestDto;
-import com.varthana.admin.entity.BookDetail;
-import com.varthana.admin.entity.BookPurchaseTransaction;
-import com.varthana.admin.entity.BookQuantity;
-import com.varthana.admin.entity.BookTransaction;
+import com.varthana.admin.entity.*;
 import com.varthana.admin.enums.Transaction;
 import com.varthana.admin.service.BookDetailService;
 import com.varthana.admin.service.BookPurchaseTransactionService;
 import com.varthana.admin.service.BookRentTransactionService;
 import com.varthana.admin.service.BookTransactionService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
@@ -26,6 +27,7 @@ public class BookPurchaseRestController {
     private BookPurchaseTransactionService bookPurchaseTransactionService;
     @Autowired
     private BookTransactionService bookTransactionService;
+    private Logger logger = LogManager.getLogger(BookPurchaseRestController.class);
 
     @PostMapping("/purchase-book")
     public Boolean purchaseBook(@RequestBody PurchaseBookRequestDto purchaseBookRequestDto) {
@@ -49,6 +51,7 @@ public class BookPurchaseRestController {
             bookPurchaseTransaction.setUserId(userId);
             bookPurchaseTransaction.setUserName(userName);
             bookPurchaseTransaction.setQuantity(requestedQuantity);
+            bookPurchaseTransaction.setBookPurchaseTime(LocalDateTime.now());
             if (isEliteUser) {
                 bookPurchaseTransaction.setAmountPaid(requestedQuantity * bookDetail.getPrice() * 0.8);
             } else {
@@ -58,7 +61,6 @@ public class BookPurchaseRestController {
 
             bookQuantity.setPurchasedQuantity(bookQuantity.getPurchasedQuantity() + requestedQuantity);
             bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity() - requestedQuantity);
-            bookDetail.setBookQuantity(bookQuantity);
 
             BookTransaction bookTransaction = new BookTransaction();
             bookTransaction.setBookId(bookId);
@@ -68,11 +70,39 @@ public class BookPurchaseRestController {
             bookTransaction.setPrice(bookDetail.getPrice());
             bookTransaction.setTransactionDate(LocalDate.now());
             bookTransaction.setAmountPaid(bookPurchaseTransaction.getAmountPaid());
+            bookTransaction.setTransactionTime(bookPurchaseTransaction.getBookPurchaseTime());
+            bookTransaction.setTotalQuantity(bookQuantity.getTotalQuantity());
+            bookTransaction.setRentedQuantity(bookQuantity.getRentedQuantity());
+            bookTransaction.setRemainingQuantity(bookQuantity.getRemainingQuantity());
             bookTransactionService.saveTransaction(bookTransaction);
+
+            List<BookPurchaseTransaction> bookPurchaseTransactionList = bookDetail.getBookPurchaseTransactions();
+            if(bookPurchaseTransactionList==null){
+                bookPurchaseTransactionList = new ArrayList<>();
+                bookPurchaseTransactionList.add(bookPurchaseTransaction);
+                bookDetail.setBookPurchaseTransactions(bookPurchaseTransactionList);
+            }
+            else{
+                bookPurchaseTransactionList.add(bookPurchaseTransaction);
+                bookDetail.setBookPurchaseTransactions(bookPurchaseTransactionList);
+            }
+
+            List<BookTransaction> bookTransactionList = bookDetail.getBookTransactions();
+            if(bookTransactionList==null){
+                bookTransactionList = new ArrayList<>();
+                bookTransactionList.add(bookTransaction);
+                bookDetail.setBookTransactions(bookTransactionList);
+            }
+            else{
+                bookTransactionList.add(bookTransaction);
+                bookDetail.setBookTransactions(bookTransactionList);
+            }
+
+            bookDetailService.saveBook(bookDetail);
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while puchasing book : {}",e.getMessage());
             return null;
         }
     }
@@ -84,7 +114,7 @@ public class BookPurchaseRestController {
                     .getPurchaseTransactionsByUserId(userId);
             return bookPurchaseTransactions;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while getting purchased books : {}",e.getMessage());
             return null;
         }
     }

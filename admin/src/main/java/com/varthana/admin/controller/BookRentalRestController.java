@@ -12,11 +12,15 @@ import com.varthana.admin.service.BookDetailService;
 import com.varthana.admin.service.BookPurchaseTransactionService;
 import com.varthana.admin.service.BookRentTransactionService;
 import com.varthana.admin.service.BookTransactionService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +32,7 @@ public class BookRentalRestController {
     private BookRentTransactionService bookRentTransactionService;
     @Autowired
     private BookTransactionService bookTransactionService;
+    private Logger logger = LogManager.getLogger(BookRentalRestController.class);
 
     @PostMapping("/rent-book")
     public BookDetail rentBook(@RequestBody BookRentRequestDto bookRentRequestDto) {
@@ -61,9 +66,6 @@ public class BookRentalRestController {
                     }
                 }
 
-                bookDetail.setBookQuantity(bookQuantity);
-                bookDetailService.saveBook(bookDetail);
-
                 BookRentTransaction bookRentTransaction = new BookRentTransaction();
                 bookRentTransaction.setBookId(bookId);
                 bookRentTransaction.setUserId(userId);
@@ -74,6 +76,7 @@ public class BookRentalRestController {
                 bookRentTransaction.setRentAmount(amountToBePaid);
                 bookRentTransaction.setPrice(bookDetail.getPrice());
                 bookRentTransaction.setTransactionId(UUID.randomUUID());
+                bookRentTransaction.setRentTransactionTime(LocalDateTime.now());
                 bookRentTransactionService.saveRentTransaction(bookRentTransaction);
 
                 BookTransaction bookTransaction = new BookTransaction();
@@ -84,14 +87,42 @@ public class BookRentalRestController {
                 bookTransaction.setTransactionDate(startDate);
                 bookTransaction.setPrice(bookDetail.getPrice());
                 bookTransaction.setRentAmount(amountToBePaid);
+                bookTransaction.setTransactionTime(bookRentTransaction.getRentTransactionTime());
+                bookTransaction.setTotalQuantity(bookQuantity.getTotalQuantity());
+                bookTransaction.setRentedQuantity(bookQuantity.getRentedQuantity());
+                bookTransaction.setRemainingQuantity(bookQuantity.getRemainingQuantity());
                 bookTransactionService.saveTransaction(bookTransaction);
+
+                List<BookRentTransaction> bookRentTransactionList = bookDetail.getBookRentTransactions();
+                if(bookRentTransactionList==null){
+                    bookRentTransactionList = new ArrayList<>();
+                    bookRentTransactionList.add(bookRentTransaction);
+                    bookDetail.setBookRentTransactions(bookRentTransactionList);
+                }
+                else{
+                    bookRentTransactionList.add(bookRentTransaction);
+                    bookDetail.setBookRentTransactions(bookRentTransactionList);
+                }
+
+                List<BookTransaction> bookTransactionList = bookDetail.getBookTransactions();
+                if(bookTransactionList==null){
+                    bookTransactionList = new ArrayList<>();
+                    bookTransactionList.add(bookTransaction);
+                    bookDetail.setBookTransactions(bookTransactionList);
+                }
+                else{
+                    bookTransactionList.add(bookTransaction);
+                    bookDetail.setBookTransactions(bookTransactionList);
+                }
+
+                bookDetailService.saveBook(bookDetail);
 
                 return bookDetail;
             } else {
                 return null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while renting a book : {}",e.getMessage());
             return null;
         }
     }
@@ -112,7 +143,7 @@ public class BookRentalRestController {
             }
             return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while checking if user rented a book : {}",e.getMessage());
             return null;
         }
     }
@@ -123,7 +154,7 @@ public class BookRentalRestController {
             List<BookRentTransaction> books = bookRentTransactionService.getBookTransactionsByUserId(id);
             return books;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while getting rented books : {}",e.getMessage());
             return null;
         }
     }
@@ -164,14 +195,13 @@ public class BookRentalRestController {
                     }
                     bookRentTransaction.setFineAmount(fine);
                 }
+                bookRentTransaction.setReturnTransactionTime(LocalDateTime.now());
                 bookRentTransactionService.saveRentTransaction(bookRentTransaction);
 
                 BookDetail bookDetail = bookDetailService.getBookById(bookId);
                 BookQuantity bookQuantity = bookDetail.getBookQuantity();
                 bookQuantity.setRemainingQuantity(bookQuantity.getRemainingQuantity() + 1);
                 bookQuantity.setRentedQuantity(bookQuantity.getRentedQuantity() - 1);
-                bookDetail.setBookQuantity(bookQuantity);
-                bookDetailService.saveBook(bookDetail);
 
                 BookTransaction bookTransaction = new BookTransaction();
                 bookTransaction.setBookId(bookId);
@@ -182,12 +212,29 @@ public class BookRentalRestController {
                 bookTransaction.setRentAmount(bookRentTransaction.getRentAmount());
                 bookTransaction.setFine(bookRentTransaction.getFineAmount());
                 bookTransaction.setTransactionDate(bookRentTransaction.getReturnDate());
+                bookTransaction.setTransactionTime(bookRentTransaction.getReturnTransactionTime());
+                bookTransaction.setTotalQuantity(bookQuantity.getTotalQuantity());
+                bookTransaction.setRentedQuantity(bookQuantity.getRentedQuantity());
+                bookTransaction.setRemainingQuantity(bookQuantity.getRemainingQuantity());
                 bookTransactionService.saveTransaction(bookTransaction);
+
+                List<BookTransaction> bookTransactionList = bookDetail.getBookTransactions();
+                if(bookTransactionList==null){
+                    bookTransactionList = new ArrayList<>();
+                    bookTransactionList.add(bookTransaction);
+                    bookDetail.setBookTransactions(bookTransactionList);
+                }
+                else{
+                    bookTransactionList.add(bookTransaction);
+                    bookDetail.setBookTransactions(bookTransactionList);
+                }
+
+                bookDetailService.saveBook(bookDetail);
 
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while returning a book : {}",e.getMessage());
             return null;
         }
     }

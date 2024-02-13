@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,6 +19,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int id;
     private String name;
     private String email;
@@ -25,4 +28,6 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private List<CartBook> cartBooks;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

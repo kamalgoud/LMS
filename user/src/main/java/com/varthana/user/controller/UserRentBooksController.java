@@ -3,6 +3,8 @@ package com.varthana.user.controller;
 import com.varthana.user.dto.*;
 import com.varthana.user.entity.User;
 import com.varthana.user.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -37,6 +39,8 @@ public class UserRentBooksController {
     @Value("${admin-password}")
     private String adminPassword;
 
+    private Logger logger = LogManager.getLogger(UserRentBooksController.class);
+
     @PostMapping("/request-rent-book")
     public String rentDetails(Model model,
                               @RequestParam("id") int id,
@@ -58,14 +62,16 @@ public class UserRentBooksController {
 
             if (isBookRentedByUser) {
                 model.addAttribute("warning","Already Rented");
+                logger.warn("request-rent-book controller : {}",isBookRentedByUser);
                 return "warning";
             } else {
                 model.addAttribute("id", id);
                 model.addAttribute("name", name);
+                logger.warn("request-rent-book controller : {}",isBookRentedByUser);
                 return "rent-details";
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while requesting to rent book : {}",e.getMessage());
             return "error";
         }
     }
@@ -78,12 +84,14 @@ public class UserRentBooksController {
         try {
             if (startDate == null || endDate == null) {
                 model.addAttribute("warning","Invalid start date or end date");
+                logger.warn("rent-book controller, Empty fields");
                 return "warning";
             }
 
             long daysDifference = ChronoUnit.DAYS.between(startDate, endDate);
             if (daysDifference <= 0) {
                 model.addAttribute("warning","Start Date is Greater than End Date");
+                logger.warn("rent-book controller, book not available : inconsistent dates");
                 return "warning";
             }
 
@@ -103,12 +111,14 @@ public class UserRentBooksController {
 
             if (bookDetailDto == null) {
                 model.addAttribute("warning","Books Not Available");
+                logger.warn("rent-book controller, book not available : {}",id);
                 return "warning";
             }
 
+            logger.warn("rent-book controller : {}",bookDetailDto.toString());
             return "redirect:/";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while renting : {}",e.getMessage());
             return "error";
         }
     }
@@ -131,9 +141,12 @@ public class UserRentBooksController {
 
             List<RentedBooksDto> rentedBooksDtos = response.getBody();
             model.addAttribute("books", rentedBooksDtos);
+
+            logger.warn("rented-books controller : {}",rentedBooksDtos);
+
             return "rented-books";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while retrieving rented books : {}",e.getMessage());
             return "error";
         }
     }
@@ -158,11 +171,14 @@ public class UserRentBooksController {
             Boolean isAbleToReturnBook = response.getBody();
             if (!isAbleToReturnBook) {
                 model.addAttribute("warning","Already-returned");
+                logger.warn("return-book controller already returned : {}",id);
                 return "warning";
             }
+
+            logger.warn("return-book controller");
             return "redirect:/";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while returning book : {}",e.getMessage());
             return "error";
         }
     }

@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Change Quantity</title>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             height: 100%;
+            background-color:#EEEEEE;
         }
         .container {
             display: flex;
@@ -16,57 +20,78 @@
         }
 
         .sidebar {
-            width: 200px;
-            background-color: #f4f4f4;
-            padding: 20px;
+            width: 22vh;
+            background-color: #48A248;
+            color : #EEEEEE;
+            padding: 2vh;
             height: 100vh;
         }
         .sidebar h3 {
-            margin-top: 0;
-            padding:20px;
+            margin-top: 0px;
+            padding:1.5vh;
         }
         .sidebar ul {
             list-style-type: none;
             padding: 0;
         }
         .sidebar li {
-            margin-bottom: 10px;
-            padding: 10px;
-            padding-top:40px;
+            margin-bottom: 1vh;
+            padding: 1vh;
+            padding-top:5vh;
             transition: background-color 0.3s;
         }
         .sidebar a {
             text-decoration: none;
-            color: #333;
             margin: 0;
         }
         .sidebar button{
             background: none;
             border: none;
             cursor: pointer;
+            color : #48A248;
             padding: 0;
             cursor: pointer;
             font: inherit;
         }
-        .sidebar p:hover {
-            padding:20px;
-            background-color: #C2E7FF;
+        .sidebar p{
+            padding:1vh;
+            box-shadow: 0.7vh 0.7vh 1vh rgba(0, 0, 0, 0.4);
+            background-color: #EEEEEE;
+            border-radius:2vh;
+            text-align: center;
+        }
+        .sidebar i{
+            color:#48A248
         }
 
         .content {
             flex: 1;
-            padding: 20px;
+            padding: 2vh;
         }
+        input{
+            border-radius:1vh;
+            width:25vh;
+            height:2.5vh;
+            border:2px solid #48A248;
+        }
+        form button{
+            border-radius:1vh;
+            color:#EEEEEE;
+            background-color:#48A248;
+            border:2px solid #48A248;
+        }
+
     </style>
 </head>
 <body>
 <div class="container">
     <div class="sidebar">
-        <h3>User LMS</h3>
+        <h3><i class="fa-solid fa-user"></i> User LMS</h3>
         <ul>
             <li>
                 <form method="GET" th:action="@{/}">
                     <p>
+                        <i class="fa-solid fa-house"></i>
                         <button type="submit">Home</button>
                     </p>
                 </form>
@@ -74,6 +99,7 @@
             <li>
                 <form method="GET" th:action="@{/all-transactions}">
                     <p>
+                        <i class="fa-solid fa-list"></i>
                         <button type="submit">All Transactions</button>
                     </p>
                 </form>
@@ -81,6 +107,7 @@
             <li>
                 <form method="GET" th:action="@{/rented-books}">
                     <p>
+                        <i class="fa-solid fa-book"></i>
                         <button type="submit">Rented Books</button>
                     </p>
                 </form>
@@ -88,6 +115,7 @@
             <li>
                 <form method="GET" th:action="@{/purchased-books}">
                     <p>
+                        <i class="fa-solid fa-book"></i>
                         <button type="submit">Purchased Books</button>
                     </p>
                 </form>
@@ -95,6 +123,7 @@
             <li>
                 <form method="GET" th:action="@{/view-cart}">
                     <p>
+                        <i class="fa-solid fa-cart-shopping"></i>
                         <button type="submit">Cart</button>
                     </p>
                 </form>
@@ -102,6 +131,7 @@
             <li>
                 <form method="POST" th:action="@{/logout}">
                     <p>
+                        <i class="fa-solid fa-right-from-bracket"></i>
                         <button type="submit">Logout</button>
                     </p>
                 </form>
@@ -110,8 +140,9 @@
     </div>
     <div class="content">
         <h2 th:text="${name}"></h2>
+        <h3>Change quantity</h3>
         <form method="POST" th:action="@{/update-quantity}">
-            <input name="quantity" th:value="${quantity}" type="number" required>
+            <input name="quantity" required th:value="${quantity}" type="number">
             <input name="bookId" th:value="${bookId}" type="hidden">
             <button type="submit">ADD</button>
         </form>

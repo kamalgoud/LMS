@@ -3,6 +3,9 @@ package com.varthana.user.controller;
 import com.varthana.user.dto.*;
 import com.varthana.user.entity.User;
 import com.varthana.user.service.UserService;
+import com.varthana.user.service.serviceimpl.CartBookServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -36,6 +39,8 @@ public class UserController {
     @Value("${admin-password}")
     private String adminPassword;
 
+    private Logger logger = LogManager.getLogger(UserController.class);
+
     @GetMapping("/")
     public String home(Model model) {
         try {
@@ -53,9 +58,10 @@ public class UserController {
             model.addAttribute("books", bookDetailsDto);
             model.addAttribute("isEliteUser", user.isEliteUser());
 
+            logger.warn("home controller : {}",bookDetailsDto.toString());
             return "home";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error wile getting all books : {}",e.getMessage());
             return "error";
         }
     }
@@ -76,13 +82,15 @@ public class UserController {
 
             if (bookTransactionsDto == null) {
                 model.addAttribute("warning","No Transactions");
+                logger.warn("all-transactions controller : No Transactions");
                 return "warning";
             }
             model.addAttribute("books", bookTransactionsDto);
 
+            logger.warn("all-transactions controller : {}",bookTransactionsDto.toString());
             return "all-transactions";
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error while getting all transactions : {}",e.getMessage());
             return "error";
         }
     }
@@ -95,6 +103,7 @@ public class UserController {
         user.setEliteUser(true);
         userService.saveUser(user);
 
+        logger.warn("become-elite-user controller");
         return "redirect:/";
     }
 }
