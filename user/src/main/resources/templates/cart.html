@@ -31,6 +31,9 @@
             margin-top: 0px;
             padding:1.5vh;
         }
+        .sidebar h3 i{
+            color:white;
+        }
         .sidebar ul {
             list-style-type: none;
             padding: 0;
@@ -112,48 +115,42 @@
             <li>
                 <form method="GET" th:action="@{/}">
                     <p>
-                        <i class="fa-solid fa-house"></i>
-                        <button type="submit">Home</button>
+                        <button type="submit"><i class="fa-solid fa-house"></i> Home</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="GET" th:action="@{/all-transactions}">
                     <p>
-                        <i class="fa-solid fa-list"></i>
-                        <button type="submit">All Transactions</button>
+                        <button type="submit"><i class="fa-solid fa-list"></i> All Transactions</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="GET" th:action="@{/rented-books}">
                     <p>
-                        <i class="fa-solid fa-book"></i>
-                        <button type="submit">Rented Books</button>
+                        <button type="submit"><i class="fa-solid fa-book"></i> Rented Books</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="GET" th:action="@{/purchased-books}">
                     <p>
-                        <i class="fa-solid fa-book"></i>
-                        <button type="submit">Purchased Books</button>
+                        <button type="submit"><i class="fa-solid fa-book"></i> Purchased Books</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="GET" th:action="@{/view-cart}">
                     <p>
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <button type="submit">Cart</button>
+                        <button type="submit"><i class="fa-solid fa-cart-shopping"></i>Cart</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="POST" th:action="@{/logout}">
                     <p>
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <button type="submit">Logout</button>
+                        <button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
                     </p>
                 </form>
             </li>
@@ -161,7 +158,7 @@
     </div>
     <div class="content">
         <div class="books">
-            <h3>Cart</h3>
+            <h3><i class="fa-solid fa-cart-shopping"></i>  Cart</h3>
             <table>
                 <tr>
                     <th>Name</th>

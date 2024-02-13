@@ -31,6 +31,9 @@
             margin-top: 0px;
             padding:2vh;
         }
+        .sidebar h3 i{
+            color:white;
+        }
         .sidebar ul {
             list-style-type: none;
             padding: 0;
@@ -92,32 +95,28 @@
             <li>
                 <form method="GET" th:action="@{/}">
                     <p>
-                        <i class="fa-solid fa-house"></i>
-                        <button type="submit">Home</button>
+                        <button type="submit"><i class="fa-solid fa-house"></i> Home</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="POST" th:action="add-book">
                     <p>
-                        <i class="fa-solid fa-square-plus"></i>
-                        <button type="submit">Add Book</button>
+                        <button type="submit"><i class="fa-solid fa-square-plus"></i> Add Book</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="GET" th:action="view-my-books">
                     <p>
-                        <i class="fa-solid fa-book"></i>
-                        <button type="submit">View My Books</button>
+                        <button type="submit"><i class="fa-solid fa-book"></i> View My Books</button>
                     </p>
                 </form>
             </li>
             <li>
                 <form method="POST" th:action="@{/logout}">
                     <p>
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <button type="submit">Logout</button>
+                        <button type="submit"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                     </p>
                 </form>
             </li>
@@ -125,7 +124,7 @@
     </div>
     <div class="content">
         <center>
-            <h1>Edit Book Details</h1>
+            <h1><i class="fa-solid fa-book"></i>  Edit Book Details</h1>
             <form method="POST" th:action="@{/save-updated-book}" th:object="${book}">
                 <input th:field="*{id}" type="hidden"/>
                 <input name="name" placeholder="Name" required th:field="*{name}" type="text"/> <br><br>
