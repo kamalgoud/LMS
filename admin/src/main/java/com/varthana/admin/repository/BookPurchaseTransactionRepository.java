@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BookPurchaseTransactionRepository extends JpaRepository<BookPurchaseTransaction, Integer> {
-    List<BookPurchaseTransaction> findByUserId(int userId);
+    List<BookPurchaseTransaction> findByUserId(Integer userId);
 
-    List<BookPurchaseTransaction> findByBookId(int bookId);
+    List<BookPurchaseTransaction> findByBookId(Integer bookId);
 }

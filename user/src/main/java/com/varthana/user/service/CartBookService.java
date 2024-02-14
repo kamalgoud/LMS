@@ -10,5 +10,5 @@ public interface CartBookService {
 
     public CartBook updateCart(CartBook cart) throws CustomException;
 
-    public CartBook getCartBookByBookIdAndUserId(int bookId, int userId) throws CustomException;
+    public CartBook getCartBookByBookIdAndUserId(Integer bookId, Integer userId) throws CustomException;
 }

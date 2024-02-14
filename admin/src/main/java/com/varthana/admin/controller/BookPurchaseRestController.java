@@ -33,11 +33,11 @@ public class BookPurchaseRestController {
     @PostMapping("/purchase-book")
     public Boolean purchaseBook(@RequestBody PurchaseBookRequestDto purchaseBookRequestDto) throws CustomException {
         try {
-            int bookId = purchaseBookRequestDto.getBookId();
-            int userId = purchaseBookRequestDto.getUserId();
+            Integer bookId = purchaseBookRequestDto.getBookId();
+            Integer userId = purchaseBookRequestDto.getUserId();
             String userName = purchaseBookRequestDto.getUserName();
-            long requestedQuantity = purchaseBookRequestDto.getQuantity();
-            boolean isEliteUser = purchaseBookRequestDto.isEliteUser();
+            Long requestedQuantity = purchaseBookRequestDto.getQuantity();
+            Boolean isEliteUser = purchaseBookRequestDto.getIsEliteUser();
 
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
@@ -53,6 +53,7 @@ public class BookPurchaseRestController {
             bookPurchaseTransaction.setUserName(userName);
             bookPurchaseTransaction.setQuantity(requestedQuantity);
             bookPurchaseTransaction.setBookPurchaseTime(LocalDateTime.now());
+
             if (isEliteUser) {
                 bookPurchaseTransaction.setAmountPaid(requestedQuantity * bookDetail.getPrice() * 0.8);
             } else {
@@ -75,6 +76,10 @@ public class BookPurchaseRestController {
             bookTransaction.setTotalQuantity(bookQuantity.getTotalQuantity());
             bookTransaction.setRentedQuantity(bookQuantity.getRentedQuantity());
             bookTransaction.setRemainingQuantity(bookQuantity.getRemainingQuantity());
+            bookTransaction.setFine((double) 0);
+            bookTransaction.setRentAmount(Double.valueOf(0));
+            bookTransaction.setPurchasedQuantity(requestedQuantity);
+
             bookTransactionService.saveTransaction(bookTransaction);
 
             List<BookPurchaseTransaction> bookPurchaseTransactionList = bookDetail.getBookPurchaseTransactions();
@@ -109,7 +114,7 @@ public class BookPurchaseRestController {
     }
 
     @GetMapping("/get-purchased-books/{id}")
-    public List<BookPurchaseTransaction> getPurchasedBooks(@PathVariable("id") int userId) throws CustomException {
+    public List<BookPurchaseTransaction> getPurchasedBooks(@PathVariable("id") Integer userId) throws CustomException {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByUserId(userId);

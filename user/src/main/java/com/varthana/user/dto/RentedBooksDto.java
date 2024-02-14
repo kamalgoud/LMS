@@ -13,14 +13,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentedBooksDto {
-    private int id;
-    private int bookId;
-    private int userId;
+    private Integer id;
+    private Integer bookId;
+    private Integer userId;
     private String bookName;
     private LocalDate rentedDate;
     private LocalDate expectedReturnDate;
     private LocalDate returnDate;
-    private double rentAmount;
-    private double fineAmount;
+    private Double rentAmount;
+    private Double fineAmount;
     private UUID transaction_id;
 }

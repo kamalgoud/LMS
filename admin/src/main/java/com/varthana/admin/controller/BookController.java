@@ -43,7 +43,7 @@ public class BookController {
             Iterator<BookDetail> iterator = books.iterator();
             while (iterator.hasNext()) {
                 BookDetail book = iterator.next();
-                if (book.isDeletedByAdmin()) {
+                if (book.getIsDeletedByAdmin()) {
                     iterator.remove();
                 }
             }
@@ -71,8 +71,8 @@ public class BookController {
     public String saveBookDetail(Model model,
                                  @RequestParam("name") String name,
                                  @RequestParam("author") String author,
-                                 @RequestParam("price") int price,
-                                 @RequestParam("quantity") int quantity) throws CustomException {
+                                 @RequestParam("price") Double price,
+                                 @RequestParam("quantity") Long quantity) throws CustomException {
         try {
             if (name == null || author == null || price == 0 || quantity == 0) {
                 model.addAttribute("warning", "Fill All Details to Create Book");
@@ -93,7 +93,10 @@ public class BookController {
             BookQuantity bookQuantity = new BookQuantity();
             bookQuantity.setTotalQuantity(quantity);
             bookQuantity.setRemainingQuantity(quantity);
+            bookQuantity.setRentedQuantity(Long.valueOf(0));
+            bookQuantity.setPurchasedQuantity(Long.valueOf(0));
             bookDetail.setBookQuantity(bookQuantity);
+            bookDetail.setIsDeletedByAdmin(false);
             BookDetail savedBook = bookDetailService.saveBook(bookDetail);
 
             if (admin.getBookDetails() == null) {
@@ -139,7 +142,7 @@ public class BookController {
     public String updateBookDetail(@RequestParam("id") int id, Model model) throws CustomException {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(id);
-            if (bookDetail.isDeletedByAdmin()) {
+            if (bookDetail.getIsDeletedByAdmin()) {
                 model.addAttribute("warning", "Deleted Book can't be Updated");
                 return "warning";
             }
@@ -153,7 +156,7 @@ public class BookController {
     }
 
     @PostMapping("/save-updated-book")
-    public String saveUpdatedBookDetail(@RequestParam("id") int id,
+    public String saveUpdatedBookDetail(@RequestParam("id") Integer id,
                                         @ModelAttribute BookDetail updatedBookDetail) throws CustomException {
         try {
             LocalDate localDate = LocalDate.now();
@@ -179,15 +182,15 @@ public class BookController {
     }
 
     @PostMapping("/delete-book")
-    public String deleteBookDetail(Model model, @RequestParam("id") int id) throws CustomException {
+    public String deleteBookDetail(Model model, @RequestParam("id") Integer id) throws CustomException {
         try {
             if (bookDetailService.isPresentById(id)) {
                 BookDetail bookDetail = bookDetailService.getBookById(id);
-                if (bookDetail.isDeletedByAdmin()) {
+                if (bookDetail.getIsDeletedByAdmin()) {
                     model.addAttribute("warning", "Already Deleted ");
                     return "warning";
                 }
-                bookDetail.setDeletedByAdmin(true);
+                bookDetail.setIsDeletedByAdmin(true);
                 bookDetailService.saveBook(bookDetail);
             }
             return "redirect:/";
@@ -198,7 +201,7 @@ public class BookController {
     }
 
     @GetMapping("/my-book-rent-transaction")
-    public String myBookRentTransactions(Model model, @RequestParam("bookId") int bookId) throws CustomException {
+    public String myBookRentTransactions(Model model, @RequestParam("bookId") Integer bookId) throws CustomException {
         try {
             List<BookRentTransaction> bookRentTransactions = bookRentTransactionService
                     .getBookTransactionsByBookId(bookId);
@@ -220,7 +223,7 @@ public class BookController {
     }
 
     @GetMapping("/my-book-purchase-transaction")
-    public String myBookPurchaseTransactions(Model model, @RequestParam("bookId") int bookId) throws CustomException {
+    public String myBookPurchaseTransactions(Model model, @RequestParam("bookId") Integer bookId) throws CustomException {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByBookId(bookId);
@@ -245,7 +248,7 @@ public class BookController {
     public String myBookQuantity(Model model, @RequestParam("bookId") int bookId) throws CustomException {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
-            if (bookDetail.isDeletedByAdmin()) {
+            if (bookDetail.getIsDeletedByAdmin()) {
                 model.addAttribute("warning", "Book Deleted");
                 return "warning";
             }

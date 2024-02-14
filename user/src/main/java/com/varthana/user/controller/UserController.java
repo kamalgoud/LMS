@@ -57,7 +57,7 @@ public class UserController {
             User user = userService.getUserByEmail(authentication.getName());
 
             model.addAttribute("books", bookDetailsDto);
-            model.addAttribute("isEliteUser", user.isEliteUser());
+            model.addAttribute("isEliteUser", user.getIsEliteUser());
 
             logger.warn("home controller : {}",bookDetailsDto.toString());
             return "home";
@@ -102,7 +102,7 @@ public class UserController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
 
-            user.setEliteUser(true);
+            user.setIsEliteUser(true);
             userService.saveUser(user);
 
             logger.warn("become-elite-user controller");

@@ -12,10 +12,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookRentRequestDto {
-    private int bookId;
-    private int userId;
+    private Integer bookId;
+    private Integer userId;
     private String userName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean isEliteUser;
+    private Boolean isEliteUser;
 }

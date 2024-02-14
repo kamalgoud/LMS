@@ -20,11 +20,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int id;
+    private Integer id;
     private String name;
     private String email;
     private String password;
-    private boolean isEliteUser;
+    private Boolean isEliteUser;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private List<CartBook> cartBooks;

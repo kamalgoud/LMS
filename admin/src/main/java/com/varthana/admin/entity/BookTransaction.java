@@ -21,19 +21,20 @@ public class BookTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_transaction_id")
-    private int id;
-    private int bookId;
-    private int userId;
+    private Integer id;
+    private Integer bookId;
+    private Integer userId;
     private String bookName;
     @Enumerated(EnumType.STRING)
     private Transaction type;
     private LocalDate transactionDate;
-    private double price;
-    private double rentAmount;
-    private double amountPaid;
-    private double fine;
+    private Double price;
+    private Double rentAmount;
+    private Double amountPaid;
+    private Double fine;
     private Long totalQuantity;
     private Long rentedQuantity;
     private Long remainingQuantity;
+    private Long purchasedQuantity;
     private LocalDateTime transactionTime;
 }

@@ -43,7 +43,8 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     }
 
     @Override
-    public List<BookRentTransaction> checkTransactionByBookIdAndUserId(int bookId, int userId) throws CustomException {
+    public List<BookRentTransaction> checkTransactionByBookIdAndUserId(Integer bookId,
+                                                                       Integer userId) throws CustomException {
         try {
             List<BookRentTransaction> bookRentTransaction = bookRentTransactionRepository.findByBookIdAndUserId(bookId,
                     userId);
@@ -56,7 +57,7 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     }
 
     @Override
-    public List<BookRentTransaction> getBookTransactionsByUserId(int userId) throws CustomException {
+    public List<BookRentTransaction> getBookTransactionsByUserId(Integer userId) throws CustomException {
         try {
             List<BookRentTransaction> bookRentTransactions = bookRentTransactionRepository.findByUserId(userId);
             logger.warn("getBookTransactionsByUserId service {}",userId);
@@ -68,7 +69,7 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     }
 
     @Override
-    public List<BookRentTransaction> getBookTransactionsByBookId(int bookId) throws CustomException {
+    public List<BookRentTransaction> getBookTransactionsByBookId(Integer bookId) throws CustomException {
         try {
             return bookRentTransactionRepository.findByBookId(bookId);
         } catch (Exception e) {
@@ -78,7 +79,7 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     }
 
     @Override
-    public BookRentTransaction getTransactionByBookIdAndTansactionId(int bookId,
+    public BookRentTransaction getTransactionByBookIdAndTansactionId(Integer bookId,
                                                                      UUID transactionId) throws CustomException {
         try {
             BookRentTransaction bookRentTransaction = bookRentTransactionRepository.findByBookIdAndTransactionId(bookId,

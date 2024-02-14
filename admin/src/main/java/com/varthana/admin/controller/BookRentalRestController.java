@@ -38,12 +38,12 @@ public class BookRentalRestController {
     @PostMapping("/rent-book")
     public BookDetail rentBook(@RequestBody BookRentRequestDto bookRentRequestDto) throws CustomException {
         try {
-            int bookId = bookRentRequestDto.getBookId();
-            int userId = bookRentRequestDto.getUserId();
+            Integer bookId = bookRentRequestDto.getBookId();
+            Integer userId = bookRentRequestDto.getUserId();
             String userName = bookRentRequestDto.getUserName();
             LocalDate startDate = bookRentRequestDto.getStartDate();
             LocalDate expectedEndDate = bookRentRequestDto.getEndDate();
-            boolean isEliteUser = bookRentRequestDto.isEliteUser();
+            Boolean isEliteUser = bookRentRequestDto.getIsEliteUser();
 
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
             BookQuantity bookQuantity = bookDetail.getBookQuantity();
@@ -78,6 +78,7 @@ public class BookRentalRestController {
                 bookRentTransaction.setPrice(bookDetail.getPrice());
                 bookRentTransaction.setTransactionId(UUID.randomUUID());
                 bookRentTransaction.setRentTransactionTime(LocalDateTime.now());
+                bookRentTransaction.setFineAmount(Double.valueOf(0));
                 bookRentTransactionService.saveRentTransaction(bookRentTransaction);
 
                 BookTransaction bookTransaction = new BookTransaction();
@@ -92,6 +93,10 @@ public class BookRentalRestController {
                 bookTransaction.setTotalQuantity(bookQuantity.getTotalQuantity());
                 bookTransaction.setRentedQuantity(bookQuantity.getRentedQuantity());
                 bookTransaction.setRemainingQuantity(bookQuantity.getRemainingQuantity());
+                bookTransaction.setAmountPaid(Double.valueOf(0));
+                bookTransaction.setFine(Double.valueOf(0));
+                bookTransaction.setPurchasedQuantity(Long.valueOf(0));
+
                 bookTransactionService.saveTransaction(bookTransaction);
 
                 List<BookRentTransaction> bookRentTransactionList = bookDetail.getBookRentTransactions();
@@ -131,8 +136,8 @@ public class BookRentalRestController {
     @PostMapping("/check-user-rented-book")
     public Boolean checkIfUserRentedBook(@RequestBody UserBookDto userBookDto) throws CustomException {
         try {
-            int bookId = userBookDto.getBookId();
-            int userId = userBookDto.getUserId();
+            Integer bookId = userBookDto.getBookId();
+            Integer userId = userBookDto.getUserId();
             List<BookRentTransaction> bookRentTransaction = bookRentTransactionService
                     .checkTransactionByBookIdAndUserId(bookId, userId);
             if (bookRentTransaction != null) {
@@ -150,7 +155,7 @@ public class BookRentalRestController {
     }
 
     @GetMapping("/get-rented-books/{id}")
-    public List<BookRentTransaction> getRentedBooks(@PathVariable("id") int id) throws CustomException {
+    public List<BookRentTransaction> getRentedBooks(@PathVariable("id") Integer id) throws CustomException {
         try {
             List<BookRentTransaction> books = bookRentTransactionService.getBookTransactionsByUserId(id);
             return books;
@@ -163,9 +168,9 @@ public class BookRentalRestController {
     @PostMapping("/return-book")
     public Boolean returnBook(@RequestBody ReturnBookDto returnBookDto) throws CustomException {
         try {
-            int bookId = returnBookDto.getBookId();
+            Integer bookId = returnBookDto.getBookId();
             UUID transactionId = returnBookDto.getTransactionId();
-            boolean isEliteUser = returnBookDto.isEliteUser();
+            Boolean isEliteUser = returnBookDto.getIsEliteUser();
 
             BookRentTransaction bookRentTransaction = bookRentTransactionService
                     .getTransactionByBookIdAndTansactionId(bookId, transactionId);
@@ -217,6 +222,8 @@ public class BookRentalRestController {
                 bookTransaction.setTotalQuantity(bookQuantity.getTotalQuantity());
                 bookTransaction.setRentedQuantity(bookQuantity.getRentedQuantity());
                 bookTransaction.setRemainingQuantity(bookQuantity.getRemainingQuantity());
+                bookTransaction.setAmountPaid(Double.valueOf(0));
+                bookTransaction.setPurchasedQuantity(Long.valueOf(0));
                 bookTransactionService.saveTransaction(bookTransaction);
 
                 List<BookTransaction> bookTransactionList = bookDetail.getBookTransactions();

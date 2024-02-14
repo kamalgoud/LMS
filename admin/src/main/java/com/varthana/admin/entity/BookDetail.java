@@ -19,12 +19,12 @@ public class BookDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
-    private int id;
+    private Integer id;
     private String name;
     private String author;
-    private double price;
-    private long quantity;
-    private boolean isDeletedByAdmin;
+    private Double price;
+    private Long quantity;
+    private Boolean isDeletedByAdmin;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 

@@ -12,9 +12,9 @@ public interface BookDetailService {
 
     public List<BookDetail> getAllBooks() throws CustomException;
 
-    public BookDetail getBookById(int id) throws CustomException;
+    public BookDetail getBookById(Integer id) throws CustomException;
 
-    public void deleteBookById(int id) throws CustomException;
+    public void deleteBookById(Integer id) throws CustomException;
 
-    public boolean isPresentById(int id) throws CustomException;
+    public boolean isPresentById(Integer id) throws CustomException;
 }

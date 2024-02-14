@@ -44,7 +44,7 @@ public class UserRentBooksController {
 
     @PostMapping("/request-rent-book")
     public String rentDetails(Model model,
-                              @RequestParam("id") int id,
+                              @RequestParam("id") Integer id,
                               @RequestParam("name") String name) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -79,7 +79,7 @@ public class UserRentBooksController {
 
     @PostMapping("/rent-book")
     public String rentBook(Model model,
-                           @RequestParam("id") int id,
+                           @RequestParam("id") Integer id,
                            @RequestParam("startdate") LocalDate startDate,
                            @RequestParam("enddate") LocalDate endDate) throws CustomException {
         try {
@@ -100,7 +100,7 @@ public class UserRentBooksController {
             User user = userService.getUserByEmail(authentication.getName());
 
             BookRentRequestDto bookRentRequestDto = new BookRentRequestDto(id, user.getId(), user.getName(),
-                    startDate, endDate, user.isEliteUser());
+                    startDate, endDate, user.getIsEliteUser());
 
             String url = adminUrl+"/rent-book";
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -154,7 +154,7 @@ public class UserRentBooksController {
 
     @PostMapping("/return-book")
     public String returnBook(Model model,
-                             @RequestParam("id") int id,
+                             @RequestParam("id") Integer id,
                              @RequestParam("transactionId") UUID transactionId) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -165,7 +165,7 @@ public class UserRentBooksController {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
 
-            ReturnBookDto returnBookDto = new ReturnBookDto(id, transactionId, user.isEliteUser());
+            ReturnBookDto returnBookDto = new ReturnBookDto(id, transactionId, user.getIsEliteUser());
             HttpEntity<Object> entity = new HttpEntity<>(returnBookDto, httpHeaders);
             ResponseEntity<Boolean> response
                     = restTemplate.exchange(url, HttpMethod.POST, entity, Boolean.class);

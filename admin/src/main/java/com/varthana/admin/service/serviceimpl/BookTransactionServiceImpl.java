@@ -30,7 +30,7 @@ public class BookTransactionServiceImpl implements BookTransactionService {
     }
 
     @Override
-    public List<BookTransaction> getTransactionsByUserId(int userId) throws CustomException {
+    public List<BookTransaction> getTransactionsByUserId(Integer userId) throws CustomException {
         try {
             logger.warn("getTransactionsByUserId service {}",userId);
             return bookTransactionRepository.findByUserId(userId);

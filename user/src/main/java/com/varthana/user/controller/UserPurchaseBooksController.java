@@ -46,8 +46,8 @@ public class UserPurchaseBooksController {
 
     @PostMapping("/purchase-book")
     public String purchase(Model model,
-                           @RequestParam("bookId") int bookId,
-                           @RequestParam("quantity") long quantity) throws CustomException {
+                           @RequestParam("bookId") Integer bookId,
+                           @RequestParam("quantity") Long quantity) throws CustomException {
         try {
             if(quantity==0){
                 model.addAttribute("warning","Not Able to Purchase");
@@ -59,7 +59,7 @@ public class UserPurchaseBooksController {
             String url = adminUrl+"/purchase-book";
 
             PurchaseBookRequestDto purchaseBookRequestDto = new PurchaseBookRequestDto(bookId, user.getId(),
-                    user.getName(), quantity, user.isEliteUser());
+                    user.getName(), quantity, user.getIsEliteUser());
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);

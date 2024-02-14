@@ -34,8 +34,8 @@ public class UserCartController {
 
     @PostMapping("/cart-quantity")
     public String cartBook(Model model,
-                           @RequestParam("id") int id,
-                           @RequestParam("price") double price,
+                           @RequestParam("id") Integer id,
+                           @RequestParam("price") Double price,
                            @RequestParam("name") String name) throws CustomException {
         try {
             model.addAttribute("id", id);
@@ -53,10 +53,10 @@ public class UserCartController {
 
     @PostMapping("/add-to-cart")
     public String addToCart(Model model,
-                            @RequestParam("id") int bookId,
+                            @RequestParam("id") Integer bookId,
                             @RequestParam("name") String bookName,
-                            @RequestParam("price") double price,
-                            @RequestParam("quantity") long quantity) throws CustomException {
+                            @RequestParam("price") Double price,
+                            @RequestParam("quantity") Long quantity) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
@@ -120,7 +120,7 @@ public class UserCartController {
 
     @PostMapping("/remove-from-cart")
     public String removeFromCart(Model model,
-                                 @RequestParam("id") int bookId) throws CustomException {
+                                 @RequestParam("id") Integer bookId) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
@@ -142,9 +142,9 @@ public class UserCartController {
 
     @PostMapping("/change-quantity")
     public String changeQuantity(Model model,
-                                 @RequestParam("id") int bookId,
+                                 @RequestParam("id") Integer bookId,
                                  @RequestParam("name") String name,
-                                 @RequestParam("quantity") long quantity) throws CustomException {
+                                 @RequestParam("quantity") Long quantity) throws CustomException {
         try {
             model.addAttribute("bookId", bookId);
             model.addAttribute("name", name);
@@ -160,8 +160,8 @@ public class UserCartController {
 
     @PostMapping("/update-quantity")
     public String updateQuantity(Model model,
-                                 @RequestParam("bookId") int bookId,
-                                 @RequestParam("quantity") long quantity) throws CustomException {
+                                 @RequestParam("bookId") Integer bookId,
+                                 @RequestParam("quantity") Long quantity) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());

@@ -12,11 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PurchasedBooksDto {
-    private int id;
-    private int bookId;
-    private int userId;
+    private Integer id;
+    private Integer bookId;
+    private Integer userId;
     private String bookName;
-    private double amountPaid;
-    private long quantity;
+    private Double amountPaid;
+    private Long quantity;
     private LocalDate purchasedDate;
 }

@@ -19,13 +19,13 @@ public class CartBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_book_id")
-    private int id;
-    private int bookId;
-    private int userId;
+    private Integer id;
+    private Integer bookId;
+    private Integer userId;
     private String name;
-    private double price;
-    private long quantityWanted;
-    private double amountToBePaid;
+    private Double price;
+    private Long quantityWanted;
+    private Double amountToBePaid;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

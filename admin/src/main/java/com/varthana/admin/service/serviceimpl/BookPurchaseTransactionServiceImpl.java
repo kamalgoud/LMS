@@ -31,7 +31,7 @@ public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransacti
     }
 
     @Override
-    public List<BookPurchaseTransaction> getPurchaseTransactionsByUserId(int userId) throws CustomException {
+    public List<BookPurchaseTransaction> getPurchaseTransactionsByUserId(Integer userId) throws CustomException {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
                     .findByUserId(userId);
@@ -44,7 +44,7 @@ public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransacti
     }
 
     @Override
-    public List<BookPurchaseTransaction> getPurchaseTransactionsByBookId(int bookId) throws CustomException {
+    public List<BookPurchaseTransaction> getPurchaseTransactionsByBookId(Integer bookId) throws CustomException {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
                     .findByBookId(bookId);

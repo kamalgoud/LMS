@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserBookDto {
-    private int bookId;
-    private int userId;
+    private Integer bookId;
+    private Integer userId;
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public interface BookTransactionService {
     public BookTransaction saveTransaction(BookTransaction bookTransaction) throws CustomException;
 
-    public List<BookTransaction> getTransactionsByUserId(int userId) throws CustomException;
+    public List<BookTransaction> getTransactionsByUserId(Integer userId) throws CustomException;
 }

@@ -50,7 +50,7 @@ public class CartBookServiceImpl implements CartBookService {
     }
 
     @Override
-    public CartBook getCartBookByBookIdAndUserId(int bookId, int userId) throws CustomException {
+    public CartBook getCartBookByBookIdAndUserId(Integer bookId, Integer userId) throws CustomException {
         try {
             logger.warn("getCartBookByBookIdAndUserId service {}",bookId);
             return cartRepository.findByBookIdAndUserId(bookId, userId);

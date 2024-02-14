@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReturnBookDto {
-    private int bookId;
+    private Integer bookId;
     private UUID transactionId;
-    private boolean isEliteUser;
+    private Boolean isEliteUser;
 }

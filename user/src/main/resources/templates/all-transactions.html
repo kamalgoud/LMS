@@ -163,6 +163,7 @@
                     <th>Rent Amount</th>
                     <th>Purchasing Amount</th>
                     <th>Fine Amount</th>
+                    <th>Purchased Quantity</th>
                 </tr>
                 <tr th:each="book: ${books}">
                     <td th:text="${book.bookName}"/>
@@ -172,6 +173,7 @@
                     <td th:text="${book.rentAmount}"/>
                     <td th:text="${book.amountPaid}"/>
                     <td th:text="${book.fine}"/>
+                    <td th:text="${book.purchasedQuantity}"></td>
                 </tr>
             </table>
         </div>

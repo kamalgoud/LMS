@@ -20,14 +20,13 @@ public class BookPurchaseTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_purchase_transaction_id")
-    private int id;
-    private int bookId;
-    private int userId;
+    private Integer id;
+    private Integer bookId;
+    private Integer userId;
     private String bookName;
     private String userName;
-    private double amountPaid;
-    private long quantity;
+    private Double amountPaid;
+    private Long quantity;
     private LocalDate purchasedDate;
     private LocalDateTime bookPurchaseTime;
-
 }

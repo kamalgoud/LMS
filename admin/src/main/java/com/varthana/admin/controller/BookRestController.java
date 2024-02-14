@@ -31,7 +31,7 @@ public class BookRestController {
             Iterator<BookDetail> iterator = books.iterator();
             while (iterator.hasNext()) {
                 BookDetail book = iterator.next();
-                if (book.isDeletedByAdmin()) {
+                if (book.getIsDeletedByAdmin()) {
                     iterator.remove();
                 }
             }
@@ -44,7 +44,7 @@ public class BookRestController {
     }
 
     @GetMapping("/all-transactions/{id}")
-    public List<BookTransaction> allTransactions(@PathVariable("id") int userId) throws CustomException {
+    public List<BookTransaction> allTransactions(@PathVariable("id") Integer userId) throws CustomException {
         try {
             return bookTransactionService.getTransactionsByUserId(userId);
         } catch (Exception e) {

@@ -55,7 +55,7 @@ public class BookDetailServiceImpl implements BookDetailService {
     }
 
     @Override
-    public BookDetail getBookById(int id) throws CustomException {
+    public BookDetail getBookById(Integer id) throws CustomException {
         try {
             if (!bookDetailRepository.existsById(id)) {
                 logger.warn("getBookById service id not found {}",id);
@@ -70,7 +70,7 @@ public class BookDetailServiceImpl implements BookDetailService {
     }
 
     @Override
-    public void deleteBookById(int id) throws CustomException {
+    public void deleteBookById(Integer id) throws CustomException {
         try {
             bookDetailRepository.deleteById(id);
             logger.warn("deleteBookById service {}",id);
@@ -81,7 +81,7 @@ public class BookDetailServiceImpl implements BookDetailService {
     }
 
     @Override
-    public boolean isPresentById(int id) throws CustomException {
+    public boolean isPresentById(Integer id) throws CustomException {
         try {
             if (bookDetailRepository.existsById(id)) {
                 logger.warn("isPresentById service id not found {}",id);

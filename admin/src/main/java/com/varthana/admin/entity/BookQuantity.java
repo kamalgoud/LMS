@@ -20,11 +20,11 @@ public class BookQuantity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quantity_id")
-    private int id;
-    private long totalQuantity;
-    private long rentedQuantity;
-    private long purchasedQuantity;
-    private long remainingQuantity;
+    private Integer id;
+    private Long totalQuantity;
+    private Long rentedQuantity;
+    private Long purchasedQuantity;
+    private Long remainingQuantity;
     @CreationTimestamp
     private LocalDateTime createdTime;
     @UpdateTimestamp

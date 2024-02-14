@@ -11,11 +11,11 @@ public interface BookRentTransactionService {
 
     public BookRentTransaction updateRentTransaction(BookRentTransaction bookRentTransaction) throws CustomException;
 
-    public List<BookRentTransaction> checkTransactionByBookIdAndUserId(int bookId, int userId) throws CustomException;
+    public List<BookRentTransaction> checkTransactionByBookIdAndUserId(Integer bookId, Integer userId) throws CustomException;
 
-    public List<BookRentTransaction> getBookTransactionsByUserId(int userId) throws CustomException;
+    public List<BookRentTransaction> getBookTransactionsByUserId(Integer userId) throws CustomException;
 
-    public List<BookRentTransaction> getBookTransactionsByBookId(int bookId) throws CustomException;
+    public List<BookRentTransaction> getBookTransactionsByBookId(Integer bookId) throws CustomException;
 
-    public BookRentTransaction getTransactionByBookIdAndTansactionId(int bookId, UUID transactionId) throws CustomException;
+    public BookRentTransaction getTransactionByBookIdAndTansactionId(Integer bookId, UUID transactionId) throws CustomException;
 }

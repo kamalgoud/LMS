@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BookRentTransactionRepository extends JpaRepository<BookRentTransaction, Integer> {
-    List<BookRentTransaction> findByBookIdAndUserId(int bookId, int userId);
+    List<BookRentTransaction> findByBookIdAndUserId(Integer bookId, Integer userId);
 
-    List<BookRentTransaction> findByUserId(int userId);
+    List<BookRentTransaction> findByUserId(Integer userId);
 
-    List<BookRentTransaction> findByBookId(int bookId);
+    List<BookRentTransaction> findByBookId(Integer bookId);
 
-    BookRentTransaction findByBookIdAndTransactionId(int bookId, UUID transactionId);
+    BookRentTransaction findByBookIdAndTransactionId(Integer bookId, UUID transactionId);
 }
