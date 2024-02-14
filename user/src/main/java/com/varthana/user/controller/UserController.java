@@ -45,7 +45,7 @@ public class UserController {
     @GetMapping("/")
     public String home(Model model) throws CustomException {
         try {
-            String url = adminUrl+"/getAllBooks";
+            String url = adminUrl + "/getAllBooks";
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
@@ -59,11 +59,11 @@ public class UserController {
             model.addAttribute("books", bookDetailsDto);
             model.addAttribute("isEliteUser", user.getIsEliteUser());
 
-            logger.warn("home controller : {}",bookDetailsDto.toString());
+            logger.warn("home controller : {}", bookDetailsDto.toString());
             return "home";
         } catch (Exception e) {
-            logger.error("error wile getting all books : {}",e.getMessage());
-            throw new CustomException("Error while getting all books from admin "+e.getMessage());
+            logger.error("error wile getting all books : {}", e.getMessage());
+            throw new CustomException("Error while getting all books from admin " + e.getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ public class UserController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = adminUrl+"/all-transactions/" + user.getId();
+            String url = adminUrl + "/all-transactions/" + user.getId();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
@@ -82,17 +82,17 @@ public class UserController {
             List<BookTransactionsDto> bookTransactionsDto = response.getBody();
 
             if (bookTransactionsDto == null) {
-                model.addAttribute("warning","No Transactions");
+                model.addAttribute("warning", "No Transactions");
                 logger.warn("all-transactions controller : No Transactions");
                 return "warning";
             }
             model.addAttribute("books", bookTransactionsDto);
 
-            logger.warn("all-transactions controller : {}",bookTransactionsDto.toString());
+            logger.warn("all-transactions controller : {}", bookTransactionsDto.toString());
             return "all-transactions";
         } catch (Exception e) {
-            logger.error("error while getting all transactions : {}",e.getMessage());
-            throw new CustomException("Error while retrieving all transactions "+e.getMessage());
+            logger.error("error while getting all transactions : {}", e.getMessage());
+            throw new CustomException("Error while retrieving all transactions " + e.getMessage());
         }
     }
 
@@ -107,8 +107,8 @@ public class UserController {
 
             logger.warn("become-elite-user controller");
             return "redirect:/";
-        }catch (Exception e){
-            throw new CustomException("Error while becoming elite user "+e.getMessage());
+        } catch (Exception e) {
+            throw new CustomException("Error while becoming elite user " + e.getMessage());
         }
     }
 }

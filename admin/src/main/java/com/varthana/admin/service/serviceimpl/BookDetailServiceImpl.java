@@ -22,11 +22,11 @@ public class BookDetailServiceImpl implements BookDetailService {
     public BookDetail saveBook(BookDetail bookDetail) throws CustomException {
         try {
             BookDetail savedBook = bookDetailRepository.save(bookDetail);
-            logger.warn("saveBook service {}",bookDetail.toString());
+            logger.warn("saveBook service {}", bookDetail.toString());
             return savedBook;
         } catch (Exception e) {
-            logger.error("Error while saving book : {}",e.getMessage());
-            throw new CustomException("Error while saving book "+e.getMessage());
+            logger.error("Error while saving book : {}", e.getMessage());
+            throw new CustomException("Error while saving book " + e.getMessage());
         }
     }
 
@@ -34,11 +34,11 @@ public class BookDetailServiceImpl implements BookDetailService {
     public BookDetail updateBook(BookDetail bookDetail) throws CustomException {
         try {
             BookDetail updatedBook = bookDetailRepository.save(bookDetail);
-            logger.warn("updateBook service {}",bookDetail.toString());
+            logger.warn("updateBook service {}", bookDetail.toString());
             return updatedBook;
         } catch (Exception e) {
-            logger.error("Error while updating book : {}",e.getMessage());
-            throw new CustomException("Error while updating book "+e.getMessage());
+            logger.error("Error while updating book : {}", e.getMessage());
+            throw new CustomException("Error while updating book " + e.getMessage());
         }
     }
 
@@ -49,8 +49,8 @@ public class BookDetailServiceImpl implements BookDetailService {
             logger.warn("getAllBooks service");
             return books;
         } catch (Exception e) {
-            logger.error("Error while getting all books : {}",e.getMessage());
-            throw new CustomException("Error while retrieving all books "+e.getMessage());
+            logger.error("Error while getting all books : {}", e.getMessage());
+            throw new CustomException("Error while retrieving all books " + e.getMessage());
         }
     }
 
@@ -58,14 +58,14 @@ public class BookDetailServiceImpl implements BookDetailService {
     public BookDetail getBookById(Integer id) throws CustomException {
         try {
             if (!bookDetailRepository.existsById(id)) {
-                logger.warn("getBookById service id not found {}",id);
+                logger.warn("getBookById service id not found {}", id);
                 return null;
             }
-            logger.warn("getBookById service {}",id);
+            logger.warn("getBookById service {}", id);
             return bookDetailRepository.findById(id).get();
         } catch (Exception e) {
-            logger.error("Error while getting book by id : {}",e.getMessage());
-            throw new CustomException("Error while access book by id "+e.getMessage());
+            logger.error("Error while getting book by id : {}", e.getMessage());
+            throw new CustomException("Error while access book by id " + e.getMessage());
         }
     }
 
@@ -73,10 +73,10 @@ public class BookDetailServiceImpl implements BookDetailService {
     public void deleteBookById(Integer id) throws CustomException {
         try {
             bookDetailRepository.deleteById(id);
-            logger.warn("deleteBookById service {}",id);
+            logger.warn("deleteBookById service {}", id);
         } catch (Exception e) {
-            logger.error("Error while deleting book by id : {}",e.getMessage());
-            throw new CustomException("Error while deleting book by id "+e.getMessage());
+            logger.error("Error while deleting book by id : {}", e.getMessage());
+            throw new CustomException("Error while deleting book by id " + e.getMessage());
         }
     }
 
@@ -84,14 +84,14 @@ public class BookDetailServiceImpl implements BookDetailService {
     public boolean isPresentById(Integer id) throws CustomException {
         try {
             if (bookDetailRepository.existsById(id)) {
-                logger.warn("isPresentById service id not found {}",id);
+                logger.warn("isPresentById service id not found {}", id);
                 return true;
             }
-            logger.warn("isPresentById service {}",id);
+            logger.warn("isPresentById service {}", id);
             return false;
         } catch (Exception e) {
-            logger.error("Error while checking if book exists by id : {}",e.getMessage());
-            throw new CustomException("Error while checking if book exists by id "+e.getMessage());
+            logger.error("Error while checking if book exists by id : {}", e.getMessage());
+            throw new CustomException("Error while checking if book exists by id " + e.getMessage());
         }
     }
 }

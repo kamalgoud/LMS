@@ -22,8 +22,8 @@ public class AdminServiceImpl implements AdminService {
             Admin admin = adminRepository.findByEmail(email);
             return admin;
         } catch (Exception e) {
-            logger.error("Error while getting admin by email : {}",e.getMessage());
-            throw new CustomException("Error while retrieving admin "+e.getMessage());
+            logger.error("Error while getting admin by email : {}", e.getMessage());
+            throw new CustomException("Error while retrieving admin " + e.getMessage());
         }
     }
 
@@ -33,8 +33,8 @@ public class AdminServiceImpl implements AdminService {
             Admin updatedAdmin = adminRepository.save(admin);
             return updatedAdmin;
         } catch (Exception e) {
-            logger.error("Error while updating admin : {}",e.getMessage());
-            throw new CustomException("Error while updating admin "+e.getMessage());
+            logger.error("Error while updating admin : {}", e.getMessage());
+            throw new CustomException("Error while updating admin " + e.getMessage());
         }
     }
 
@@ -43,8 +43,8 @@ public class AdminServiceImpl implements AdminService {
         try {
             return adminRepository.save(admin);
         } catch (Exception e) {
-            logger.error("Error while saving admin : {}",e.getMessage());
-            throw new CustomException("Error while saving admin "+e.getMessage());
+            logger.error("Error while saving admin : {}", e.getMessage());
+            throw new CustomException("Error while saving admin " + e.getMessage());
         }
     }
 }

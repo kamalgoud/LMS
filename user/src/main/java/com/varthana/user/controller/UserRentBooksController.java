@@ -51,7 +51,7 @@ public class UserRentBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = adminUrl+"/check-user-rented-book";
+            String url = adminUrl + "/check-user-rented-book";
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
 
@@ -62,18 +62,18 @@ public class UserRentBooksController {
             Boolean isBookRentedByUser = response.getBody();
 
             if (isBookRentedByUser) {
-                model.addAttribute("warning","Already Rented");
-                logger.warn("request-rent-book controller : {}",isBookRentedByUser);
+                model.addAttribute("warning", "Already Rented");
+                logger.warn("request-rent-book controller : {}", isBookRentedByUser);
                 return "warning";
             } else {
                 model.addAttribute("id", id);
                 model.addAttribute("name", name);
-                logger.warn("request-rent-book controller : {}",isBookRentedByUser);
+                logger.warn("request-rent-book controller : {}", isBookRentedByUser);
                 return "rent-details";
             }
         } catch (Exception e) {
-            logger.error("error while requesting to rent book : {}",e.getMessage());
-            throw new CustomException("Error while requesting to rent a book "+e.getMessage());
+            logger.error("error while requesting to rent book : {}", e.getMessage());
+            throw new CustomException("Error while requesting to rent a book " + e.getMessage());
         }
     }
 
@@ -84,14 +84,14 @@ public class UserRentBooksController {
                            @RequestParam("enddate") LocalDate endDate) throws CustomException {
         try {
             if (startDate == null || endDate == null) {
-                model.addAttribute("warning","Invalid start date or end date");
+                model.addAttribute("warning", "Invalid start date or end date");
                 logger.warn("rent-book controller, Empty fields");
                 return "warning";
             }
 
             long daysDifference = ChronoUnit.DAYS.between(startDate, endDate);
             if (daysDifference <= 0) {
-                model.addAttribute("warning","Start Date is Greater than End Date");
+                model.addAttribute("warning", "Start Date is Greater than End Date");
                 logger.warn("rent-book controller, book not available : inconsistent dates");
                 return "warning";
             }
@@ -102,7 +102,7 @@ public class UserRentBooksController {
             BookRentRequestDto bookRentRequestDto = new BookRentRequestDto(id, user.getId(), user.getName(),
                     startDate, endDate, user.getIsEliteUser());
 
-            String url = adminUrl+"/rent-book";
+            String url = adminUrl + "/rent-book";
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(bookRentRequestDto, httpHeaders);
@@ -111,16 +111,16 @@ public class UserRentBooksController {
             BookDetailDto bookDetailDto = response.getBody();
 
             if (bookDetailDto == null) {
-                model.addAttribute("warning","Books Not Available");
-                logger.warn("rent-book controller, book not available : {}",id);
+                model.addAttribute("warning", "Books Not Available");
+                logger.warn("rent-book controller, book not available : {}", id);
                 return "warning";
             }
 
-            logger.warn("rent-book controller : {}",bookDetailDto.toString());
+            logger.warn("rent-book controller : {}", bookDetailDto.toString());
             return "redirect:/";
         } catch (Exception e) {
-            logger.error("error while renting : {}",e.getMessage());
-            throw new CustomException("Error while renting a book "+e.getMessage());
+            logger.error("error while renting : {}", e.getMessage());
+            throw new CustomException("Error while renting a book " + e.getMessage());
         }
     }
 
@@ -131,7 +131,7 @@ public class UserRentBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = adminUrl+"/get-rented-books/" + user.getId();
+            String url = adminUrl + "/get-rented-books/" + user.getId();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
 
@@ -143,12 +143,12 @@ public class UserRentBooksController {
             List<RentedBooksDto> rentedBooksDtos = response.getBody();
             model.addAttribute("books", rentedBooksDtos);
 
-            logger.warn("rented-books controller : {}",rentedBooksDtos);
+            logger.warn("rented-books controller : {}", rentedBooksDtos);
 
             return "rented-books";
         } catch (Exception e) {
-            logger.error("error while retrieving rented books : {}",e.getMessage());
-            throw new CustomException("Error while retrieving rented books "+e.getMessage());
+            logger.error("error while retrieving rented books : {}", e.getMessage());
+            throw new CustomException("Error while retrieving rented books " + e.getMessage());
         }
     }
 
@@ -161,7 +161,7 @@ public class UserRentBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = adminUrl+"/return-book";
+            String url = adminUrl + "/return-book";
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
 
@@ -171,16 +171,16 @@ public class UserRentBooksController {
                     = restTemplate.exchange(url, HttpMethod.POST, entity, Boolean.class);
             Boolean isAbleToReturnBook = response.getBody();
             if (!isAbleToReturnBook) {
-                model.addAttribute("warning","Already-returned");
-                logger.warn("return-book controller already returned : {}",id);
+                model.addAttribute("warning", "Already-returned");
+                logger.warn("return-book controller already returned : {}", id);
                 return "warning";
             }
 
             logger.warn("return-book controller");
             return "redirect:/";
         } catch (Exception e) {
-            logger.error("error while returning book : {}",e.getMessage());
-            throw new CustomException("Error while returning a book admin "+e.getMessage());
+            logger.error("error while returning book : {}", e.getMessage());
+            throw new CustomException("Error while returning a book admin " + e.getMessage());
         }
     }
 }

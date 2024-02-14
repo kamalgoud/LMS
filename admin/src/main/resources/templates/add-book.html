@@ -124,14 +124,14 @@
     </div>
     <div class="content">
         <center>
-            <h2><i class="fa-solid fa-book"></i>  Add Book</h2>
-        <form method="POST" th:action="@{/create-book}">
-            <input id="nameId" name="name" required type="text" placeholder="Book Name"> <br><br>
-            <input id="authorId" name="author" required type="text" placeholder="Author"> <br><br>
-            <input id="priceId" name="price" required type="number" placeholder="Price"> <br><br>
-            <input id="quantityId" name="quantity" required type="number" placeholder="Quantity"> <br><br>
-            <button type="submit">ADD</button>
-        </form>
+            <h2><i class="fa-solid fa-book"></i> Add Book</h2>
+            <form method="POST" th:action="@{/create-book}">
+                <input id="nameId" name="name" placeholder="Book Name" required type="text"> <br><br>
+                <input id="authorId" name="author" placeholder="Author" required type="text"> <br><br>
+                <input id="priceId" name="price" placeholder="Price" required type="number"> <br><br>
+                <input id="quantityId" name="quantity" placeholder="Quantity" required type="number"> <br><br>
+                <button type="submit">ADD</button>
+            </form>
         </center>
     </div>
 </div>

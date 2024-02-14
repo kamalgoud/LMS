@@ -83,23 +83,21 @@ public class BookPurchaseRestController {
             bookTransactionService.saveTransaction(bookTransaction);
 
             List<BookPurchaseTransaction> bookPurchaseTransactionList = bookDetail.getBookPurchaseTransactions();
-            if(bookPurchaseTransactionList==null){
+            if (bookPurchaseTransactionList == null) {
                 bookPurchaseTransactionList = new ArrayList<>();
                 bookPurchaseTransactionList.add(bookPurchaseTransaction);
                 bookDetail.setBookPurchaseTransactions(bookPurchaseTransactionList);
-            }
-            else{
+            } else {
                 bookPurchaseTransactionList.add(bookPurchaseTransaction);
                 bookDetail.setBookPurchaseTransactions(bookPurchaseTransactionList);
             }
 
             List<BookTransaction> bookTransactionList = bookDetail.getBookTransactions();
-            if(bookTransactionList==null){
+            if (bookTransactionList == null) {
                 bookTransactionList = new ArrayList<>();
                 bookTransactionList.add(bookTransaction);
                 bookDetail.setBookTransactions(bookTransactionList);
-            }
-            else{
+            } else {
                 bookTransactionList.add(bookTransaction);
                 bookDetail.setBookTransactions(bookTransactionList);
             }
@@ -108,8 +106,8 @@ public class BookPurchaseRestController {
 
             return true;
         } catch (Exception e) {
-            logger.error("Error while puchasing book : {}",e.getMessage());
-            throw new CustomException("Error while purchasing Book "+e.getMessage());
+            logger.error("Error while puchasing book : {}", e.getMessage());
+            throw new CustomException("Error while purchasing Book " + e.getMessage());
         }
     }
 
@@ -120,8 +118,8 @@ public class BookPurchaseRestController {
                     .getPurchaseTransactionsByUserId(userId);
             return bookPurchaseTransactions;
         } catch (Exception e) {
-            logger.error("Error while getting purchased books : {}",e.getMessage());
-            throw new CustomException("Error while getting purchased books by user id "+e.getMessage());
+            logger.error("Error while getting purchased books : {}", e.getMessage());
+            throw new CustomException("Error while getting purchased books by user id " + e.getMessage());
         }
     }
 }

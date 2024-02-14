@@ -21,11 +21,11 @@ public class SecurityController {
 
     @GetMapping("/showLoginPage")
     public String showLoginPage() throws CustomException {
-        try{
+        try {
             return "login";
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new CustomException("Error while showing login page "+e.getMessage());
+            throw new CustomException("Error while showing login page " + e.getMessage());
         }
     }
 
@@ -33,9 +33,9 @@ public class SecurityController {
     public String accessDenied() throws CustomException {
         try {
             return "access-denied";
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new CustomException("Error while access denying "+e.getMessage());
+            throw new CustomException("Error while access denying " + e.getMessage());
         }
     }
 
@@ -43,9 +43,9 @@ public class SecurityController {
     public String registerUser() throws CustomException {
         try {
             return "registration-form";
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new CustomException("Error while accessing registration "+e.getMessage());
+            throw new CustomException("Error while accessing registration " + e.getMessage());
         }
     }
 
@@ -67,8 +67,8 @@ public class SecurityController {
             userService.saveUser(user);
 
             return "redirect:/showLoginPage";
-        }catch (Exception e){
-            logger.error("error while registering user : {}",e.getMessage());
+        } catch (Exception e) {
+            logger.error("error while registering user : {}", e.getMessage());
             return "login";
         }
     }

@@ -22,11 +22,11 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     @Override
     public BookRentTransaction saveRentTransaction(BookRentTransaction bookRentTransaction) throws CustomException {
         try {
-            logger.warn("saveRentTransaction service {}",bookRentTransaction.toString());
+            logger.warn("saveRentTransaction service {}", bookRentTransaction.toString());
             return bookRentTransactionRepository.save(bookRentTransaction);
         } catch (Exception e) {
-            logger.error("Error while saving rent transaction : {}",e.getMessage());
-            throw new CustomException("Error while saving rent transaction "+e.getMessage());
+            logger.error("Error while saving rent transaction : {}", e.getMessage());
+            throw new CustomException("Error while saving rent transaction " + e.getMessage());
         }
     }
 
@@ -34,11 +34,11 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     public BookRentTransaction updateRentTransaction(BookRentTransaction bookRentTransaction) throws CustomException {
         try {
             BookRentTransaction updatedBookRentTransaction = bookRentTransactionRepository.save(bookRentTransaction);
-            logger.warn("updateRentTransaction service {}",bookRentTransaction.toString());
+            logger.warn("updateRentTransaction service {}", bookRentTransaction.toString());
             return updatedBookRentTransaction;
         } catch (Exception e) {
-            logger.error("Error while updating rent transactions : {}",e.getMessage());
-            throw new CustomException("Error while updating rent transaction "+e.getMessage());
+            logger.error("Error while updating rent transactions : {}", e.getMessage());
+            throw new CustomException("Error while updating rent transaction " + e.getMessage());
         }
     }
 
@@ -48,11 +48,11 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
         try {
             List<BookRentTransaction> bookRentTransaction = bookRentTransactionRepository.findByBookIdAndUserId(bookId,
                     userId);
-            logger.warn("checkTransactionByBookIdAndUserId service {}",bookId);
+            logger.warn("checkTransactionByBookIdAndUserId service {}", bookId);
             return bookRentTransaction;
         } catch (Exception e) {
-            logger.error("Error while checking transactions by book id and user id : {}",e.getMessage());
-            throw new CustomException("Error while checking transaction by book id and user id "+e.getMessage());
+            logger.error("Error while checking transactions by book id and user id : {}", e.getMessage());
+            throw new CustomException("Error while checking transaction by book id and user id " + e.getMessage());
         }
     }
 
@@ -60,11 +60,11 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
     public List<BookRentTransaction> getBookTransactionsByUserId(Integer userId) throws CustomException {
         try {
             List<BookRentTransaction> bookRentTransactions = bookRentTransactionRepository.findByUserId(userId);
-            logger.warn("getBookTransactionsByUserId service {}",userId);
+            logger.warn("getBookTransactionsByUserId service {}", userId);
             return bookRentTransactions;
         } catch (Exception e) {
-            logger.error("Error while getting book transactions by user id : {}",e.getMessage());
-            throw new CustomException("Error while getting book transactions by user id "+e.getMessage());
+            logger.error("Error while getting book transactions by user id : {}", e.getMessage());
+            throw new CustomException("Error while getting book transactions by user id " + e.getMessage());
         }
     }
 
@@ -73,8 +73,8 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
         try {
             return bookRentTransactionRepository.findByBookId(bookId);
         } catch (Exception e) {
-            logger.error("Error while getting book transactions by book id : {}",e.getMessage());
-            throw new CustomException("Error while accessing transactions by book id "+e.getMessage());
+            logger.error("Error while getting book transactions by book id : {}", e.getMessage());
+            throw new CustomException("Error while accessing transactions by book id " + e.getMessage());
         }
     }
 
@@ -86,8 +86,9 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
                     transactionId);
             return bookRentTransaction;
         } catch (Exception e) {
-            logger.error("Error while getting transactions : {}",e.getMessage());
-            throw new CustomException("Error while accessing transactions by book id and transaction id "+e.getMessage());
+            logger.error("Error while getting transactions : {}", e.getMessage());
+            throw new CustomException("Error while accessing transactions by book and transaction ids " +
+                    e.getMessage());
         }
     }
 }

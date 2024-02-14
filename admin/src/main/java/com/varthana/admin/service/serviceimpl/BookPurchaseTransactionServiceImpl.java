@@ -22,11 +22,11 @@ public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransacti
     public BookPurchaseTransaction savePurchaseTransaction(BookPurchaseTransaction bookPurchaseTransaction)
             throws CustomException {
         try {
-            logger.warn("savePurchaseTransaction service {}",bookPurchaseTransaction.toString());
+            logger.warn("savePurchaseTransaction service {}", bookPurchaseTransaction.toString());
             return bookPurchaseTransactionRepository.save(bookPurchaseTransaction);
         } catch (Exception e) {
-            logger.error("Error while saving purchase transaction : {}",e.getMessage());
-            throw new CustomException("Error while saving purchase transaction "+e.getMessage());
+            logger.error("Error while saving purchase transaction : {}", e.getMessage());
+            throw new CustomException("Error while saving purchase transaction " + e.getMessage());
         }
     }
 
@@ -35,11 +35,11 @@ public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransacti
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
                     .findByUserId(userId);
-            logger.warn("getPurchaseTransactionsByUserId service {}",userId);
+            logger.warn("getPurchaseTransactionsByUserId service {}", userId);
             return bookPurchaseTransactions;
         } catch (Exception e) {
-            logger.error("Error while getting purchased transactions by user id : {}",e.getMessage());
-            throw new CustomException("Error while accessing purchase transaction by user id "+e.getMessage());
+            logger.error("Error while getting purchased transactions by user id : {}", e.getMessage());
+            throw new CustomException("Error while accessing purchase transaction by user id " + e.getMessage());
         }
     }
 
@@ -48,11 +48,11 @@ public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransacti
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository
                     .findByBookId(bookId);
-            logger.warn("getPurchaseTransactionsByBookId service {}",bookId);
+            logger.warn("getPurchaseTransactionsByBookId service {}", bookId);
             return bookPurchaseTransactions;
         } catch (Exception e) {
-            logger.error("Error while getting purchased transactions by book id : {}",e.getMessage());
-            throw new CustomException("Error while accessing purchase transaction by book id "+e.getMessage());
+            logger.error("Error while getting purchased transactions by book id : {}", e.getMessage());
+            throw new CustomException("Error while accessing purchase transaction by book id " + e.getMessage());
         }
     }
 }

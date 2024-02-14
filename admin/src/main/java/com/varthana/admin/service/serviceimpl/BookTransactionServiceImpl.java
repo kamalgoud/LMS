@@ -21,22 +21,22 @@ public class BookTransactionServiceImpl implements BookTransactionService {
     @Override
     public BookTransaction saveTransaction(BookTransaction bookTransaction) throws CustomException {
         try {
-            logger.warn("saveTransaction service {}",bookTransaction.toString());
+            logger.warn("saveTransaction service {}", bookTransaction.toString());
             return bookTransactionRepository.save(bookTransaction);
         } catch (Exception e) {
-            logger.error("Error while saving transaction : {}",e.getMessage());
-            throw new CustomException("Error while saving transaction "+e.getMessage());
+            logger.error("Error while saving transaction : {}", e.getMessage());
+            throw new CustomException("Error while saving transaction " + e.getMessage());
         }
     }
 
     @Override
     public List<BookTransaction> getTransactionsByUserId(Integer userId) throws CustomException {
         try {
-            logger.warn("getTransactionsByUserId service {}",userId);
+            logger.warn("getTransactionsByUserId service {}", userId);
             return bookTransactionRepository.findByUserId(userId);
         } catch (Exception e) {
-            logger.error("Error while getting transaction by user id : {}",e.getMessage());
-            throw new CustomException("Error while getting transactions by user id "+e.getMessage());
+            logger.error("Error while getting transaction by user id : {}", e.getMessage());
+            throw new CustomException("Error while getting transactions by user id " + e.getMessage());
         }
     }
 }

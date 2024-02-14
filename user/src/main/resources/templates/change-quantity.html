@@ -137,7 +137,7 @@
     </div>
     <div class="content">
         <h2 th:text="${name}"></h2>
-        <h3><i class="fa-solid fa-cart-shopping"></i>  Change quantity</h3>
+        <h3><i class="fa-solid fa-cart-shopping"></i> Change quantity</h3>
         <form method="POST" th:action="@{/update-quantity}">
             <input name="quantity" required th:value="${quantity}" type="number">
             <input name="bookId" th:value="${bookId}" type="hidden">

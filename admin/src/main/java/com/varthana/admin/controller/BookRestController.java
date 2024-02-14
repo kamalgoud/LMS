@@ -38,8 +38,8 @@ public class BookRestController {
 
             return books;
         } catch (Exception e) {
-            logger.error("Error while retrieving all books : {}",e.getMessage());
-            throw new CustomException("Error while getting all books "+e.getMessage());
+            logger.error("Error while retrieving all books : {}", e.getMessage());
+            throw new CustomException("Error while getting all books " + e.getMessage());
         }
     }
 
@@ -48,8 +48,8 @@ public class BookRestController {
         try {
             return bookTransactionService.getTransactionsByUserId(userId);
         } catch (Exception e) {
-            logger.error("Error while getting all transactions : {}",e.getMessage());
-            throw new CustomException("Error while retrieving all transactions "+e.getMessage());
+            logger.error("Error while getting all transactions : {}", e.getMessage());
+            throw new CustomException("Error while retrieving all transactions " + e.getMessage());
         }
     }
 }

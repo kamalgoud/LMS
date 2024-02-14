@@ -42,12 +42,12 @@ public class UserCartController {
             model.addAttribute("price", price);
             model.addAttribute("name", name);
 
-            logger.warn("cart-quantity controller : {}",name);
+            logger.warn("cart-quantity controller : {}", name);
 
             return "cart-quantity";
         } catch (Exception e) {
-            logger.error("error while fetching cart quantity : {}",e.getMessage());
-            throw new CustomException("Error while adding cart quantity "+e.getMessage());
+            logger.error("error while fetching cart quantity : {}", e.getMessage());
+            throw new CustomException("Error while adding cart quantity " + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class UserCartController {
                 existedCartBook.setQuantityWanted(quantity);
                 cartService.saveCart(existedCartBook);
 
-                logger.warn("add-to-cart controller existed book : {}",existedCartBook.toString());
+                logger.warn("add-to-cart controller existed book : {}", existedCartBook.toString());
             } else {
                 List<CartBook> cartBooks = user.getCartBooks();
                 CartBook cartBook = new CartBook();
@@ -90,13 +90,13 @@ public class UserCartController {
                     userService.saveUser(user);
                 }
 
-                logger.warn("add-to-cart controller book : {}",cartBook.toString());
+                logger.warn("add-to-cart controller book : {}", cartBook.toString());
             }
 
             return "redirect:/view-cart";
         } catch (Exception e) {
-            logger.error("error while adding book to cart : {}",e.getMessage());
-            throw new CustomException("Error while adding book to cart "+e.getMessage());
+            logger.error("error while adding book to cart : {}", e.getMessage());
+            throw new CustomException("Error while adding book to cart " + e.getMessage());
         }
     }
 
@@ -109,12 +109,12 @@ public class UserCartController {
             List<CartBook> cartBookList = user.getCartBooks();
             model.addAttribute("books", cartBookList);
 
-            logger.warn("view-cart controller : {}",cartBookList);
+            logger.warn("view-cart controller : {}", cartBookList);
 
             return "cart";
         } catch (Exception e) {
-            logger.error("error while viewing cart : {}",e.getMessage());
-            throw new CustomException("Error while accessing cart "+e.getMessage());
+            logger.error("error while viewing cart : {}", e.getMessage());
+            throw new CustomException("Error while accessing cart " + e.getMessage());
         }
     }
 
@@ -131,12 +131,12 @@ public class UserCartController {
             cartService.deleteCart(cartBook);
             userService.saveUser(user);
 
-            logger.warn("remove-from-cart controller : {}",bookId);
+            logger.warn("remove-from-cart controller : {}", bookId);
 
             return "redirect:/view-cart";
         } catch (Exception e) {
-            logger.error("error while removing from cart : {}",e.getMessage());
-            throw new CustomException("Error while removing book from cart "+e.getMessage());
+            logger.error("error while removing from cart : {}", e.getMessage());
+            throw new CustomException("Error while removing book from cart " + e.getMessage());
         }
     }
 
@@ -150,11 +150,11 @@ public class UserCartController {
             model.addAttribute("name", name);
             model.addAttribute("quantity", quantity);
 
-            logger.warn("change-quantity controller : {}",quantity);
+            logger.warn("change-quantity controller : {}", quantity);
             return "change-quantity";
         } catch (Exception e) {
-            logger.error("error while changing quantity : {}",e.getMessage());
-            throw new CustomException("Error while changing book quantity in cart "+e.getMessage());
+            logger.error("error while changing quantity : {}", e.getMessage());
+            throw new CustomException("Error while changing book quantity in cart " + e.getMessage());
         }
     }
 
@@ -171,11 +171,11 @@ public class UserCartController {
             cartBook.setAmountToBePaid(quantity * cartBook.getPrice());
             cartService.saveCart(cartBook);
 
-            logger.warn("update-quantity controller : {}",bookId);
+            logger.warn("update-quantity controller : {}", bookId);
             return "redirect:/view-cart";
         } catch (Exception e) {
-            logger.error("error while updating the quantity : {}",e.getMessage());
-            throw new CustomException("Error while updating bokk quantity in cart "+e.getMessage());
+            logger.error("error while updating the quantity : {}", e.getMessage());
+            throw new CustomException("Error while updating bokk quantity in cart " + e.getMessage());
         }
     }
 }

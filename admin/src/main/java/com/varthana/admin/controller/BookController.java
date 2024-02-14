@@ -47,13 +47,13 @@ public class BookController {
                     iterator.remove();
                 }
             }
-            logger.warn("home {}",books);
+            logger.warn("home {}", books);
             System.out.println("Admin Home");
             model.addAttribute("books", books);
             return "home";
         } catch (Exception e) {
-            logger.error("Error while loading home page : {}",e.getMessage());
-            throw new CustomException("Error while getting books "+e.getMessage());
+            logger.error("Error while loading home page : {}", e.getMessage());
+            throw new CustomException("Error while getting books " + e.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class BookController {
         try {
             return "add-book";
         } catch (Exception e) {
-            logger.error("Error while adding book : {}",e.getMessage());
+            logger.error("Error while adding book : {}", e.getMessage());
             throw new CustomException("Error while adding books");
         }
     }
@@ -113,8 +113,8 @@ public class BookController {
 
             return "redirect:/";
         } catch (Exception e) {
-            logger.error("Error while creating book : {}",e.getMessage());
-            throw new CustomException("Error while creating admin "+e.getMessage());
+            logger.error("Error while creating book : {}", e.getMessage());
+            throw new CustomException("Error while creating admin " + e.getMessage());
         }
     }
 
@@ -133,8 +133,8 @@ public class BookController {
 
             return "my-books";
         } catch (Exception e) {
-            logger.error("Error while viewing my books : {}",e.getMessage());
-            throw new CustomException("Error while viewing my books "+e.getMessage());
+            logger.error("Error while viewing my books : {}", e.getMessage());
+            throw new CustomException("Error while viewing my books " + e.getMessage());
         }
     }
 
@@ -150,8 +150,8 @@ public class BookController {
 
             return "update-book";
         } catch (Exception e) {
-            logger.error("Error while updating book : {}",e.getMessage());
-            throw new CustomException("Error while updating books "+e.getMessage());
+            logger.error("Error while updating book : {}", e.getMessage());
+            throw new CustomException("Error while updating books " + e.getMessage());
         }
     }
 
@@ -176,8 +176,8 @@ public class BookController {
 
             return "redirect:/";
         } catch (Exception e) {
-            logger.error("Error while saving updated book : {}",e.getMessage());
-            throw new CustomException("Error while saving updated book details "+e.getMessage());
+            logger.error("Error while saving updated book : {}", e.getMessage());
+            throw new CustomException("Error while saving updated book details " + e.getMessage());
         }
     }
 
@@ -195,8 +195,8 @@ public class BookController {
             }
             return "redirect:/";
         } catch (Exception e) {
-            logger.error("Error while deleting book : {}",e.getMessage());
-            throw new CustomException("Error while deleting book "+e.getMessage());
+            logger.error("Error while deleting book : {}", e.getMessage());
+            throw new CustomException("Error while deleting book " + e.getMessage());
         }
     }
 
@@ -211,14 +211,14 @@ public class BookController {
             }
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
 
-            model.addAttribute("name",bookDetail.getName());
+            model.addAttribute("name", bookDetail.getName());
             model.addAttribute("books", bookRentTransactions);
             model.addAttribute("income", totalRentalsIncome);
 
             return "my-book-rent-transactions";
         } catch (Exception e) {
-            logger.error("Error while viewing my book rent transaction : {}",e.getMessage());
-            throw new CustomException("Error while retrieving my book transactions "+e.getMessage());
+            logger.error("Error while viewing my book rent transaction : {}", e.getMessage());
+            throw new CustomException("Error while retrieving my book transactions " + e.getMessage());
         }
     }
 
@@ -233,14 +233,14 @@ public class BookController {
             }
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
 
-            model.addAttribute("name",bookDetail.getName());
+            model.addAttribute("name", bookDetail.getName());
             model.addAttribute("books", bookPurchaseTransactions);
             model.addAttribute("income", totalSalesIncome);
 
             return "my-book-purchase-transactions";
         } catch (Exception e) {
-            logger.error("Error while viewing my book purchase transaction : {}",e.getMessage());
-            throw new CustomException("Error while retrieving purchase transactions "+e.getMessage());
+            logger.error("Error while viewing my book purchase transaction : {}", e.getMessage());
+            throw new CustomException("Error while retrieving purchase transactions " + e.getMessage());
         }
     }
 
@@ -258,8 +258,8 @@ public class BookController {
 
             return "my-book-quantity-detail";
         } catch (Exception e) {
-            logger.error("Error while viewing my book quantity : {}",e.getMessage());
-            throw new CustomException("Error while viewing my book quantity "+e.getMessage());
+            logger.error("Error while viewing my book quantity : {}", e.getMessage());
+            throw new CustomException("Error while viewing my book quantity " + e.getMessage());
         }
     }
 }

@@ -22,9 +22,9 @@ public class SecurityController {
     public String showLoginPage() throws CustomException {
         try {
             return "login";
-        }catch (Exception e){
-            logger.error("Error while showing Login Page : {}",e.getMessage());
-            throw new CustomException("Error while showing login page "+e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error while showing Login Page : {}", e.getMessage());
+            throw new CustomException("Error while showing login page " + e.getMessage());
         }
     }
 
@@ -32,9 +32,9 @@ public class SecurityController {
     public String accessDenied() throws CustomException {
         try {
             return "access-denied";
-        }catch (Exception e){
-            logger.error("Error while viewing access-denied page : {}",e.getMessage());
-            throw new CustomException("Error while access denying "+e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error while viewing access-denied page : {}", e.getMessage());
+            throw new CustomException("Error while access denying " + e.getMessage());
         }
     }
 
@@ -42,9 +42,9 @@ public class SecurityController {
     public String registerUser() throws CustomException {
         try {
             return "registration-form";
-        }catch (Exception e){
-            logger.error("Error while accessing /register : {}",e.getMessage());
-            throw new CustomException("Error while trying to register "+e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error while accessing /register : {}", e.getMessage());
+            throw new CustomException("Error while trying to register " + e.getMessage());
         }
     }
 
@@ -67,8 +67,8 @@ public class SecurityController {
             adminService.saveAdmin(admin);
 
             return "redirect:/showLoginPage";
-        }catch (Exception e){
-            logger.error("Error while registering user : {}",e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error while registering user : {}", e.getMessage());
             return "login";
         }
     }

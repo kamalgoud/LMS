@@ -19,7 +19,7 @@ public class CartBookServiceImpl implements CartBookService {
     @Override
     public CartBook saveCart(CartBook cart) throws CustomException {
         try {
-            logger.warn("saveCart service {}",cart.toString());
+            logger.warn("saveCart service {}", cart.toString());
             return cartRepository.save(cart);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -31,7 +31,7 @@ public class CartBookServiceImpl implements CartBookService {
     public void deleteCart(CartBook cart) throws CustomException {
         try {
             cartRepository.delete(cart);
-            logger.warn("deleteCart service {}",cart.toString());
+            logger.warn("deleteCart service {}", cart.toString());
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new CustomException("Error while deleting cart book");
@@ -41,7 +41,7 @@ public class CartBookServiceImpl implements CartBookService {
     @Override
     public CartBook updateCart(CartBook cart) throws CustomException {
         try {
-            logger.warn("updateCart service {}",cart.toString());
+            logger.warn("updateCart service {}", cart.toString());
             return cartRepository.save(cart);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -52,7 +52,7 @@ public class CartBookServiceImpl implements CartBookService {
     @Override
     public CartBook getCartBookByBookIdAndUserId(Integer bookId, Integer userId) throws CustomException {
         try {
-            logger.warn("getCartBookByBookIdAndUserId service {}",bookId);
+            logger.warn("getCartBookByBookIdAndUserId service {}", bookId);
             return cartRepository.findByBookIdAndUserId(bookId, userId);
         } catch (Exception e) {
             logger.error(e.getMessage());

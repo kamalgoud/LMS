@@ -49,14 +49,14 @@ public class UserPurchaseBooksController {
                            @RequestParam("bookId") Integer bookId,
                            @RequestParam("quantity") Long quantity) throws CustomException {
         try {
-            if(quantity==0){
-                model.addAttribute("warning","Not Able to Purchase");
+            if (quantity == 0) {
+                model.addAttribute("warning", "Not Able to Purchase");
                 return "warning";
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = adminUrl+"/purchase-book";
+            String url = adminUrl + "/purchase-book";
 
             PurchaseBookRequestDto purchaseBookRequestDto = new PurchaseBookRequestDto(bookId, user.getId(),
                     user.getName(), quantity, user.getIsEliteUser());
@@ -69,7 +69,7 @@ public class UserPurchaseBooksController {
             Boolean isPurchased = response.getBody();
 
             if (!isPurchased) {
-                model.addAttribute("warning","Not Able to Purchase");
+                model.addAttribute("warning", "Not Able to Purchase");
                 logger.warn("purchase-book controller : Not able to purchase because of admin side error");
                 return "warning";
             }
@@ -80,11 +80,11 @@ public class UserPurchaseBooksController {
             cartBookService.deleteCart(cartBook);
             userService.saveUser(user);
 
-            logger.warn("purchase-book controller : {}",cartBook.toString());
+            logger.warn("purchase-book controller : {}", cartBook.toString());
             return "redirect:/";
         } catch (Exception e) {
-            logger.error("error while purchasing book : {}",e.getMessage());
-            throw new CustomException("Error while purchasing book "+e.getMessage());
+            logger.error("error while purchasing book : {}", e.getMessage());
+            throw new CustomException("Error while purchasing book " + e.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class UserPurchaseBooksController {
             System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
-            String url = adminUrl+"/get-purchased-books/" + user.getId();
+            String url = adminUrl + "/get-purchased-books/" + user.getId();
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setBasicAuth(adminUserName, adminPassword);
             HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
@@ -104,17 +104,17 @@ public class UserPurchaseBooksController {
             List<PurchasedBooksDto> books = response.getBody();
 
             if (books == null) {
-                model.addAttribute("warning","No purchased Books");
+                model.addAttribute("warning", "No purchased Books");
                 logger.warn("purchased-books controller : No purchased books");
                 return "warning";
             }
             model.addAttribute("books", books);
-            logger.warn("purchased-books controller : {}",books.toString());
+            logger.warn("purchased-books controller : {}", books.toString());
 
             return "purchased-books";
         } catch (Exception e) {
-            logger.error("error while retrieving purchased books : {}",e.getMessage());
-            throw new CustomException("Error while accessing purchased books "+e.getMessage());
+            logger.error("error while retrieving purchased books : {}", e.getMessage());
+            throw new CustomException("Error while accessing purchased books " + e.getMessage());
         }
     }
 }

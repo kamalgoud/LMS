@@ -100,23 +100,21 @@ public class BookRentalRestController {
                 bookTransactionService.saveTransaction(bookTransaction);
 
                 List<BookRentTransaction> bookRentTransactionList = bookDetail.getBookRentTransactions();
-                if(bookRentTransactionList==null){
+                if (bookRentTransactionList == null) {
                     bookRentTransactionList = new ArrayList<>();
                     bookRentTransactionList.add(bookRentTransaction);
                     bookDetail.setBookRentTransactions(bookRentTransactionList);
-                }
-                else{
+                } else {
                     bookRentTransactionList.add(bookRentTransaction);
                     bookDetail.setBookRentTransactions(bookRentTransactionList);
                 }
 
                 List<BookTransaction> bookTransactionList = bookDetail.getBookTransactions();
-                if(bookTransactionList==null){
+                if (bookTransactionList == null) {
                     bookTransactionList = new ArrayList<>();
                     bookTransactionList.add(bookTransaction);
                     bookDetail.setBookTransactions(bookTransactionList);
-                }
-                else{
+                } else {
                     bookTransactionList.add(bookTransaction);
                     bookDetail.setBookTransactions(bookTransactionList);
                 }
@@ -128,8 +126,8 @@ public class BookRentalRestController {
                 return null;
             }
         } catch (Exception e) {
-            logger.error("Error while renting a book : {}",e.getMessage());
-            throw new CustomException("Error while renting a book "+e.getMessage());
+            logger.error("Error while renting a book : {}", e.getMessage());
+            throw new CustomException("Error while renting a book " + e.getMessage());
         }
     }
 
@@ -149,8 +147,8 @@ public class BookRentalRestController {
             }
             return false;
         } catch (Exception e) {
-            logger.error("Error while checking if user rented a book : {}",e.getMessage());
-            throw new CustomException("Error while checking if user rented a book "+e.getMessage());
+            logger.error("Error while checking if user rented a book : {}", e.getMessage());
+            throw new CustomException("Error while checking if user rented a book " + e.getMessage());
         }
     }
 
@@ -160,7 +158,7 @@ public class BookRentalRestController {
             List<BookRentTransaction> books = bookRentTransactionService.getBookTransactionsByUserId(id);
             return books;
         } catch (Exception e) {
-            logger.error("Error while getting rented books : {}",e.getMessage());
+            logger.error("Error while getting rented books : {}", e.getMessage());
             throw new CustomException("Error while getting rented books");
         }
     }
@@ -227,12 +225,11 @@ public class BookRentalRestController {
                 bookTransactionService.saveTransaction(bookTransaction);
 
                 List<BookTransaction> bookTransactionList = bookDetail.getBookTransactions();
-                if(bookTransactionList==null){
+                if (bookTransactionList == null) {
                     bookTransactionList = new ArrayList<>();
                     bookTransactionList.add(bookTransaction);
                     bookDetail.setBookTransactions(bookTransactionList);
-                }
-                else{
+                } else {
                     bookTransactionList.add(bookTransaction);
                     bookDetail.setBookTransactions(bookTransactionList);
                 }
@@ -242,8 +239,8 @@ public class BookRentalRestController {
                 return true;
             }
         } catch (Exception e) {
-            logger.error("Error while returning a book : {}",e.getMessage());
-            throw new CustomException("Error while returning a book "+e.getMessage());
+            logger.error("Error while returning a book : {}", e.getMessage());
+            throw new CustomException("Error while returning a book " + e.getMessage());
         }
     }
 }
