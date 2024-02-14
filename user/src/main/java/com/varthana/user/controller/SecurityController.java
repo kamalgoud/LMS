@@ -64,6 +64,7 @@ public class SecurityController {
             user.setName(name);
             user.setEmail(email);
             user.setPassword("{noop}" + password);
+            user.setIsEliteUser(false);
             userService.saveUser(user);
 
             return "redirect:/showLoginPage";

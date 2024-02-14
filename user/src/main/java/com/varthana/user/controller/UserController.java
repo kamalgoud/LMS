@@ -99,6 +99,15 @@ public class UserController {
     @PostMapping("/become-elite-user")
     public String becomeEliteUser(Model model) throws CustomException {
         try {
+            return "become-elite-user";
+        } catch (Exception e) {
+            throw new CustomException("Error while becoming elite user " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/elite-user")
+    public String eliteUser(Model model) throws CustomException {
+        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
 
@@ -111,5 +120,6 @@ public class UserController {
             throw new CustomException("Error while becoming elite user " + e.getMessage());
         }
     }
+
 }
 
