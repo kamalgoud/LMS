@@ -1,13 +1,14 @@
 package com.varthana.user.service;
 
 import com.varthana.user.entity.CartBook;
+import com.varthana.user.exception.CustomException;
 
 public interface CartBookService {
-    public CartBook saveCart(CartBook cart);
+    public CartBook saveCart(CartBook cart) throws CustomException;
 
-    public void deleteCart(CartBook cart);
+    public void deleteCart(CartBook cart) throws CustomException;
 
-    public CartBook updateCart(CartBook cart);
+    public CartBook updateCart(CartBook cart) throws CustomException;
 
-    public CartBook getCartBookByBookIdAndUserId(int bookId, int userId);
+    public CartBook getCartBookByBookIdAndUserId(int bookId, int userId) throws CustomException;
 }

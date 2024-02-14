@@ -3,6 +3,7 @@ package com.varthana.admin.controller;
 import com.varthana.admin.dto.*;
 import com.varthana.admin.entity.*;
 import com.varthana.admin.enums.Transaction;
+import com.varthana.admin.exception.CustomException;
 import com.varthana.admin.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,7 @@ public class BookRestController {
     private Logger logger = LogManager.getLogger(BookRestController.class);
 
     @GetMapping("/getAllBooks")
-    public List<BookDetail> getAllBooks() {
+    public List<BookDetail> getAllBooks() throws CustomException {
         try {
             List<BookDetail> books = bookDetailService.getAllBooks();
             Iterator<BookDetail> iterator = books.iterator();
@@ -38,17 +39,17 @@ public class BookRestController {
             return books;
         } catch (Exception e) {
             logger.error("Error while retrieving all books : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while getting all books "+e.getMessage());
         }
     }
 
     @GetMapping("/all-transactions/{id}")
-    public List<BookTransaction> allTransactions(@PathVariable("id") int userId) {
+    public List<BookTransaction> allTransactions(@PathVariable("id") int userId) throws CustomException {
         try {
             return bookTransactionService.getTransactionsByUserId(userId);
         } catch (Exception e) {
             logger.error("Error while getting all transactions : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while retrieving all transactions "+e.getMessage());
         }
     }
 }

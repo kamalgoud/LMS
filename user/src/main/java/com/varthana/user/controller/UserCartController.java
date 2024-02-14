@@ -2,6 +2,7 @@ package com.varthana.user.controller;
 
 import com.varthana.user.entity.CartBook;
 import com.varthana.user.entity.User;
+import com.varthana.user.exception.CustomException;
 import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +36,7 @@ public class UserCartController {
     public String cartBook(Model model,
                            @RequestParam("id") int id,
                            @RequestParam("price") double price,
-                           @RequestParam("name") String name) {
+                           @RequestParam("name") String name) throws CustomException {
         try {
             model.addAttribute("id", id);
             model.addAttribute("price", price);
@@ -46,7 +47,7 @@ public class UserCartController {
             return "cart-quantity";
         } catch (Exception e) {
             logger.error("error while fetching cart quantity : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while adding cart quantity "+e.getMessage());
         }
     }
 
@@ -55,7 +56,7 @@ public class UserCartController {
                             @RequestParam("id") int bookId,
                             @RequestParam("name") String bookName,
                             @RequestParam("price") double price,
-                            @RequestParam("quantity") long quantity) {
+                            @RequestParam("quantity") long quantity) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
@@ -95,12 +96,12 @@ public class UserCartController {
             return "redirect:/view-cart";
         } catch (Exception e) {
             logger.error("error while adding book to cart : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while adding book to cart "+e.getMessage());
         }
     }
 
     @GetMapping("/view-cart")
-    public String viewCart(Model model) {
+    public String viewCart(Model model) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
@@ -113,13 +114,13 @@ public class UserCartController {
             return "cart";
         } catch (Exception e) {
             logger.error("error while viewing cart : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while accessing cart "+e.getMessage());
         }
     }
 
     @PostMapping("/remove-from-cart")
     public String removeFromCart(Model model,
-                                 @RequestParam("id") int bookId) {
+                                 @RequestParam("id") int bookId) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
@@ -135,7 +136,7 @@ public class UserCartController {
             return "redirect:/view-cart";
         } catch (Exception e) {
             logger.error("error while removing from cart : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while removing book from cart "+e.getMessage());
         }
     }
 
@@ -143,7 +144,7 @@ public class UserCartController {
     public String changeQuantity(Model model,
                                  @RequestParam("id") int bookId,
                                  @RequestParam("name") String name,
-                                 @RequestParam("quantity") long quantity) {
+                                 @RequestParam("quantity") long quantity) throws CustomException {
         try {
             model.addAttribute("bookId", bookId);
             model.addAttribute("name", name);
@@ -153,14 +154,14 @@ public class UserCartController {
             return "change-quantity";
         } catch (Exception e) {
             logger.error("error while changing quantity : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while changing book quantity in cart "+e.getMessage());
         }
     }
 
     @PostMapping("/update-quantity")
     public String updateQuantity(Model model,
                                  @RequestParam("bookId") int bookId,
-                                 @RequestParam("quantity") long quantity) {
+                                 @RequestParam("quantity") long quantity) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
@@ -174,7 +175,7 @@ public class UserCartController {
             return "redirect:/view-cart";
         } catch (Exception e) {
             logger.error("error while updating the quantity : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while updating bokk quantity in cart "+e.getMessage());
         }
     }
 }

@@ -2,6 +2,7 @@ package com.varthana.user.controller;
 
 import com.varthana.user.dto.*;
 import com.varthana.user.entity.User;
+import com.varthana.user.exception.CustomException;
 import com.varthana.user.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +45,7 @@ public class UserRentBooksController {
     @PostMapping("/request-rent-book")
     public String rentDetails(Model model,
                               @RequestParam("id") int id,
-                              @RequestParam("name") String name) {
+                              @RequestParam("name") String name) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
@@ -72,7 +73,7 @@ public class UserRentBooksController {
             }
         } catch (Exception e) {
             logger.error("error while requesting to rent book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while requesting to rent a book "+e.getMessage());
         }
     }
 
@@ -80,7 +81,7 @@ public class UserRentBooksController {
     public String rentBook(Model model,
                            @RequestParam("id") int id,
                            @RequestParam("startdate") LocalDate startDate,
-                           @RequestParam("enddate") LocalDate endDate) {
+                           @RequestParam("enddate") LocalDate endDate) throws CustomException {
         try {
             if (startDate == null || endDate == null) {
                 model.addAttribute("warning","Invalid start date or end date");
@@ -119,12 +120,12 @@ public class UserRentBooksController {
             return "redirect:/";
         } catch (Exception e) {
             logger.error("error while renting : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while renting a book "+e.getMessage());
         }
     }
 
     @GetMapping("/rented-books")
-    public String getRentedBooks(Model model) {//id
+    public String getRentedBooks(Model model) throws CustomException {//id
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
@@ -147,14 +148,14 @@ public class UserRentBooksController {
             return "rented-books";
         } catch (Exception e) {
             logger.error("error while retrieving rented books : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while retrieving rented books "+e.getMessage());
         }
     }
 
     @PostMapping("/return-book")
     public String returnBook(Model model,
                              @RequestParam("id") int id,
-                             @RequestParam("transactionId") UUID transactionId) {
+                             @RequestParam("transactionId") UUID transactionId) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
@@ -179,7 +180,7 @@ public class UserRentBooksController {
             return "redirect:/";
         } catch (Exception e) {
             logger.error("error while returning book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while returning a book admin "+e.getMessage());
         }
     }
 }

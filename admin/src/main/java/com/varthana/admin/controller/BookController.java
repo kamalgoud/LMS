@@ -2,6 +2,7 @@ package com.varthana.admin.controller;
 
 import com.varthana.admin.configuration.SecurityConfiguration;
 import com.varthana.admin.entity.*;
+import com.varthana.admin.exception.CustomException;
 import com.varthana.admin.service.AdminService;
 import com.varthana.admin.service.BookDetailService;
 import com.varthana.admin.service.BookPurchaseTransactionService;
@@ -36,7 +37,7 @@ public class BookController {
     private Logger logger = LogManager.getLogger(BookController.class);
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model) throws CustomException {
         try {
             List<BookDetail> books = bookDetailService.getAllBooks();
             Iterator<BookDetail> iterator = books.iterator();
@@ -52,17 +53,17 @@ public class BookController {
             return "home";
         } catch (Exception e) {
             logger.error("Error while loading home page : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while getting books "+e.getMessage());
         }
     }
 
     @PostMapping("/add-book")
-    public String addBook() {
+    public String addBook() throws CustomException {
         try {
             return "add-book";
         } catch (Exception e) {
             logger.error("Error while adding book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while adding books");
         }
     }
 
@@ -71,7 +72,7 @@ public class BookController {
                                  @RequestParam("name") String name,
                                  @RequestParam("author") String author,
                                  @RequestParam("price") int price,
-                                 @RequestParam("quantity") int quantity) {
+                                 @RequestParam("quantity") int quantity) throws CustomException {
         try {
             if (name == null || author == null || price == 0 || quantity == 0) {
                 model.addAttribute("warning", "Fill All Details to Create Book");
@@ -110,12 +111,12 @@ public class BookController {
             return "redirect:/";
         } catch (Exception e) {
             logger.error("Error while creating book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while creating admin "+e.getMessage());
         }
     }
 
     @GetMapping("/view-my-books")
-    public String viewMyBooks(Model model) {
+    public String viewMyBooks(Model model) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Admin admin = adminService.getAdminByEmail(authentication.getName());
@@ -130,12 +131,12 @@ public class BookController {
             return "my-books";
         } catch (Exception e) {
             logger.error("Error while viewing my books : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while viewing my books "+e.getMessage());
         }
     }
 
     @PostMapping("/update-book")
-    public String updateBookDetail(@RequestParam("id") int id, Model model) {
+    public String updateBookDetail(@RequestParam("id") int id, Model model) throws CustomException {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(id);
             if (bookDetail.isDeletedByAdmin()) {
@@ -147,12 +148,13 @@ public class BookController {
             return "update-book";
         } catch (Exception e) {
             logger.error("Error while updating book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while updating books "+e.getMessage());
         }
     }
 
     @PostMapping("/save-updated-book")
-    public String saveUpdatedBookDetail(@RequestParam("id") int id, @ModelAttribute BookDetail updatedBookDetail) {
+    public String saveUpdatedBookDetail(@RequestParam("id") int id,
+                                        @ModelAttribute BookDetail updatedBookDetail) throws CustomException {
         try {
             LocalDate localDate = LocalDate.now();
             BookDetail bookDetail = bookDetailService.getBookById(id);
@@ -172,12 +174,12 @@ public class BookController {
             return "redirect:/";
         } catch (Exception e) {
             logger.error("Error while saving updated book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while saving updated book details "+e.getMessage());
         }
     }
 
     @PostMapping("/delete-book")
-    public String deleteBookDetail(Model model, @RequestParam("id") int id) {
+    public String deleteBookDetail(Model model, @RequestParam("id") int id) throws CustomException {
         try {
             if (bookDetailService.isPresentById(id)) {
                 BookDetail bookDetail = bookDetailService.getBookById(id);
@@ -191,12 +193,12 @@ public class BookController {
             return "redirect:/";
         } catch (Exception e) {
             logger.error("Error while deleting book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while deleting book "+e.getMessage());
         }
     }
 
     @GetMapping("/my-book-rent-transaction")
-    public String myBookRentTransactions(Model model, @RequestParam("bookId") int bookId) {
+    public String myBookRentTransactions(Model model, @RequestParam("bookId") int bookId) throws CustomException {
         try {
             List<BookRentTransaction> bookRentTransactions = bookRentTransactionService
                     .getBookTransactionsByBookId(bookId);
@@ -213,12 +215,12 @@ public class BookController {
             return "my-book-rent-transactions";
         } catch (Exception e) {
             logger.error("Error while viewing my book rent transaction : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while retrieving my book transactions "+e.getMessage());
         }
     }
 
     @GetMapping("/my-book-purchase-transaction")
-    public String myBookPurchaseTransactions(Model model, @RequestParam("bookId") int bookId) {
+    public String myBookPurchaseTransactions(Model model, @RequestParam("bookId") int bookId) throws CustomException {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByBookId(bookId);
@@ -235,12 +237,12 @@ public class BookController {
             return "my-book-purchase-transactions";
         } catch (Exception e) {
             logger.error("Error while viewing my book purchase transaction : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while retrieving purchase transactions "+e.getMessage());
         }
     }
 
     @GetMapping("/my-book-quantity")
-    public String myBookQuantity(Model model, @RequestParam("bookId") int bookId) {
+    public String myBookQuantity(Model model, @RequestParam("bookId") int bookId) throws CustomException {
         try {
             BookDetail bookDetail = bookDetailService.getBookById(bookId);
             if (bookDetail.isDeletedByAdmin()) {
@@ -254,7 +256,7 @@ public class BookController {
             return "my-book-quantity-detail";
         } catch (Exception e) {
             logger.error("Error while viewing my book quantity : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while viewing my book quantity "+e.getMessage());
         }
     }
 }

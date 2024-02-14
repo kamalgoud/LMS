@@ -5,6 +5,7 @@ import com.varthana.user.dto.PurchaseBookRequestDto;
 import com.varthana.user.dto.PurchasedBooksDto;
 import com.varthana.user.entity.CartBook;
 import com.varthana.user.entity.User;
+import com.varthana.user.exception.CustomException;
 import com.varthana.user.service.CartBookService;
 import com.varthana.user.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -46,7 +47,7 @@ public class UserPurchaseBooksController {
     @PostMapping("/purchase-book")
     public String purchase(Model model,
                            @RequestParam("bookId") int bookId,
-                           @RequestParam("quantity") long quantity) {
+                           @RequestParam("quantity") long quantity) throws CustomException {
         try {
             if(quantity==0){
                 model.addAttribute("warning","Not Able to Purchase");
@@ -83,12 +84,12 @@ public class UserPurchaseBooksController {
             return "redirect:/";
         } catch (Exception e) {
             logger.error("error while purchasing book : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while purchasing book "+e.getMessage());
         }
     }
 
     @GetMapping("/purchased-books")
-    public String purchasedBooks(Model model) {
+    public String purchasedBooks(Model model) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             System.out.println(authentication.getName());
@@ -113,7 +114,7 @@ public class UserPurchaseBooksController {
             return "purchased-books";
         } catch (Exception e) {
             logger.error("error while retrieving purchased books : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while accessing purchased books "+e.getMessage());
         }
     }
 }

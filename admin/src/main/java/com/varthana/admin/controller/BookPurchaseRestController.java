@@ -3,6 +3,7 @@ package com.varthana.admin.controller;
 import com.varthana.admin.dto.PurchaseBookRequestDto;
 import com.varthana.admin.entity.*;
 import com.varthana.admin.enums.Transaction;
+import com.varthana.admin.exception.CustomException;
 import com.varthana.admin.service.BookDetailService;
 import com.varthana.admin.service.BookPurchaseTransactionService;
 import com.varthana.admin.service.BookRentTransactionService;
@@ -30,7 +31,7 @@ public class BookPurchaseRestController {
     private Logger logger = LogManager.getLogger(BookPurchaseRestController.class);
 
     @PostMapping("/purchase-book")
-    public Boolean purchaseBook(@RequestBody PurchaseBookRequestDto purchaseBookRequestDto) {
+    public Boolean purchaseBook(@RequestBody PurchaseBookRequestDto purchaseBookRequestDto) throws CustomException {
         try {
             int bookId = purchaseBookRequestDto.getBookId();
             int userId = purchaseBookRequestDto.getUserId();
@@ -103,19 +104,19 @@ public class BookPurchaseRestController {
             return true;
         } catch (Exception e) {
             logger.error("Error while puchasing book : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while purchasing Book "+e.getMessage());
         }
     }
 
     @GetMapping("/get-purchased-books/{id}")
-    public List<BookPurchaseTransaction> getPurchasedBooks(@PathVariable("id") int userId) {
+    public List<BookPurchaseTransaction> getPurchasedBooks(@PathVariable("id") int userId) throws CustomException {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByUserId(userId);
             return bookPurchaseTransactions;
         } catch (Exception e) {
             logger.error("Error while getting purchased books : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while getting purchased books by user id "+e.getMessage());
         }
     }
 }

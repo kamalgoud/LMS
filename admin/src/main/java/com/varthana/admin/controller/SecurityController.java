@@ -1,6 +1,7 @@
 package com.varthana.admin.controller;
 
 import com.varthana.admin.entity.Admin;
+import com.varthana.admin.exception.CustomException;
 import com.varthana.admin.service.AdminService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,32 +19,32 @@ public class SecurityController {
     private Logger logger = LogManager.getLogger(SecurityController.class);
 
     @GetMapping("/showLoginPage")
-    public String showLoginPage() {
+    public String showLoginPage() throws CustomException {
         try {
             return "login";
         }catch (Exception e){
             logger.error("Error while showing Login Page : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while showing login page "+e.getMessage());
         }
     }
 
     @RequestMapping("/access-denied")
-    public String accessDenied() {
+    public String accessDenied() throws CustomException {
         try {
             return "access-denied";
         }catch (Exception e){
             logger.error("Error while viewing access-denied page : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while access denying "+e.getMessage());
         }
     }
 
     @GetMapping("/register")
-    public String registerUser() {
+    public String registerUser() throws CustomException {
         try {
             return "registration-form";
         }catch (Exception e){
             logger.error("Error while accessing /register : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while trying to register "+e.getMessage());
         }
     }
 

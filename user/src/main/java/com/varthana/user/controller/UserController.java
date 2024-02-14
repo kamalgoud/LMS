@@ -2,6 +2,7 @@ package com.varthana.user.controller;
 
 import com.varthana.user.dto.*;
 import com.varthana.user.entity.User;
+import com.varthana.user.exception.CustomException;
 import com.varthana.user.service.UserService;
 import com.varthana.user.service.serviceimpl.CartBookServiceImpl;
 import org.apache.logging.log4j.LogManager;
@@ -42,7 +43,7 @@ public class UserController {
     private Logger logger = LogManager.getLogger(UserController.class);
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model) throws CustomException {
         try {
             String url = adminUrl+"/getAllBooks";
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -62,12 +63,12 @@ public class UserController {
             return "home";
         } catch (Exception e) {
             logger.error("error wile getting all books : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while getting all books from admin "+e.getMessage());
         }
     }
 
     @GetMapping("/all-transactions")
-    public String allTransactions(Model model) {
+    public String allTransactions(Model model) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getUserByEmail(authentication.getName());
@@ -91,20 +92,24 @@ public class UserController {
             return "all-transactions";
         } catch (Exception e) {
             logger.error("error while getting all transactions : {}",e.getMessage());
-            return "error";
+            throw new CustomException("Error while retrieving all transactions "+e.getMessage());
         }
     }
 
     @PostMapping("/become-elite-user")
-    public String becomeEliteUser(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByEmail(authentication.getName());
+    public String becomeEliteUser(Model model) throws CustomException {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = userService.getUserByEmail(authentication.getName());
 
-        user.setEliteUser(true);
-        userService.saveUser(user);
+            user.setEliteUser(true);
+            userService.saveUser(user);
 
-        logger.warn("become-elite-user controller");
-        return "redirect:/";
+            logger.warn("become-elite-user controller");
+            return "redirect:/";
+        }catch (Exception e){
+            throw new CustomException("Error while becoming elite user "+e.getMessage());
+        }
     }
 }
 

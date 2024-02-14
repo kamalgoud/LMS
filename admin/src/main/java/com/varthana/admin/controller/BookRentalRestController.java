@@ -8,6 +8,7 @@ import com.varthana.admin.entity.BookQuantity;
 import com.varthana.admin.entity.BookRentTransaction;
 import com.varthana.admin.entity.BookTransaction;
 import com.varthana.admin.enums.Transaction;
+import com.varthana.admin.exception.CustomException;
 import com.varthana.admin.service.BookDetailService;
 import com.varthana.admin.service.BookPurchaseTransactionService;
 import com.varthana.admin.service.BookRentTransactionService;
@@ -35,7 +36,7 @@ public class BookRentalRestController {
     private Logger logger = LogManager.getLogger(BookRentalRestController.class);
 
     @PostMapping("/rent-book")
-    public BookDetail rentBook(@RequestBody BookRentRequestDto bookRentRequestDto) {
+    public BookDetail rentBook(@RequestBody BookRentRequestDto bookRentRequestDto) throws CustomException {
         try {
             int bookId = bookRentRequestDto.getBookId();
             int userId = bookRentRequestDto.getUserId();
@@ -123,12 +124,12 @@ public class BookRentalRestController {
             }
         } catch (Exception e) {
             logger.error("Error while renting a book : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while renting a book "+e.getMessage());
         }
     }
 
     @PostMapping("/check-user-rented-book")
-    public Boolean checkIfUserRentedBook(@RequestBody UserBookDto userBookDto) {
+    public Boolean checkIfUserRentedBook(@RequestBody UserBookDto userBookDto) throws CustomException {
         try {
             int bookId = userBookDto.getBookId();
             int userId = userBookDto.getUserId();
@@ -144,23 +145,23 @@ public class BookRentalRestController {
             return false;
         } catch (Exception e) {
             logger.error("Error while checking if user rented a book : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while checking if user rented a book "+e.getMessage());
         }
     }
 
     @GetMapping("/get-rented-books/{id}")
-    public List<BookRentTransaction> getRentedBooks(@PathVariable("id") int id) {
+    public List<BookRentTransaction> getRentedBooks(@PathVariable("id") int id) throws CustomException {
         try {
             List<BookRentTransaction> books = bookRentTransactionService.getBookTransactionsByUserId(id);
             return books;
         } catch (Exception e) {
             logger.error("Error while getting rented books : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while getting rented books");
         }
     }
 
     @PostMapping("/return-book")
-    public Boolean returnBook(@RequestBody ReturnBookDto returnBookDto) {
+    public Boolean returnBook(@RequestBody ReturnBookDto returnBookDto) throws CustomException {
         try {
             int bookId = returnBookDto.getBookId();
             UUID transactionId = returnBookDto.getTransactionId();
@@ -235,7 +236,7 @@ public class BookRentalRestController {
             }
         } catch (Exception e) {
             logger.error("Error while returning a book : {}",e.getMessage());
-            return null;
+            throw new CustomException("Error while returning a book "+e.getMessage());
         }
     }
 }

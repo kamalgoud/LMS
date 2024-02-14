@@ -1,0 +1,72 @@
+com.varthana.admin.AdminApplication-[INFO]- 2024-02-14 11:26:29,743-Starting AdminApplication using Java 21 with PID 10527 (/home/kamal/dev-spring-boot/LMS/admin/target/classes started by kamal in /home/kamal/dev-spring-boot/LMS)-
+com.varthana.admin.AdminApplication-[INFO]- 2024-02-14 11:26:29,744-No active profile set, falling back to 1 default profile: "default"-
+org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor-[INFO]- 2024-02-14 11:26:29,783-Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable-
+org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor-[INFO]- 2024-02-14 11:26:29,783-For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'-
+org.springframework.data.repository.config.RepositoryConfigurationDelegate-[INFO]- 2024-02-14 11:26:30,583-Bootstrapping Spring Data JPA repositories in DEFAULT mode.-
+org.springframework.data.repository.config.RepositoryConfigurationDelegate-[INFO]- 2024-02-14 11:26:30,634-Finished Spring Data repository scanning in 45 ms. Found 5 JPA repository interfaces.-
+org.springframework.boot.web.embedded.tomcat.TomcatWebServer-[INFO]- 2024-02-14 11:26:31,282-Tomcat initialized with port 8080 (http)-
+org.apache.catalina.core.StandardService-[INFO]- 2024-02-14 11:26:31,293-Starting service [Tomcat]-
+org.apache.catalina.core.StandardEngine-[INFO]- 2024-02-14 11:26:31,293-Starting Servlet engine: [Apache Tomcat/10.1.18]-
+org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]-[INFO]- 2024-02-14 11:26:31,325-Initializing Spring embedded WebApplicationContext-
+org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext-[INFO]- 2024-02-14 11:26:31,326-Root WebApplicationContext: initialization completed in 1543 ms-
+org.hibernate.jpa.internal.util.LogHelper-[INFO]- 2024-02-14 11:26:31,710-HHH000204: Processing PersistenceUnitInfo [name: default]-
+org.hibernate.Version-[INFO]- 2024-02-14 11:26:31,751-HHH000412: Hibernate ORM core version 6.4.1.Final-
+org.hibernate.cache.internal.RegionFactoryInitiator-[INFO]- 2024-02-14 11:26:31,778-HHH000026: Second-level cache disabled-
+org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo-[INFO]- 2024-02-14 11:26:31,923-No LoadTimeWeaver setup: ignoring JPA class transformer-
+com.zaxxer.hikari.HikariDataSource-[INFO]- 2024-02-14 11:26:31,943-HikariPool-1 - Starting...-
+com.zaxxer.hikari.pool.HikariPool-[INFO]- 2024-02-14 11:26:32,235-HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@665c5d0b-
+com.zaxxer.hikari.HikariDataSource-[INFO]- 2024-02-14 11:26:32,236-HikariPool-1 - Start completed.-
+org.hibernate.orm.deprecation-[WARN]- 2024-02-14 11:26:32,257-HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)-
+org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator-[INFO]- 2024-02-14 11:26:32,999-HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)-
+org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean-[INFO]- 2024-02-14 11:26:33,108-Initialized JPA EntityManagerFactory for persistence unit 'default'-
+org.springframework.security.provisioning.JdbcUserDetailsManager-[INFO]- 2024-02-14 11:26:33,729-No authentication manager set. Reauthentication of users when changing passwords will not be performed.-
+org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration-[WARN]- 2024-02-14 11:26:33,765-spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning-
+org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver-[INFO]- 2024-02-14 11:26:34,120-Exposing 1 endpoint(s) beneath base path '/actuator'-
+org.springframework.security.web.DefaultSecurityFilterChain-[INFO]- 2024-02-14 11:26:34,172-Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@390d3109, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@30af8013, org.springframework.security.web.context.SecurityContextHolderFilter@5abac899, org.springframework.security.web.header.HeaderWriterFilter@5b170304, org.springframework.web.filter.CorsFilter@1509565f, org.springframework.security.web.authentication.logout.LogoutFilter@e019796, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@18d9af3b, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@3c46ada6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@123478d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1463f3e7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2f23aa04, org.springframework.security.web.access.ExceptionTranslationFilter@52e5e56b, org.springframework.security.web.access.intercept.AuthorizationFilter@45985d3e]-
+org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer-[INFO]- 2024-02-14 11:26:34,523-LiveReload server is running on port 35729-
+org.springframework.boot.web.embedded.tomcat.TomcatWebServer-[INFO]- 2024-02-14 11:26:34,586-Tomcat started on port 8080 (http) with context path ''-
+com.varthana.admin.AdminApplication-[INFO]- 2024-02-14 11:26:34,606-Started AdminApplication in 5.224 seconds (process running for 5.719)-
+org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]-[INFO]- 2024-02-14 11:27:02,778-Initializing Spring DispatcherServlet 'dispatcherServlet'-
+org.springframework.web.servlet.DispatcherServlet-[INFO]- 2024-02-14 11:27:02,779-Initializing Servlet 'dispatcherServlet'-
+org.springframework.web.servlet.DispatcherServlet-[INFO]- 2024-02-14 11:27:02,784-Completed initialization in 4 ms-
+com.varthana.admin.service.serviceimpl.BookDetailServiceImpl-[WARN]- 2024-02-14 11:27:03,091-getAllBooks service-
+com.varthana.admin.controller.BookController-[WARN]- 2024-02-14 11:27:03,095-home [com.varthana.admin.entity.BookDetail@35230a60, com.varthana.admin.entity.BookDetail@6bd57b74, com.varthana.admin.entity.BookDetail@5e42f4d5]-
+com.varthana.admin.service.serviceimpl.BookDetailServiceImpl-[WARN]- 2024-02-14 11:30:45,878-getAllBooks service-
+org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean-[INFO]- 2024-02-14 11:39:02,657-Closing JPA EntityManagerFactory for persistence unit 'default'-
+com.zaxxer.hikari.HikariDataSource-[INFO]- 2024-02-14 11:39:02,660-HikariPool-1 - Shutdown initiated...-
+com.zaxxer.hikari.HikariDataSource-[INFO]- 2024-02-14 11:39:02,667-HikariPool-1 - Shutdown completed.-
+com.varthana.admin.AdminApplication-[INFO]- 2024-02-14 11:39:04,779-Starting AdminApplication using Java 21 with PID 12553 (/home/kamal/dev-spring-boot/LMS/admin/target/classes started by kamal in /home/kamal/dev-spring-boot/LMS)-
+com.varthana.admin.AdminApplication-[INFO]- 2024-02-14 11:39:04,781-No active profile set, falling back to 1 default profile: "default"-
+org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor-[INFO]- 2024-02-14 11:39:04,845-Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable-
+org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor-[INFO]- 2024-02-14 11:39:04,845-For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'-
+org.springframework.data.repository.config.RepositoryConfigurationDelegate-[INFO]- 2024-02-14 11:39:05,757-Bootstrapping Spring Data JPA repositories in DEFAULT mode.-
+org.springframework.data.repository.config.RepositoryConfigurationDelegate-[INFO]- 2024-02-14 11:39:05,804-Finished Spring Data repository scanning in 41 ms. Found 5 JPA repository interfaces.-
+org.springframework.boot.web.embedded.tomcat.TomcatWebServer-[INFO]- 2024-02-14 11:39:06,468-Tomcat initialized with port 8080 (http)-
+org.apache.catalina.core.StandardService-[INFO]- 2024-02-14 11:39:06,478-Starting service [Tomcat]-
+org.apache.catalina.core.StandardEngine-[INFO]- 2024-02-14 11:39:06,478-Starting Servlet engine: [Apache Tomcat/10.1.18]-
+org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]-[INFO]- 2024-02-14 11:39:06,506-Initializing Spring embedded WebApplicationContext-
+org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext-[INFO]- 2024-02-14 11:39:06,507-Root WebApplicationContext: initialization completed in 1662 ms-
+org.hibernate.jpa.internal.util.LogHelper-[INFO]- 2024-02-14 11:39:06,819-HHH000204: Processing PersistenceUnitInfo [name: default]-
+org.hibernate.Version-[INFO]- 2024-02-14 11:39:06,855-HHH000412: Hibernate ORM core version 6.4.1.Final-
+org.hibernate.cache.internal.RegionFactoryInitiator-[INFO]- 2024-02-14 11:39:06,876-HHH000026: Second-level cache disabled-
+org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo-[INFO]- 2024-02-14 11:39:07,017-No LoadTimeWeaver setup: ignoring JPA class transformer-
+com.zaxxer.hikari.HikariDataSource-[INFO]- 2024-02-14 11:39:07,036-HikariPool-1 - Starting...-
+com.zaxxer.hikari.pool.HikariPool-[INFO]- 2024-02-14 11:39:07,288-HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@357cb52f-
+com.zaxxer.hikari.HikariDataSource-[INFO]- 2024-02-14 11:39:07,289-HikariPool-1 - Start completed.-
+org.hibernate.orm.deprecation-[WARN]- 2024-02-14 11:39:07,311-HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)-
+org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator-[INFO]- 2024-02-14 11:39:08,076-HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)-
+org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean-[INFO]- 2024-02-14 11:39:08,164-Initialized JPA EntityManagerFactory for persistence unit 'default'-
+org.springframework.security.provisioning.JdbcUserDetailsManager-[INFO]- 2024-02-14 11:39:08,643-No authentication manager set. Reauthentication of users when changing passwords will not be performed.-
+org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration-[WARN]- 2024-02-14 11:39:08,678-spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning-
+org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver-[INFO]- 2024-02-14 11:39:09,080-Exposing 1 endpoint(s) beneath base path '/actuator'-
+org.springframework.security.web.DefaultSecurityFilterChain-[INFO]- 2024-02-14 11:39:09,128-Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@462bc4a2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@76f90a2c, org.springframework.security.web.context.SecurityContextHolderFilter@31152d1a, org.springframework.security.web.header.HeaderWriterFilter@5d0b9ae1, org.springframework.web.filter.CorsFilter@15281358, org.springframework.security.web.authentication.logout.LogoutFilter@27cb7b4a, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@22925d5, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1e85dcef, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3842a943, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@94487fa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@17164e94, org.springframework.security.web.access.ExceptionTranslationFilter@3296d83f, org.springframework.security.web.access.intercept.AuthorizationFilter@2ce32a2c]-
+org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer-[INFO]- 2024-02-14 11:39:09,451-LiveReload server is running on port 35729-
+org.springframework.boot.web.embedded.tomcat.TomcatWebServer-[INFO]- 2024-02-14 11:39:09,500-Tomcat started on port 8080 (http) with context path ''-
+com.varthana.admin.AdminApplication-[INFO]- 2024-02-14 11:39:09,512-Started AdminApplication in 5.152 seconds (process running for 5.588)-
+org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]-[INFO]- 2024-02-14 11:39:15,239-Initializing Spring DispatcherServlet 'dispatcherServlet'-
+org.springframework.web.servlet.DispatcherServlet-[INFO]- 2024-02-14 11:39:15,261-Initializing Servlet 'dispatcherServlet'-
+org.springframework.web.servlet.DispatcherServlet-[INFO]- 2024-02-14 11:39:15,267-Completed initialization in 4 ms-
+com.varthana.admin.service.serviceimpl.BookDetailServiceImpl-[WARN]- 2024-02-14 11:39:15,625-getAllBooks service-
+com.varthana.admin.controller.BookController-[WARN]- 2024-02-14 11:39:15,627-home [com.varthana.admin.entity.BookDetail@6257d231, com.varthana.admin.entity.BookDetail@1b30d0ad, com.varthana.admin.entity.BookDetail@7048528a]-
+com.varthana.admin.service.serviceimpl.BookDetailServiceImpl-[WARN]- 2024-02-14 11:39:21,537-getBookById service 1-
+com.varthana.admin.service.serviceimpl.BookDetailServiceImpl-[WARN]- 2024-02-14 11:39:26,326-getAllBooks service-
