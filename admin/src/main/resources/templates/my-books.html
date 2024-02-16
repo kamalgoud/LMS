@@ -128,8 +128,10 @@
             </li>
             <li>
                 <form method="GET" th:action="view-my-books">
-                    <p>
-                        <button type="submit"><i class="fa-solid fa-book"></i> View My Books</button>
+                    <p style="background-color:#0a610a;">
+                        <button style="color:#EEEEEE;" type="submit"><i class="fa-solid fa-book"
+                                                                        style="color:#EEEEEE;"></i> View My Books
+                        </button>
                     </p>
                 </form>
             </li>
@@ -165,13 +167,13 @@
                     <td>
                         <form method="POST" th:action="@{/update-book}">
                             <input name="id" th:value="${book.id}" type="hidden">
-                            <button type="submit">Update</button>
+                            <button type="submit">Update Book</button>
                         </form>
                     </td>
                     <td>
                         <form method="POST" th:action="@{/delete-book}">
                             <input name="id" th:value="${book.id}" type="hidden">
-                            <button type="submit">delete</button>
+                            <button type="submit">delete Book</button>
                         </form>
                     </td>
                     <td>

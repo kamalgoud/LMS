@@ -92,7 +92,6 @@ public class UserPurchaseBooksController {
     public String purchasedBooks(Model model) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
             String url = adminUrl + "/get-purchased-books/" + user.getId();

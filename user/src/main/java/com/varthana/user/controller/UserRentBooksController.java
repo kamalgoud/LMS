@@ -48,7 +48,6 @@ public class UserRentBooksController {
                               @RequestParam("name") String name) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
             String url = adminUrl + "/check-user-rented-book";
@@ -128,7 +127,6 @@ public class UserRentBooksController {
     public String getRentedBooks(Model model) throws CustomException {//id
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
             String url = adminUrl + "/get-rented-books/" + user.getId();
@@ -158,7 +156,6 @@ public class UserRentBooksController {
                              @RequestParam("transactionId") UUID transactionId) throws CustomException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             User user = userService.getUserByEmail(authentication.getName());
 
             String url = adminUrl + "/return-book";

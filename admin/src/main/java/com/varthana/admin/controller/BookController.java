@@ -79,7 +79,6 @@ public class BookController {
                 return "warning";
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
             Admin admin = adminService.getAdminByEmail(authentication.getName());
 
             LocalDate localDate = LocalDate.now();
@@ -223,7 +222,8 @@ public class BookController {
     }
 
     @GetMapping("/my-book-purchase-transaction")
-    public String myBookPurchaseTransactions(Model model, @RequestParam("bookId") Integer bookId) throws CustomException {
+    public String myBookPurchaseTransactions(Model model,
+                                             @RequestParam("bookId") Integer bookId) throws CustomException {
         try {
             List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService
                     .getPurchaseTransactionsByBookId(bookId);

@@ -33,3 +33,4 @@ build/
 .vscode/
 
 AdminLog.log
+AdminLog.log.*

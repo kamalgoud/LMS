@@ -120,6 +120,5 @@ public class UserController {
             throw new CustomException("Error while becoming elite user " + e.getMessage());
         }
     }
-
 }
 
