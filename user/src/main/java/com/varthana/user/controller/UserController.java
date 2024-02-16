@@ -120,5 +120,26 @@ public class UserController {
             throw new CustomException("Error while becoming elite user " + e.getMessage());
         }
     }
+
+    @GetMapping("/popular-books")
+    public String popularBooks(Model model) throws CustomException {
+        try {
+            String url = adminUrl + "/popular-books";
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setBasicAuth(adminUserName, adminPassword);
+            HttpEntity<Object> entity = new HttpEntity<>(httpHeaders);
+            ResponseEntity<List> response
+                    = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
+            List<String> popularBooks = response.getBody();
+
+            model.addAttribute("highestRentedBook",popularBooks.get(0));
+            model.addAttribute("highestPurchasedBook",popularBooks.get(1));
+
+            return "popular-books";
+        } catch (Exception e) {
+            throw new CustomException("Error while becoming elite user " + e.getMessage());
+        }
+    }
+
 }
 

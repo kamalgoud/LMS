@@ -18,4 +18,6 @@ public interface BookRentTransactionService {
     public List<BookRentTransaction> getBookTransactionsByBookId(Integer bookId) throws CustomException;
 
     public BookRentTransaction getTransactionByBookIdAndTansactionId(Integer bookId, UUID transactionId) throws CustomException;
+
+    public List<BookRentTransaction> getAllRentalTransactions() throws CustomException;
 }

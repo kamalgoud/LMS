@@ -110,6 +110,7 @@
             color:#EEEEEE;
             background-color:#48A248;
             border:2px solid #48A248;
+            cursor:pointer;
         }
     </style>
 </head>
@@ -168,7 +169,7 @@
     <div class="content">
         <div th:if="${isEliteUser == false}">
             <form method="POST" th:action="@{/become-elite-user}">
-                <button type="submit">Obtain Elite Membership</button>
+                <button style="padding:1vh;"  type="submit">Obtain Elite Membership</button>
             </form>
         </div>
         <div th:if="${isEliteUser == true}">
@@ -207,6 +208,9 @@
             </table>
             <br><br>
         </div>
+        <form method="GET" th:action="@{popular-books}">
+            <button style="padding:1vh;" type="submit">Popular Books</button>
+        </form>
     </div>
 </div>
 </body>

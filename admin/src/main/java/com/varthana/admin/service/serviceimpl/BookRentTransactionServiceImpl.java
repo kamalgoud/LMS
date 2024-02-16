@@ -91,4 +91,15 @@ public class BookRentTransactionServiceImpl implements BookRentTransactionServic
                     e.getMessage());
         }
     }
+
+    @Override
+    public List<BookRentTransaction> getAllRentalTransactions() throws CustomException {
+        try{
+            List<BookRentTransaction> bookRentTransactions = bookRentTransactionRepository.findAll();
+            return bookRentTransactions;
+        }catch (Exception e){
+            throw new CustomException("Error while accessing all rental transactions " +
+                    e.getMessage());
+        }
+    }
 }

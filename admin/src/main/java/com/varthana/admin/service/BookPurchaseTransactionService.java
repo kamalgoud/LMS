@@ -11,4 +11,6 @@ public interface BookPurchaseTransactionService {
     public List<BookPurchaseTransaction> getPurchaseTransactionsByUserId(Integer userId) throws CustomException;
 
     public List<BookPurchaseTransaction> getPurchaseTransactionsByBookId(Integer bookId) throws CustomException;
+
+    public List<BookPurchaseTransaction> getAllPurchasedBooks() throws CustomException;
 }

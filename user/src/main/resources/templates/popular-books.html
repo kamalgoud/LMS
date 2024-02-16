@@ -1,10 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Popular Books</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            background-color:#EEEEEE;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 22vh;
+            background-color: #48A248;
+            color : #EEEEEE;
+            padding: 2vh;
+            height: 100vh;
+        }
+        .sidebar h3 {
+            margin-top: 0px;
+            padding:1.5vh;
+        }
+        .sidebar h3 i{
+            color:white;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 1vh;
+            padding: 1vh;
+            padding-top:5vh;
+            transition: background-color 0.3s;
+        }
+        .sidebar a {
+            text-decoration: none;
+            margin: 0;
+        }
+        .sidebar button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            color : #48A248;
+            padding: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        .sidebar p{
+            padding:1vh;
+            box-shadow: 0.7vh 0.7vh 1vh rgba(0, 0, 0, 0.4);
+            background-color: #EEEEEE;
+            border-radius:2vh;
+            text-align: center;
+        }
+        .sidebar i{
+            color:#48A248
+        }
+
+        .content {
+            flex: 1;
+            padding: 2vh;
+        }
+
+        table{
+            width:80%;
+            box-shadow: 0.7vh 0.7vh 1vh rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+        table,tr,td,th{
+            border:1px solid black;
+            padding:1vh;
+        }
+        th{
+            background-color: #48A248;
+            color:white;
+        }
+        th:hover{
+            background-color: #DEE9FF;
+            box-shadow: 0.7vh 0.7vh 1vh rgba(0, 0, 0, 0.4);
+            color:black;
+        }
+        td:hover{
+            background-color: #DEE9FF;
+            box-shadow: 0.7vh 0.7vh 1vh rgba(0, 0, 0, 0.4);
+            color:black;
+        }
+        table{
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <div class="sidebar">
+        <h3><i class="fa-solid fa-user"></i> User LMS</h3>
+        <ul>
+            <li>
+                <form method="GET" th:action="@{/}">
+                    <p style="background-color:#0a610a;">
+                        <button style="color:white;" type="submit"><i class="fa-solid fa-house"
+                                                                      style="color:white;"></i> Home
+                        </button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/all-transactions}">
+                    <p>
+                        <button type="submit"><i class="fa-solid fa-list"></i> All Transactions</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/rented-books}">
+                    <p>
+                        <button type="submit"><i class="fa-solid fa-book"></i> Rented Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/purchased-books}">
+                    <p>
+                        <button type="submit"><i class="fa-solid fa-book"></i> Purchased Books</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="GET" th:action="@{/view-cart}">
+                    <p>
+                        <button type="submit"><i class="fa-solid fa-cart-shopping"></i>Cart</button>
+                    </p>
+                </form>
+            </li>
+            <li>
+                <form method="POST" th:action="@{/logout}">
+                    <p>
+                        <button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
+                    </p>
+                </form>
+            </li>
+        </ul>
+    </div>
 
+    <div class="content">
+        <table style="width:40%">
+            <tr>
+                <th>Category</th>
+                <th>Book</th>
+            </tr>
+            <tr>
+                <td><h4>Most Rented Book</h4></td>
+                <td><h4 th:text="${highestRentedBook}"></h4></td>
+            </tr>
+            <tr>
+                <td><h4>Most Purchased Book</h4></td>
+                <td><h4 th:text="${highestPurchasedBook}"></h4></td>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>

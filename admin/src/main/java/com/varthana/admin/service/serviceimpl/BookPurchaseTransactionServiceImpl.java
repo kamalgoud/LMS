@@ -55,4 +55,14 @@ public class BookPurchaseTransactionServiceImpl implements BookPurchaseTransacti
             throw new CustomException("Error while accessing purchase transaction by book id " + e.getMessage());
         }
     }
+
+    @Override
+    public List<BookPurchaseTransaction> getAllPurchasedBooks() throws CustomException {
+        try{
+            List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionRepository.findAll();
+            return bookPurchaseTransactions;
+        }catch (Exception e){
+            throw new CustomException("Error while accessing all purchase transactions " + e.getMessage());
+        }
+    }
 }

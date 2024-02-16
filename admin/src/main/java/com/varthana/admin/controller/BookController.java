@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,9 +48,46 @@ public class BookController {
                     iterator.remove();
                 }
             }
+
+            List<BookRentTransaction> bookRentTransactions = bookRentTransactionService.getAllRentalTransactions();
+            HashMap<String, Long> rentsFrequency = new HashMap<>();
+            String highestRentedBook = "";
+
+            if (bookRentTransactions != null) {
+                long count = 0;
+                for (int i = 0; i < bookRentTransactions.size(); i++) {
+                    rentsFrequency.put(bookRentTransactions.get(i).getBookName(),
+                            rentsFrequency.getOrDefault(bookRentTransactions.get(i).getBookName(), (long)0) + 1);
+                    if (rentsFrequency.get(bookRentTransactions.get(i).getBookName()) >= count) {
+                        highestRentedBook = bookRentTransactions.get(i).getBookName();
+                        count = rentsFrequency.get(bookRentTransactions.get(i).getBookName());
+                    }
+                }
+            }
+
+            List<BookPurchaseTransaction> bookPurchaseTransactions = bookPurchaseTransactionService.
+                    getAllPurchasedBooks();
+            HashMap<String, Long> purchaseFrequency = new HashMap<>();
+            String highestPurchasedBook = "";
+
+            if (bookPurchaseTransactions != null) {
+                long count = 0;
+                for (int i = 0; i < bookPurchaseTransactions.size(); i++) {
+                    purchaseFrequency.put(bookPurchaseTransactions.get(i).getBookName(),
+                             (purchaseFrequency.getOrDefault(bookPurchaseTransactions.get(i).getBookName(), (long)0)
+                                                                + bookPurchaseTransactions.get(i).getQuantity()));
+                    if (purchaseFrequency.get(bookPurchaseTransactions.get(i).getBookName()) >= count) {
+                        highestPurchasedBook = bookPurchaseTransactions.get(i).getBookName();
+                        count = purchaseFrequency.get(bookPurchaseTransactions.get(i).getBookName());
+                    }
+                }
+            }
+
             logger.warn("home {}", books);
             System.out.println("Admin Home");
             model.addAttribute("books", books);
+            model.addAttribute("highestRentedBook", highestRentedBook);
+            model.addAttribute("highestPurchasedBook", highestPurchasedBook);
             return "home";
         } catch (Exception e) {
             logger.error("Error while loading home page : {}", e.getMessage());
